@@ -1,0 +1,101 @@
+#:kivy 1.11
+#: import Graph kivy.garden.Graph
+
+<GraphTabs>:
+    do_default_tab: False
+    capacitance_tab: _capacitance_tab
+    CapacitancePlot:
+        id: _capacitance_tab
+    TemperaturePlot:
+        id: _temperature_tab
+    HumidityPlot:
+        id: _humidity_tab
+
+<GraphPanelItem>:
+    graph: _graph
+    plot_settings: _plot_settings
+    BoxLayout:    
+        padding: 10
+        orientation: 'horizontal'
+        Graph:
+            id: _graph
+            size_hint_x: 0.7
+        PlotSettings:
+            id: _plot_settings
+            size_hint_x: 0.3
+
+<CapacitancePlot>:
+    text: 'Capacitance'
+
+<TemperaturePlot>:
+    text: 'Temperature'
+
+<HumidityPlot>:
+    text: 'Humidity'
+
+<PlotSettings>:
+    orientation: 'vertical'
+    spacing: 10
+    padding: 10
+    seconds_spinner: _seconds_spinner
+    autorange_cb: _autorange_cb
+    ymin_input: _ymin
+    ymax_input: _ymax
+    GridLayout:
+        cols: 2
+        spacing: 10
+        padding: 10
+        size_hint_y: 0.5
+        canvas.before:
+            Color: 
+                rgba: 0.5, 0.5, 0.5, 1.0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        PlotSettingsLabel:
+            text: 'Min'
+        FloatInput:
+            text: '0'
+            id: _ymin
+        PlotSettingsLabel:
+            text: 'Max'
+        FloatInput:
+            text: '10'
+            id: _ymax
+        PlotSettingsLabel:
+            text: 'AutoRange'
+        CheckBox:
+            id: _autorange_cb
+        PlotSettingsLabel:
+            text: 'Seconds'
+        Spinner:
+            id: _seconds_spinner
+            values: ['1','5','10','30','60']
+            text: '30'
+        Widget:
+    GridLayout:
+        cols: 1
+        padding: 10
+        spacing: 10
+        size_hint_y: 0.5
+        canvas.before:
+            Color: 
+                rgba: 0.7, 0.4, 0.4, 1.0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: 'Export to CSV'
+            size_hint_y: 0.2
+        Button:
+            text: 'Export to txt'
+            size_hint_y: 0.2
+        Widget:
+    
+<PlotSettingsLabel@Label>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1.0
+        Rectangle:
+            pos: self.pos
+            size: self.size

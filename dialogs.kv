@@ -1,0 +1,49 @@
+#:kivy 1.11
+
+<SampleAverageDialog>:
+    auto_dismiss: False
+    size_hint: 0.4, 0.4
+    pos_hint: {'top': 0.5, 'right':0.5}
+    title: 'Sample Average'
+    avg_samples_sinner: _spinner
+    GridLayout:
+        cols: 2
+        spacing: 10
+        padding: 20
+        Label: 
+            text: '# Samples'
+        Spinner:
+            id: _spinner
+            values: ['1','2','4','8','16','32']
+            on_text: root.spinner_updated()
+        Widget:
+        Widget:
+        Button:
+            text: 'Cancel'
+            on_release: root.dismiss()
+        Button:
+            text: 'Update'
+
+<ModeConfDialog>:
+    auto_dismiss: False
+    size_hint: 0.4, 0.4
+    pos_hint: {'top': 0.5, 'right':0.5}
+    title: 'Mode Configuration'
+    mode_spinner: _spinner
+    GridLayout:
+        cols: 2
+        spacing: 10
+        padding: 20
+        Label: 
+            text: 'Mode'
+        Spinner:
+            values: ['HR','SpO2','Multi LED'] 
+            id: _spinner
+            on_text: root.spinner_updated()
+        Widget:
+        Widget:
+        Button:
+            text: 'Cancel'
+            on_release: root.dismiss()
+        Button:
+            text: 'Update'

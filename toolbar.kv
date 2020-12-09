@@ -1,0 +1,20 @@
+#:kivy 1.11
+
+<Toolbar>:
+    orientation:'vertical'
+    spacing: 10
+
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    ToolbarButton:
+        id: _sample_average_button
+        text: 'Sample Average'
+    
+    Widget:
+
+<ToolbarButton@Button>:
+    size_hint_y: 0.1

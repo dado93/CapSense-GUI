@@ -1,0 +1,29 @@
+#:kivy 1.11.1
+
+<TopBar@BoxLayout>:
+    padding: '2sp'
+    canvas:
+        Color:
+            rgba: 1, 1, 1, .6
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    size_hint: 1, None
+    height: '45sp'
+    Label:
+        size_hint: None, 1
+        width: '108sp'
+        text: 'MIP Board GUI'
+    Widget:
+    Button:
+        size_hint: None, 1
+        width: '108sp'
+        text: 'Start'
+    Button:
+        size_hint: None, 1
+        width: '108sp'
+        text: 'Stop'
+    Label:
+        size_hint: None, 1
+        width: '108sp'
+        text: 'Battery: '

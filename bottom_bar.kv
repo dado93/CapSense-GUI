@@ -1,0 +1,38 @@
+#:kivy 1.11
+
+<BottomBar>:
+    orientation:'horizontal'
+    spacing: 10
+    message_label: _message_label
+    connection_label: _connection_label
+    sensor_label: _sensor_label
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Label:
+        id: _message_label
+        text: "MAX30101 GUI"
+    ConnectionLabel:
+        id: _connection_label
+        size_hint_x: 0.1
+    SensorLabel:
+        id: _sensor_label
+        size_hint_x: 0.1
+    
+<ColoredLabel@Label>:
+    canvas.before:
+        Color:
+            rgba: (0.3, 0.3, 0.3, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    
+
+<ConnectionLabel@ColoredLabel>:
+    text: 'Device'
+
+<SensorLabel@ColoredLabel>:
+    text: 'Sensor'
