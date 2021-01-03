@@ -13,12 +13,16 @@
     
     BoxLayout:
         orientation:'horizontal'
-        size_hint: 1.0, 0.8
+        size_hint: 1.0, 0.89
         spacing: 10
         Toolbar:
             id: _toolbar
             size_hint: 0.2, 1.0
         GraphTabs:
+    ProgressBar:
+        id: _progress_bar
+        size_hint_y: 0.01
+        value: 50
     BottomBar:
         id: _bottom_bar
         size_hint: 1.0, 0.1

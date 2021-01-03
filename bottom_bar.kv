@@ -5,7 +5,6 @@
     spacing: 10
     message_label: _message_label
     connection_label: _connection_label
-    sensor_label: _sensor_label
     canvas.before:
         Color:
             rgba: (0.1, 0.1, 0.1, 1.0)
@@ -14,22 +13,18 @@
             pos: self.pos
     Label:
         id: _message_label
-        text: "MAX30101 GUI"
+        text: "MIP GUI"
     ConnectionLabel:
         id: _connection_label
         size_hint_x: 0.1
-    SensorLabel:
-        id: _sensor_label
-        size_hint_x: 0.1
     
-<ColoredLabel@Label>:
+<ColoredLabel>:
     canvas.before:
         Color:
-            rgba: (0.3, 0.3, 0.3, 1.0)
+            rgba: (1.0, 0., 0., 0.7)
         Rectangle:
             size: self.size
             pos: self.pos
-    
 
 <ConnectionLabel@ColoredLabel>:
     text: 'Device'

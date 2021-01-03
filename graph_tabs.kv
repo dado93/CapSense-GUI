@@ -6,10 +6,14 @@
     capacitance_tab: _capacitance_tab
     CapacitancePlot:
         id: _capacitance_tab
+    ResistancePlot:
+        id: _resistance_tab
     TemperaturePlot:
         id: _temperature_tab
     HumidityPlot:
         id: _humidity_tab
+    CurrentPlot:
+        id: _current_tab
 
 <GraphPanelItem>:
     graph: _graph
@@ -27,11 +31,17 @@
 <CapacitancePlot>:
     text: 'Capacitance'
 
+<ResistancePlot>:
+    text: 'Resistance'
+
 <TemperaturePlot>:
     text: 'Temperature'
 
 <HumidityPlot>:
     text: 'Humidity'
+
+<CurrentPlot>:
+    text: 'Current'
 
 <PlotSettings>:
     orientation: 'vertical'
@@ -71,13 +81,15 @@
         Spinner:
             id: _seconds_spinner
             values: ['1','5','10','30','60']
-            text: '30'
+            text: '60'
         Widget:
+    Legend:
+        size_hint_y: 0.3
     GridLayout:
         cols: 1
         padding: 10
         spacing: 10
-        size_hint_y: 0.5
+        size_hint_y: 0.2
         canvas.before:
             Color: 
                 rgba: 0.7, 0.4, 0.4, 1.0
@@ -90,7 +102,7 @@
         Button:
             text: 'Export to txt'
             size_hint_y: 0.2
-        Widget:
+    
     
 <PlotSettingsLabel@Label>:
     canvas.before:
@@ -99,3 +111,31 @@
         Rectangle:
             pos: self.pos
             size: self.size
+
+<LegendEntry@BoxLayout>:
+    line_label: _line_name
+    spacing: 5
+    LegendLabel:
+        id: _legend_color
+        size_hint_x: 0.5
+    Label:
+        size_hint_x: 0.5
+        id: _line_name
+        text: 'Channel #'
+
+<LegendLabel@Label>:
+    canvas.before:
+        Color:
+            rgba: 1, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<Legend@BoxLayout>:
+    orientation: 'vertical'
+    spacing: 10
+    LegendEntry:
+        size_hint_y: 0.1
+    LegendEntry:
+        size_hint_y: 0.1
+    Widget:

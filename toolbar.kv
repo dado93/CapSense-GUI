@@ -3,7 +3,7 @@
 <Toolbar>:
     orientation:'vertical'
     spacing: 10
-
+    padding: 10
     canvas.before:
         Color:
             rgba: (0.1, 0.1, 0.1, 1.0)
@@ -12,8 +12,20 @@
             pos: self.pos
     ToolbarButton:
         id: _sample_average_button
-        text: 'Sample Average'
+        text: 'Cap Settings'
     
+    ToolbarButton:
+        id: _sd_card_button
+        text: 'SD Card Settings'
+    
+    ToolbarButton:
+        id: _sd_load_button
+        text: 'Load SD Data'
+
+    ToolbarButton:
+        id: _info_button
+        text: 'Info'
+
     Widget:
 
 <ToolbarButton@Button>:

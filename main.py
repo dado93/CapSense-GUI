@@ -1,8 +1,10 @@
 from kivy.app import App
+from kivy.config import Config
+Config.set('kivy', 'exit_on_escape', '0')
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
-from communication import MAXSerial
+from communication import MIPSerial
 
 Builder.load_file('toolbar.kv')
 Builder.load_file('bottom_bar.kv')
@@ -16,7 +18,7 @@ class ContainerLayout(BoxLayout):
     bottom_bar = ObjectProperty(None)
     
     def __init__(self, **kwargs):
-        self.serial = MAXSerial()
+        self.serial = MIPSerial()
         super(ContainerLayout, self).__init__(**kwargs)
     
     def on_toolbar(self, instance, value):

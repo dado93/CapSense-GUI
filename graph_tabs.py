@@ -4,6 +4,7 @@ from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import BooleanProperty, ObjectProperty, NumericProperty
 import re
+from kivy.garden.Graph import LinePlot
 
 class GraphTabs(TabbedPanel):
     def __init__(self, **kwargs):
@@ -15,7 +16,7 @@ class GraphPanelItem(TabbedPanelItem):
 
     def __init__(self, **kwargs):
         super(GraphPanelItem, self).__init__(**kwargs)
-        self.n_seconds = 30
+        self.n_seconds = 60
 
     def on_graph(self, instance, value):
         self.graph.xmin = -self.n_seconds
@@ -30,7 +31,11 @@ class GraphPanelItem(TabbedPanelItem):
         self.graph.ymin = 0
         self.graph.ymax = 10
         self.graph.y_grid_label = True
-    
+        self.n_points = self.n_seconds * 1  # Number of points to plot
+        self.time_between_points = (self.n_seconds)/float(self.n_points)
+        self.x_points = [x for x in range(-self.n_points, 0)]
+        self.y_points = [10 for y in range(-self.n_points, 0)]
+        
     def on_plot_settings(self, instance, value):
         self.plot_settings.bind(n_seconds=self.graph.setter('xmin'))
         self.plot_settings.bind(ymin=self.graph.setter('ymin'))
@@ -40,7 +45,19 @@ class TemperaturePlot(GraphPanelItem):
     def on_graph(self, instance, value):
         super(TemperaturePlot, self).on_graph(instance, value)
         self.graph.ylabel = 'Temperature (C)'
-
+        
+        #self.y_points = []
+        self.plot = LinePlot(color=(0.5, 0.4, 0.4, 1.0))
+        self.plot.line_width = 2
+        """
+        self.y_points.append(list([0 for y in range(-self.n_points, 0)]))
+        for j in range(self.n_points):
+            self.x_points[j] = -self.n_seconds + \
+                    j * self.time_between_points
+        """
+        self.plot.points = zip(self.x_points, self.y_points)
+        self.graph.add_plot(self.plot)
+        
 class HumidityPlot(GraphPanelItem):
     def on_graph(self, instance, value):
         super(HumidityPlot, self).on_graph(instance, value)
@@ -49,8 +66,21 @@ class HumidityPlot(GraphPanelItem):
         self.graph.y_ticks_minor = 5
         self.graph.y_ticks_major = 10
 
+class CurrentPlot(GraphPanelItem):
+    def on_graph(self, instance, value):
+        super(CurrentPlot, self).on_graph(instance, value)
+        self.graph.ylabel = 'Current (mA)'
+        self.graph.ymax = 100
+        self.graph.y_ticks_minor = 5
+        self.graph.y_ticks_major = 10
+
 class CapacitancePlot(GraphPanelItem):
     pass
+
+class ResistancePlot(GraphPanelItem):
+    def on_graph(self, instance, value):
+        super(ResistancePlot, self).on_graph(instance, value)
+        self.graph.ylabel = 'Resistance (kOhm)'
 
 class PlotSettings(BoxLayout):
     seconds_spinner = ObjectProperty(None)
