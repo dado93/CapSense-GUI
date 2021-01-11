@@ -1,6 +1,7 @@
 #:kivy 1.11.1
+#:import TopBar top_bar
 
-<TopBar@BoxLayout>:
+<TopBar>:
     padding: '2sp'
     canvas:
         Color:
@@ -19,10 +20,12 @@
         size_hint: None, 1
         width: '108sp'
         text: 'Start'
+        on_release: root.start_streaming()
     Button:
         size_hint: None, 1
         width: '108sp'
         text: 'Stop'
+        on_release: root.stop_streaming()
     Label:
         size_hint: None, 1
         width: '108sp'
