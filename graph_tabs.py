@@ -7,8 +7,31 @@ import re
 from kivy.garden.Graph import LinePlot
 
 class GraphTabs(TabbedPanel):
+    data_sample_rate = NumericProperty(0)
+    temperature_sample_rate = NumericProperty(0)
+
+    temperature_tab = ObjectProperty(None)
+    resistance_tab = ObjectProperty(None)
+    current_tab = ObjectProperty(None)
+    humidity_tab = ObjectProperty(None)
+    capacitance_tab = ObjectProperty(None)
+
     def __init__(self, **kwargs):
         super(GraphTabs, self).__init__(**kwargs)
+        
+    def on_data_sample_rate(self, instance, value):
+        self.capacitance_tab.update_sample_rate(value)
+        self.resistance_tab.update_sample_rate(value)
+        self.temperature_tab.update_sample_rate(value)
+        self.humidity_tab.update_sample_rate(value)
+        self.current_tab.update_sample_rate(value)
+    
+    def on_temperature_sample_rate(self, instance, value):
+        self.capacitance_tab.update_temperature_sample_rate(value)
+        self.resistance_tab.update_temperature_sample_rate(value)
+        self.temperature_tab.update_temperature_sample_rate(value)
+        self.humidity_tab.update_temperature_sample_rate(value)
+        self.current_tab.update_temperature_sample_rate(value)
 
 class GraphPanelItem(TabbedPanelItem):
     graph = ObjectProperty(None)
@@ -40,6 +63,12 @@ class GraphPanelItem(TabbedPanelItem):
         self.plot_settings.bind(n_seconds=self.graph.setter('xmin'))
         self.plot_settings.bind(ymin=self.graph.setter('ymin'))
         self.plot_settings.bind(ymax=self.graph.setter('ymax'))
+    
+    def update_sample_rate(self, value):
+        self.plot_settings.update_sample_rate(value)
+    
+    def update_temperature_sample_rate(self, value):
+        self.plot_settings.update_temperature_sample_rate(value)
 
 class TemperaturePlot(GraphPanelItem):
     def on_graph(self, instance, value):
@@ -87,8 +116,10 @@ class PlotSettings(BoxLayout):
     autorange_cb = ObjectProperty(None)
     ymin_input = ObjectProperty(None)
     ymax_input = ObjectProperty(None)
+    data_sr_label = ObjectProperty(None)
+    temperature_sr_label = ObjectProperty(None)
+
     n_seconds = NumericProperty(0)
-    
     ymin = NumericProperty(0)
     ymax = NumericProperty(0)
     
@@ -124,6 +155,12 @@ class PlotSettings(BoxLayout):
                 self.ymin_input.text = f"{self.ymin:.2f}"
             elif (self.ymax_input.text == ''):
                 self.ymax_input.text = f"{self.ymax:.2f}"
+    
+    def update_sample_rate(self, value):
+        self.data_sr_label.text = f"Data SR: {value:.1f} Hz"
+
+    def update_temperature_sample_rate(self, value):
+        self.temperature_sr_label.text = f"T&RH SR: {value:.1f} Hz"
 
 class FloatInput(TextInput):
     pat = re.compile('[^0-9]')
