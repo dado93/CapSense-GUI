@@ -7,19 +7,23 @@
     toolbar: _toolbar
     bottom_bar: _bottom_bar
     progress_bar: _progress_bar
+    top_bar: _top_bar
+    graph_tabs: _graph_tabs
     orientation: 'vertical'
     spacing: 10
     padding: 20
     TopBar:
-    
+        id: _top_bar
     BoxLayout:
         orientation:'horizontal'
         size_hint: 1.0, 0.89
         spacing: 10
         Toolbar:
             id: _toolbar
+            disabled: True
             size_hint: 0.2, 1.0
         GraphTabs:
+            id: _graph_tabs
     ProgressBar:
         id: _progress_bar
         size_hint_y: 0.01
