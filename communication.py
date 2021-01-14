@@ -3,7 +3,7 @@ import serial
 import serial.tools.list_ports as list_ports
 import struct
 import threading
-import kivy.properties
+from kivy.properties import NumericProperty, BooleanProperty, StringProperty
 from kivy.event import EventDispatcher
 import time
 
@@ -96,11 +96,12 @@ class Singleton(type):
         return cls._instances[cls]
 
 class MIPSerial(EventDispatcher, metaclass=Singleton):
-    connected = kivy.properties.NumericProperty(defaultvalue=BOARD_DISCONNECTED)
-    message_string = kivy.properties.StringProperty('')
-    battery_voltage = kivy.properties.NumericProperty(defaultvalue=0.0)
-    data_sample_rate = kivy.properties.NumericProperty(defaultvalue=0.0)
-    temperature_sample_rate = kivy.properties.NumericProperty(defaultvalue=0.0)
+    connected = NumericProperty(defaultvalue=BOARD_DISCONNECTED)
+    message_string = StringProperty('')
+    battery_voltage = NumericProperty(defaultvalue=0.0)
+    data_sample_rate = NumericProperty(defaultvalue=0.0)
+    temperature_sample_rate = NumericProperty(defaultvalue=0.0)
+    is_streaming = BooleanProperty(False)
 
     def __init__(self):
         self.port_name = ""
@@ -112,8 +113,13 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         self.samples_read = 0
         self.temp_rh_samples_read = 0
         self.is_streaming = False
+        self.callbacks = []
         find_port_thread = threading.Thread(target=self.find_port, daemon=True)
         find_port_thread.start()
+
+    def add_callback(self, callback):
+        if (callback not in self.callbacks):
+            self.callbacks.append(callback)
 
     def find_port(self):
         mip_port_found = False
@@ -170,8 +176,6 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                     self.connected = 2
                     time.sleep(1)
                     self.send_updated_time_to_board()
-                    time.sleep(1)
-                    self.set_sample_rate('100 Hz')
                     # Start thread for data reading
                     read_thread = threading.Thread(target=self.read_data)
                     read_thread.daemon = True
@@ -294,6 +298,9 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         self.temp_rh_samples_read += 1
                         if (self.temp_rh_samples_read == 1):
                             self.temperature_received_packet_time = datetime.now()
+                        has_temperature_data = True
+                    else:
+                        has_temperature_data = False
                     self.read_state = 4
                 elif (self.read_state == 4):
                     # Extract capdac values
@@ -334,7 +341,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                             diff = (curr_time - self.received_packet_time)
                             self.data_sample_rate = (self.samples_read) / diff.total_seconds()
                         # Compute temperature and humidity sample rate
-                        if (self.temp_rh_samples_read >  0 and self.temp_rh_samples_read % 100 == 0):
+                        if (self.temp_rh_samples_read >  0 and self.temp_rh_samples_read % 50 == 0):
                             curr_time = datetime.now()
                             diff = (curr_time - self.received_packet_time)
                             self.temperature_sample_rate = (self.temp_rh_samples_read) / diff.total_seconds()
@@ -346,8 +353,10 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                                                 cap_ch_2=cap_ch_2,
                                                 cap_ch_3=cap_ch_3,
                                                 cap_ch_4=cap_ch_4,
-                                                packet_counter=packet_counter)
-                        #print(packet)
+                                                packet_counter=packet_counter,
+                                                has_temp_data = has_temperature_data)
+                        for callback in self.callbacks:
+                            callback(packet)
                     else:
                         print('Skipped one packet')
                         self.read_state = 0 
@@ -384,8 +393,42 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         sample_rate_cmd = self.get_sample_rate_cmd(sample_rate)
         self.port.write(sample_rate_cmd.encode('utf-8'))
 
-    #def get_temp_hum_sample_rate_cmd(self, th_sample_rate, th_rep):
+    def get_temp_hum_config_cmd(self, th_sample_rate, th_repeatability):
+        config_dict = {
+            '0.5 Hz': {
+                'Low': [0x20, 0x2f],
+                'Med': [0x20, 0x24],
+                'High': [0x20, 0x32],
+            },
+            '1 Hz': {
+                'Low': [0x21, 0x2D],
+                'Med': [0x21, 0x26],
+                'High': [0x21, 0x30], 
+            },
+            '2 Hz': {
+                'Low': [0x22, 0x2B],
+                'Med': [0x22, 0x20],
+                'High': [0x22, 0x36],
+            },
+            '4 Hz': {
+                'Low': [0x23, 0x29],
+                'Med': [0x23, 0x22],
+                'High': [0x23, 0x34],
+            },
+            '10 Hz': {
+                'Low': [0x27, 0x2A],
+                'Med': [0x27, 0x21],
+                'High': [0x27, 0x37],
+            }
+        }
+        return bytearray(config_dict[th_sample_rate][th_repeatability])
 
+    def set_temperature_settings(self, sample_rate, repeatability):
+        self.message_string = f'Setting temperature sensor to {sample_rate} and {repeatability}'
+        cmds = self.get_temp_hum_config_cmd(sample_rate, repeatability)
+        self.port.write(TEMP_RH_SETTINGS_SET_CMD.encode('utf-8'))
+        self.port.write(cmds)
+        self.port.write(TEMP_RH_SETTINGS_LATCH_CMD.encode('utf-8'))
     
     def convert_battery_voltage(self, value):
         """!
@@ -471,7 +514,26 @@ class DataPacket():
         self.capacitance_values = [cap_ch_1, cap_ch_2, cap_ch_3, cap_ch_4]
         self.current = current
         self.aux = aux
+        self.has_temp_data = has_temp_data
     
+    def has_temperature_data(self):
+        return self.has_temp_data
+    
+    def get_temperature(self):
+        return self.temperature
+    
+    def get_humidity(self):
+        return self.humidity
+    
+    def get_capacitance(self, channel_number=None):
+        if (channel_number == None):
+            return self.capacitance_values
+
+        if (channel_number < 0 or channel_number > 3):
+            return 0
+        else:
+            return self.capacitance_values[channel_number]
+
     def __str__(self):
         st = f"[{self.packet_counter}] - {self.temperature:.2f} - "
         st += f"{self.humidity:.2f} - {self.capacitance_values}"

@@ -6,30 +6,39 @@ from kivy.graphics import Color, Rectangle
 
 class TopBar(BoxLayout):
     enable_buttons = BooleanProperty(False)
-    start_streaming_button = ObjectProperty(None)
-    stop_streaming_button = ObjectProperty(None)
+    streaming_button = ObjectProperty(None)
     battery_label = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super(TopBar, self).__init__(**kwargs)
         self.ser = MIPSerial()
 
-    def start_streaming(self):
-        self.ser.start_streaming()
+    def streaming(self):
+        """!
+        @brief Callback called on streaming button pressed.
 
-    def stop_streaming(self):
-        self.ser.stop_streaming()
+        This function checks whether the board is currently
+        streaming data or not, and based on that triggers
+        the start/stop of data streaming and also 
+        updates the text of the button. 
+        """
+        if (self.ser.is_streaming):
+            self.ser.stop_streaming()
+            self.streaming_button.text = 'Start'
+        else:
+            self.ser.start_streaming()
+            self.streaming_button.text = 'Stop'
+
 
     def enable_widgets(self, value):
         """!
         @brief Enable/disable widgets for interaction with board.
         """
-        self.start_streaming_button.disabled = (not value)
-        self.stop_streaming_button.disabled = (not value)
+        self.streaming_button.disabled = (not value)
         self.battery_label.disabled = (not value)
     
     def update_battery_level(self, instance, value):
-        self.battery_label.text = f'Battery: {value:.2f}'
+        self.battery_label.text = f'Battery: {value:.1f}'
         if (value >= 3.7):
             self.battery_label.update_color(0,1,0)
             self.battery_label.color = (0,0,0,1)

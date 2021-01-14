@@ -2,8 +2,7 @@
 #:import TopBar top_bar
 
 <TopBar>:
-    start_streaming_button: _start_button
-    stop_streaming_button: _stop_button
+    streaming_button: _start_button
     battery_label: _battery_label
     padding: '2sp'
     canvas:
@@ -25,14 +24,7 @@
         size_hint: None, 1
         width: '108sp'
         text: 'Start'
-        on_release: root.start_streaming()
-    Button:
-        id: _stop_button
-        disabled: True
-        size_hint: None, 1
-        width: '108sp'
-        text: 'Stop'
-        on_release: root.stop_streaming()
+        on_release: root.streaming()
     ColoredLabel:
         id: _battery_label
         size_hint: None, 1

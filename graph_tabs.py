@@ -18,6 +18,7 @@ class GraphTabs(TabbedPanel):
 
     def __init__(self, **kwargs):
         super(GraphTabs, self).__init__(**kwargs)
+        self.n_points_per_update = 10
         
     def on_data_sample_rate(self, instance, value):
         self.capacitance_tab.update_sample_rate(value)
@@ -33,6 +34,13 @@ class GraphTabs(TabbedPanel):
         self.humidity_tab.update_temperature_sample_rate(value)
         self.current_tab.update_temperature_sample_rate(value)
 
+    def update_plots(self, packet):
+        self.temperature_tab.update_plot(packet)
+        self.capacitance_tab.update_plot(packet)
+        self.humidity_tab.update_plot(packet)
+        #self.temperature_tab.update_plot(packet.get_temperature())
+    
+
 class GraphPanelItem(TabbedPanelItem):
     graph = ObjectProperty(None)
     plot_settings = ObjectProperty(None)
@@ -40,6 +48,8 @@ class GraphPanelItem(TabbedPanelItem):
     def __init__(self, **kwargs):
         super(GraphPanelItem, self).__init__(**kwargs)
         self.n_seconds = 60
+        self.n_points_per_update = 1
+        self.temp_points = []
 
     def on_graph(self, instance, value):
         self.graph.xmin = -self.n_seconds
@@ -69,13 +79,19 @@ class GraphPanelItem(TabbedPanelItem):
     
     def update_temperature_sample_rate(self, value):
         self.plot_settings.update_temperature_sample_rate(value)
+    
+    def update_plot(self, packet):
+        pass
 
 class TemperaturePlot(GraphPanelItem):
+    
+    def __init__(self, **kwargs):
+        super(TemperaturePlot, self).__init__(**kwargs)
+        self.last_temperature = 10
+
     def on_graph(self, instance, value):
         super(TemperaturePlot, self).on_graph(instance, value)
         self.graph.ylabel = 'Temperature (C)'
-        
-        #self.y_points = []
         self.plot = LinePlot(color=(0.5, 0.4, 0.4, 1.0))
         self.plot.line_width = 2
         """
@@ -86,7 +102,21 @@ class TemperaturePlot(GraphPanelItem):
         """
         self.plot.points = zip(self.x_points, self.y_points)
         self.graph.add_plot(self.plot)
-        
+    
+    def update_plot(self, packet):
+        if (not packet.has_temperature_data()):
+            value = self.last_temperature
+        else:
+            value = packet.get_temperature()
+            self.last_temperature = value
+        self.temp_points.append(value)
+        if (len(self.temp_points) == self.n_points_per_update):
+            for val in self.temp_points:
+                self.y_points.append(self.y_points.pop(0))
+                self.y_points[-1] = val
+            self.temp_points = []
+            self.plot.points = zip(self.x_points, self.y_points)
+
 class HumidityPlot(GraphPanelItem):
     def on_graph(self, instance, value):
         super(HumidityPlot, self).on_graph(instance, value)
