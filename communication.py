@@ -57,6 +57,16 @@ TEMP_RH_SETTINGS_SET_CMD = 'x'
 """
 TEMP_RH_SETTINGS_LATCH_CMD = 'X'
 
+SAMPLE_RATE_1_HZ_CMD   = '1'
+SAMPLE_RATE_10_HZ_CMD  = '2'
+SAMPLE_RATE_25_HZ_CMD  = '3'
+SAMPLE_RATE_50_HZ_CMD  = '4'
+SAMPLE_RATE_100_HZ_CMD = '5'
+
+RETRIEVE_SAMPLE_RATE_CMD = 'w'
+
+CONN_REQUEST_CMD = 'v'
+
 """!
 @brief Voltage packet header byte.
 """
@@ -77,15 +87,15 @@ DATA_PACKET_HEADER = 0xA1
 """
 DATA_PACKET_TAIL = 0xC0
 
-SAMPLE_RATE_1_HZ_CMD   = '1'
-SAMPLE_RATE_10_HZ_CMD  = '2'
-SAMPLE_RATE_25_HZ_CMD  = '3'
-SAMPLE_RATE_50_HZ_CMD  = '4'
-SAMPLE_RATE_100_HZ_CMD = '5'
+"""!
+@brief Sample rate packet header byte.
+"""
+SAMPLE_RATE_PACKET_HEADER = 0xA3
 
-GET_SAMPLE_RATE_CMD = 'w'
-
-CONN_REQUEST_CMD = 'v'
+"""!
+@brief Sample rate packet tail byte.
+"""
+SAMPLE_RATE_PACKET_TAIL = 0xC3
 
 
 class Singleton(type):
@@ -102,18 +112,24 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
     data_sample_rate = NumericProperty(defaultvalue=0.0)
     temperature_sample_rate = NumericProperty(defaultvalue=0.0)
     is_streaming = BooleanProperty(False)
+    configured_sample_rate = StringProperty('')
+    sample_rate_num_samples = NumericProperty(defaultvalue=0)
+    configured_temp_rh_sample_rate = StringProperty('')
+    configured_temp_rh_sample_rep = StringProperty('')
 
     def __init__(self):
         self.port_name = ""
         self.baudrate = 115200
         self.read_state = 0
         self.packet_type = ''
+        self.voltage_received_packet_time = 0
         self.received_packet_time = 0
         self.temperature_received_packet_time = 0
         self.samples_read = 0
         self.temp_rh_samples_read = 0
-        self.is_streaming = False
         self.callbacks = []
+        self.available_sample_rates = ['1 Hz', '10 Hz', '25 Hz', '50 Hz', '100 Hz']
+        self.available_temp_rh_sample_rates = ['0.5 Hz','1 Hz', '2 Hz', '4 Hz', '10 Hz']
         find_port_thread = threading.Thread(target=self.find_port, daemon=True)
         find_port_thread.start()
 
@@ -122,6 +138,13 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             self.callbacks.append(callback)
 
     def find_port(self):
+        """!
+        @brief Find the serial port to which the device is connected.
+
+        This function scans all the available serial ports until
+        the one to which the device is connected is found. Once
+        found, it attempts to connect to it.
+        """
         mip_port_found = False
         while (not mip_port_found):
             ports = list_ports.comports()
@@ -173,9 +196,11 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                 self.port = serial.Serial(port=self.port_name, baudrate=self.baudrate)
                 if (self.port.isOpen()):
                     self.message_string = 'Device connected'
-                    self.connected = 2
+                    self.connected = BOARD_CONNECTED
                     time.sleep(1)
                     self.send_updated_time_to_board()
+                    time.sleep(0.5)
+                    self.retrieve_sample_rate_from_board()
                     # Start thread for data reading
                     read_thread = threading.Thread(target=self.read_data)
                     read_thread.daemon = True
@@ -230,6 +255,8 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                 self.message_string = 'Starting data streaming'
                 self.is_streaming = True
                 self.samples_read = 0
+                self.received_packet_time = 0
+                self.temperature_received_packet_time = 0
                 self.temp_rh_samples_read = 0
             except:
                 self.message_string = 'Could not write command to board'
@@ -255,16 +282,26 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             self.message_string = 'Board is not connected'
 
     def read_data(self):
-        while True:
+        while (self.connected == BOARD_CONNECTED):
+            # Check if more than 5 seconds passed from last voltage packet
+            if (self.voltage_received_packet_time != 0):
+                curr_time = datetime.now()
+                if ((curr_time - self.voltage_received_packet_time).total_seconds() > 11):
+                    self.connected = BOARD_DISCONNECTED
+                    self.message_string = 'Device disconnected'
             if (self.port.in_waiting > 0):
                 if (self.read_state == 0):
                     b = self.port.read(1)
                     # Header byte
                     b = struct.unpack('B', b)[0]
-                    if (b == DATA_PACKET_HEADER or b == VOLTAGE_PACKET_HEADER):
+                    if (b == DATA_PACKET_HEADER or b == VOLTAGE_PACKET_HEADER or b == SAMPLE_RATE_PACKET_HEADER):
                         self.read_state = 1
                         if (b == VOLTAGE_PACKET_HEADER):
                             self.packet_type = 'voltage'
+                            self.voltage_received_packet_time = datetime.now()
+                        elif (b == SAMPLE_RATE_PACKET_HEADER):
+                            self.packet_type = 'sample rate'
+                            print('Sample rate packet received')
                         else:
                             self.packet_type = 'data'
                 elif (self.read_state == 1):
@@ -273,6 +310,8 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         crc = self.port.read(1)
                     elif (self.packet_type == 'voltage'):
                         temp_voltage = self.port.read(2)
+                    elif (self.packet_type == 'sample rate'):
+                        temp_sample_rate = self.port.read(3)
                     self.read_state = 2
                 elif (self.read_state == 2):
                     if (self.is_streaming and self.packet_type == 'data'):
@@ -285,6 +324,12 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         voltage_end_byte = struct.unpack('B',voltage_end_byte)[0]
                         if (voltage_end_byte == VOLTAGE_PACKET_TAIL):
                             self.battery_voltage = self.convert_battery_voltage(temp_voltage)
+                            self.read_state = 0
+                    elif (self.packet_type == 'sample rate'):
+                        sample_rate_end_byte = self.port.read(1)
+                        sample_rate_end_byte = struct.unpack('B',sample_rate_end_byte)[0]
+                        if (sample_rate_end_byte == SAMPLE_RATE_PACKET_TAIL):
+                            self.parse_sample_rate(temp_sample_rate)
                             self.read_state = 0
                 elif (self.read_state == 3):
                     # Temperature and humidity
@@ -333,19 +378,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         # Check CRC
                         self.read_state = 0
                         self.samples_read += 1
-                        # Compute overall data sample rate
-                        if (self.samples_read == 1):
-                            self.received_packet_time = datetime.now()
-                        if (self.samples_read > 0 and self.samples_read % 10 == 0):
-                            curr_time = datetime.now()
-                            diff = (curr_time - self.received_packet_time)
-                            self.data_sample_rate = (self.samples_read) / diff.total_seconds()
-                        # Compute temperature and humidity sample rate
-                        if (self.temp_rh_samples_read >  0 and self.temp_rh_samples_read % 50 == 0):
-                            curr_time = datetime.now()
-                            diff = (curr_time - self.received_packet_time)
-                            self.temperature_sample_rate = (self.temp_rh_samples_read) / diff.total_seconds()
-                            self.temp_rh_samples_read = 0
+                        self.update_computed_sample_rate()
                         # Create packet and send it to the receiver callbacks
                         packet = DataPacket(temperature=temperature,
                                                 humidity=humidity,
@@ -361,6 +394,38 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         print('Skipped one packet')
                         self.read_state = 0 
             time.sleep(0.001)
+
+    def parse_sample_rate(self, sample_rate_packet):
+        sample_rate_packet = struct.unpack('3B', sample_rate_packet)
+        print(sample_rate_packet)
+        if (sample_rate_packet[0] < len(self.available_sample_rates)):
+            self.configured_sample_rate = self.available_sample_rates[sample_rate_packet[0]]
+            self.message_string = f'Current sample rate: {self.configured_sample_rate}'
+            self.compute_num_samples_sample_rate(self.configured_sample_rate)
+        else:
+            self.message_string = 'Error in received sample rate'
+        self.configured_temp_rh_sample_rate, self.configured_temp_rh_sample_rep = self.get_temp_hum_config_value(sample_rate_packet[1], 
+                                                                                                                sample_rate_packet[2])
+
+    def compute_num_samples_sample_rate(self, sample_rate):
+        # Get only the first part of the string --> frequency
+        frequency = sample_rate.split(' ')[0]
+        self.sample_rate_num_samples = int(frequency)
+
+    def update_computed_sample_rate(self):
+        # Compute overall data sample rate
+        if (self.samples_read == 1):
+            self.received_packet_time = datetime.now()
+        if (self.samples_read > 0 and self.samples_read % 10 == 0):
+            curr_time = datetime.now()
+            diff = (curr_time - self.received_packet_time)
+            self.data_sample_rate = (self.samples_read) / diff.total_seconds()
+        # Compute temperature and humidity sample rate
+        if (self.temp_rh_samples_read >  0 and self.temp_rh_samples_read % 50 == 0):
+            curr_time = datetime.now()
+            diff = (curr_time - self.received_packet_time)
+            self.temperature_sample_rate = (self.temp_rh_samples_read) / diff.total_seconds()
+            self.temp_rh_samples_read = 0
 
     def get_sample_rate_cmd(self, sample_rate):
         """!
@@ -389,9 +454,85 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         and the class property is then updated accordingly.
         @param sample_rate string identifying the new sample rate to be set.
         """
-        self.message_string = f'Setting sample rate to {sample_rate}'
-        sample_rate_cmd = self.get_sample_rate_cmd(sample_rate)
-        self.port.write(sample_rate_cmd.encode('utf-8'))
+        
+        if (sample_rate not in self.available_sample_rates):
+            self.message_string = f'{sample_rate} is not a valid sample rate'
+        else:
+            self.message_string = f'Setting sample rate to {sample_rate}'
+            sample_rate_cmd = self.get_sample_rate_cmd(sample_rate)
+            self.port.write(sample_rate_cmd.encode('utf-8'))
+
+    def get_temp_hum_config_value(self, th_sample_rate, th_repeatability):
+        sr_dict = {
+            0x20: '0.5 Hz',
+            0X21: '1 Hz',
+            0x22: '2 Hz',
+            0x23: '4 Hz',
+            0x27: '10 Hz'
+        }
+        rep_dict = {
+            0x20: {
+                0x2F: 'Low',
+                0x24: 'Med',
+                0x32: 'High'
+            },
+            0x21: {
+                0x2d: 'Low',
+                0x26: 'Med',
+                0x30: 'High'
+            },
+            0x22: {
+                0x2B: 'Low',
+                0x20: 'Med',
+                0x36:  'High'
+            },
+            0x23: {
+                0x29: 'Low',
+                0x22: 'Med',
+                0x34:  'High'
+            },
+            0x27: {
+                0x2A: 'Low',
+                0x21: 'Med',
+                0x37:  'High'
+            }
+        }
+        return sr_dict[th_sample_rate], rep_dict[th_sample_rate][th_repeatability]
+
+    def get_sample_rate_cmd(self, sample_rate):
+        """!
+        @brief Get command to set sample rate.
+
+        This function returns the correct command to send to the
+        board to set the proper sample rate.
+        """
+        sample_rate_dict = {
+            '1 Hz': SAMPLE_RATE_1_HZ_CMD,
+            '10 Hz': SAMPLE_RATE_10_HZ_CMD,
+            '25 Hz': SAMPLE_RATE_25_HZ_CMD,
+            '50 Hz': SAMPLE_RATE_50_HZ_CMD,
+            '100 Hz': SAMPLE_RATE_100_HZ_CMD,
+        }
+        return sample_rate_dict[sample_rate]
+
+    def set_sample_rate(self, sample_rate):
+        """!
+        @brief Send command to set sample rate on the board.
+        
+        This function sends the appropriate command to the board
+        to set the sample rate to a new value. It then sends a 
+        command to the board to retrieve the sample rate value that
+        was set, that is checked inside the read data function
+        and the class property is then updated accordingly.
+        @param sample_rate string identifying the new sample rate to be set.
+        """
+        
+        if (sample_rate not in self.available_sample_rates):
+            self.message_string = f'{sample_rate} is not a valid sample rate'
+        else:
+            self.message_string = f'Setting sample rate to {sample_rate}'
+            sample_rate_cmd = self.get_sample_rate_cmd(sample_rate)
+            self.port.write(sample_rate_cmd.encode('utf-8'))
 
     def get_temp_hum_config_cmd(self, th_sample_rate, th_repeatability):
         config_dict = {
@@ -424,12 +565,36 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         return bytearray(config_dict[th_sample_rate][th_repeatability])
 
     def set_temperature_settings(self, sample_rate, repeatability):
+        """!
+        @brief Set new configuration for temperature and relative humidity sensor.
+
+        This function sends the proper commands to the board to configure the
+        temperature and relative humidity sensor.
+        @param sample_rate the new desidered sample rate value
+        @param repeatability the new desidered repeatability settings
+        """
         self.message_string = f'Setting temperature sensor to {sample_rate} and {repeatability}'
-        cmds = self.get_temp_hum_config_cmd(sample_rate, repeatability)
+        try:
+            cmds = self.get_temp_hum_config_cmd(sample_rate, repeatability)
+        except:
+            self.message_string = f'{sample_rate} and {repeatability} are invalid settings'
         self.port.write(TEMP_RH_SETTINGS_SET_CMD.encode('utf-8'))
         self.port.write(cmds)
         self.port.write(TEMP_RH_SETTINGS_LATCH_CMD.encode('utf-8'))
     
+    def retrieve_sample_rate_from_board(self):
+        """!
+        @brief Send command to the board to retrieve current sample rate configuration.
+
+        This function sends a command to the board to retrieve the current
+        sample rate configuration for both data and temperature and relative
+        humidity sensor.
+        The response from the board is parsed in the main read data function.
+        """
+        self.message_string = 'Retrieving sample rate configuration from board'
+        if (self.port.is_open and self.connected == BOARD_CONNECTED):
+            self.port.write(RETRIEVE_SAMPLE_RATE_CMD.encode('utf-8'))
+
     def convert_battery_voltage(self, value):
         """!
         @brief Convert raw bytes to battery voltage.

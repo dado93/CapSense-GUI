@@ -25,13 +25,13 @@
         width: '108sp'
         text: 'Start'
         on_release: root.streaming()
-    ColoredLabel:
+    TopBarColoredLabel:
         id: _battery_label
         size_hint: None, 1
         width: '108sp'
         text: 'Battery: '
 
-<ColoredLabel>:
+<TopBarColoredLabel>:
     canvas.before:
         Color:
             rgba: (1.0, 0., 0., 0.7)

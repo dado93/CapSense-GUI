@@ -2,6 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
 from communication import MIPSerial
+import communication
 from kivy.graphics import Color, Rectangle
 
 class BottomBar(BoxLayout):
@@ -16,18 +17,21 @@ class BottomBar(BoxLayout):
         self.message_label.text = value
 
     def connection_event(self, instance, value):
-        if (value == 1):
-            self.connection_label.update_color(1, 1, 0)
+        if (value == communication.BOARD_FOUND):
+            self.connection_label.update_color(1, 1, 0, 0.7)
             self.connection_label.color = (0, 0, 0, 1)
-        elif (value == 2):
-            self.connection_label.update_color(0, 0.5, 0)
+        elif (value == communication.BOARD_CONNECTED):
+            self.connection_label.update_color(0, 0.5, 0, 0.7)
+            self.connection_label.color = (1, 1, 1, 1)
+        elif (value == communication.BOARD_DISCONNECTED):
+            self.connection_label.update_color(1, 0.0, 0, 0.7)
             self.connection_label.color = (1, 1, 1, 1)
         
 class ColoredLabel(Label):
-    def update_color(self, r, g, b):
+    def update_color(self, r, g, b, a):
         self.canvas.before.clear()
         with self.canvas.before:
-            Color(r,g,b,1)
+            Color(r,g,b,a)
             self.rect = Rectangle(pos=self.pos, size=self.size)
         self.bind(pos=self.update_rect,
                     size=self.update_rect)

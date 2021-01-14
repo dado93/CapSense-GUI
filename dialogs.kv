@@ -1,28 +1,45 @@
 #:kivy 1.11
 
-<SampleRateDialog>:
+<SampleRateSelection>:
+    data_sample_rate_spinner: _data_sr_spinner
+    update_button: _update_button
+    dismiss_button: _dismiss_button
+    cols: 2
+    spacing: 10
+    padding: 20
+    Label: 
+        text: 'Data Sample Rate'
+    Spinner:
+        id: _data_sr_spinner
+    Widget:
+    Widget:
+    Button:
+        text: 'Cancel'
+        id: _dismiss_button
+    Button:
+        text: 'Update'
+        id: _update_button
+
+<PopupRetrieval>:
     auto_dismiss: False
     size_hint: 0.4, 0.4
     pos_hint: {'top': 0.5, 'right':0.5}
     title: 'Sample Rate'
-    data_sample_rate_spinner: _data_sr_spinner
-    GridLayout:
-        cols: 2
-        spacing: 10
-        padding: 20
-        Label: 
-            text: 'Data Sample Rate'
-        Spinner:
-            id: _data_sr_spinner
-            values: ['1 Hz', '10 Hz', '25 Hz', '50 Hz','100 Hz']
-        Widget:
-        Widget:
-        Button:
-            text: 'Cancel'
-            on_release: root.dismiss()
-        Button:
-            text: 'Update'
-            on_release: root.update()
+    retrieval_label: _retrieval_label
+    pb_update: _pb_update
+    BoxLayout:
+        id: _update_widget
+        orientation:'vertical'
+        Label:
+            id: _retrieval_label
+            size_hint_y: 0.5
+        ProgressBar:
+            id: _pb_update
+            value: 50
+            size_hint_y: 0.5
+
+<SampleRateDialog>:
+    title: 'Sample Rate'
 
 <TRHConfigurationDialog>:
     auto_dismiss: False

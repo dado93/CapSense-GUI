@@ -36,6 +36,10 @@ class TopBar(BoxLayout):
         """
         self.streaming_button.disabled = (not value)
         self.battery_label.disabled = (not value)
+        if (not value):
+            self.battery_label.update_color(1,0,0)
+            self.battery_label.color = (1,1,1,1)
+            self.battery_label.text = f'Battery: '
     
     def update_battery_level(self, instance, value):
         self.battery_label.text = f'Battery: {value:.1f}'
@@ -49,7 +53,7 @@ class TopBar(BoxLayout):
             self.battery_label.update_color(1,0,0)
             self.battery_label.color = (1,1,1,1)
 
-class ColoredLabel(Label):
+class TopBarColoredLabel(Label):
     def update_color(self, r, g, b):
         self.canvas.before.clear()
         with self.canvas.before:

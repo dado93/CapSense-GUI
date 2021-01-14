@@ -9,6 +9,7 @@ from kivy.garden.Graph import LinePlot
 class GraphTabs(TabbedPanel):
     data_sample_rate = NumericProperty(0)
     temperature_sample_rate = NumericProperty(0)
+    num_samples_per_second = NumericProperty(1)
 
     temperature_tab = ObjectProperty(None)
     resistance_tab = ObjectProperty(None)
@@ -35,11 +36,12 @@ class GraphTabs(TabbedPanel):
         self.current_tab.update_temperature_sample_rate(value)
 
     def update_plots(self, packet):
-        self.temperature_tab.update_plot(packet)
         self.capacitance_tab.update_plot(packet)
+        self.temperature_tab.update_plot(packet)
         self.humidity_tab.update_plot(packet)
-        #self.temperature_tab.update_plot(packet.get_temperature())
     
+    def on_num_samples_per_second(self, instance, value):
+        
 
 class GraphPanelItem(TabbedPanelItem):
     graph = ObjectProperty(None)
