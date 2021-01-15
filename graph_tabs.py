@@ -5,44 +5,60 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import BooleanProperty, ObjectProperty, NumericProperty
 import re
 from kivy.garden.Graph import LinePlot
+from kivy.uix.tabbedpanel import TabbedPanelHeader
+from decimal import Decimal
+from math import pow, isclose
 
 class GraphTabs(TabbedPanel):
     data_sample_rate = NumericProperty(0)
     temperature_sample_rate = NumericProperty(0)
-
-    temperature_tab = ObjectProperty(None)
-    resistance_tab = ObjectProperty(None)
-    current_tab = ObjectProperty(None)
-    humidity_tab = ObjectProperty(None)
-    capacitance_tab = ObjectProperty(None)
+    num_samples_per_second = NumericProperty(1)
 
     def __init__(self, **kwargs):
         super(GraphTabs, self).__init__(**kwargs)
-        
-    def on_data_sample_rate(self, instance, value):
-        self.capacitance_tab.update_sample_rate(value)
-        self.resistance_tab.update_sample_rate(value)
-        self.temperature_tab.update_sample_rate(value)
-        self.humidity_tab.update_sample_rate(value)
-        self.current_tab.update_sample_rate(value)
-    
-    def on_temperature_sample_rate(self, instance, value):
-        self.capacitance_tab.update_temperature_sample_rate(value)
-        self.resistance_tab.update_temperature_sample_rate(value)
-        self.temperature_tab.update_temperature_sample_rate(value)
-        self.humidity_tab.update_temperature_sample_rate(value)
-        self.current_tab.update_temperature_sample_rate(value)
+        self.n_points_per_update = 10
+        self.tabs_dict = {
+            'Capacitance': CapacitancePlot(),
+            'Resistance': ResistancePlot(),
+            'Temperature': TemperaturePlot(),
+            'Humidity': HumidityPlot(),
+            'Current': CurrentPlot()
+        }
+        for tab in self.tabs_dict.keys():
+            # Create panel
+            th = TabbedPanelHeader(text=tab)
+            th.content = self.tabs_dict[tab]
+            self.add_widget(th)
+            # Bind data sample rate
+            self.bind(data_sample_rate=self.tabs_dict[tab].setter('data_sample_rate'))
+            # Bind temperature and humidity sample rate
+            self.bind(temperature_sample_rate=self.tabs_dict[tab].setter('temperature_sample_rate'))
+            self.bind(num_samples_per_second=self.tabs_dict[tab].setter('num_samples_per_second'))
+        print(self.content.children)
 
-class GraphPanelItem(TabbedPanelItem):
+    def update_plots(self, packet):
+        for tab in self.tabs_dict.keys():
+            self.tabs_dict[tab].update_plot(packet)
+
+class GraphPanelItem(BoxLayout):
     graph = ObjectProperty(None)
     plot_settings = ObjectProperty(None)
+    data_sample_rate = NumericProperty(0)
+    temperature_sample_rate = NumericProperty(0)
+    num_samples_per_second = NumericProperty(1)
+    ymin = NumericProperty(0)
+    ymax = NumericProperty(10)
+    xmin = NumericProperty(-60)
+    autoscale = BooleanProperty(False)
 
     def __init__(self, **kwargs):
+        self.n_seconds = self.xmin * (-1)
+        self.n_points_per_update = 10
+        self.temp_points = []
         super(GraphPanelItem, self).__init__(**kwargs)
-        self.n_seconds = 60
 
     def on_graph(self, instance, value):
-        self.graph.xmin = -self.n_seconds
+        self.graph.xmin = self.xmin
         self.graph.xmax = 0
         self.graph.xlabel = 'Time (s)'
         self.graph.ylabel = 'Capacitance (pF)'
@@ -51,49 +67,163 @@ class GraphPanelItem(TabbedPanelItem):
         self.graph.y_ticks_minor = 1
         self.graph.y_ticks_major = 5
         self.graph.x_grid_label = True
-        self.graph.ymin = 0
-        self.graph.ymax = 10
+        self.graph.ymin = self.ymin
+        self.graph.ymax = self.ymax
         self.graph.y_grid_label = True
-        self.n_points = self.n_seconds * 1  # Number of points to plot
+        self.n_points = self.n_seconds * self.num_samples_per_second  # Number of points to plot
         self.time_between_points = (self.n_seconds)/float(self.n_points)
         self.x_points = [x for x in range(-self.n_points, 0)]
-        self.y_points = [10 for y in range(-self.n_points, 0)]
+        self.y_points = [0 for y in range(-self.n_points, 0)]
+        for j in range(self.n_points):
+            self.x_points[j] = -self.n_seconds + j * self.time_between_points
         
     def on_plot_settings(self, instance, value):
-        self.plot_settings.bind(n_seconds=self.graph.setter('xmin'))
-        self.plot_settings.bind(ymin=self.graph.setter('ymin'))
-        self.plot_settings.bind(ymax=self.graph.setter('ymax'))
+        self.plot_settings.bind(n_seconds=self.setter('xmin'))
+        self.plot_settings.bind(ymin=self.setter('ymin'))
+        self.plot_settings.bind(ymax=self.setter('ymax'))
+        self.plot_settings.bind(autorange_selected=self.setter('autoscale'))
     
-    def update_sample_rate(self, value):
+    def on_ymin(self, instance, value):
+        self.graph.ymin = value
+        min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(self.ymin, self.ymax,10)
+        self.graph.y_ticks_major = major_ticks
+        self.graph.y_ticks_minor = minor_ticks
+
+    def on_ymax(self, instance, value):
+        self.graph.ymax = value
+        min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(self.ymin, self.ymax,10)
+        self.graph.y_ticks_major = major_ticks
+        self.graph.y_ticks_minor = minor_ticks
+
+    def on_xmin(self, instance, value):
+        self.graph.xmin = value
+        min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(value, 0, 10)
+        self.graph.x_ticks_major = major_ticks
+        self.graph.x_ticks_minor = minor_ticks
+
+    def on_data_sample_rate(self, instance, value):
         self.plot_settings.update_sample_rate(value)
     
-    def update_temperature_sample_rate(self, value):
+    def on_temperature_sample_rate(self, instance, value):
         self.plot_settings.update_temperature_sample_rate(value)
+    
+    def update_plot(self, packet):
+        pass
+
+    def on_num_samples_per_second(self, instance, value):
+        self.n_points = self.n_seconds * self.num_samples_per_second  # Number of points to plot
+        self.x_points = [x for x in range(-self.n_points, 0)]
+        self.y_points = [0 for y in range(-self.n_points, 0)]
+        self.time_between_points = (self.n_seconds)/float(self.n_points)
+        for j in range(self.n_points):
+            self.x_points[j] = -self.n_seconds + j * self.time_between_points
+
+    def fexp(self, number):
+        (sign, digits, exponent) = Decimal(number).as_tuple()
+        return len(digits) + exponent - 1
+
+    def fman(self, number):
+        return float(Decimal(number).scaleb(-self.fexp(number)).normalize())
+
+    def get_bounds_and_ticks(self, minval, maxval, nticks):
+        # amplitude of data
+        amp = maxval - minval
+        # basic tick
+        basictick = self.fman(amp/float(nticks))
+        # correct basic tick to 1,2,5 as mantissa
+        tickpower = pow(10.0, self.fexp(amp/float(nticks)))
+        if basictick < 1.5:
+            tick = 1.0*tickpower
+            suggested_minor_tick = 4
+        elif basictick >= 1.5 and basictick < 2.5:
+            tick = 2.0*tickpower
+            suggested_minor_tick = 4
+        elif basictick >= 2.5 and basictick < 7.5:
+            tick = 5.0*tickpower
+            suggested_minor_tick = 5
+        elif basictick >= 7.5:
+            tick = 10.0*tickpower
+            suggested_minor_tick = 4
+        # calculate good (rounded) min and max
+        goodmin = tick * (minval // tick)
+        if not isclose(maxval % tick,0.0):
+            goodmax = tick * (maxval // tick +1)
+        else:
+            goodmax = tick * (maxval // tick)
+        return goodmin, goodmax, tick, suggested_minor_tick
 
 class TemperaturePlot(GraphPanelItem):
+    
+    def __init__(self, **kwargs):
+        super(TemperaturePlot, self).__init__(**kwargs)
+        self.last_temperature = 10
+
     def on_graph(self, instance, value):
         super(TemperaturePlot, self).on_graph(instance, value)
         self.graph.ylabel = 'Temperature (C)'
-        
-        #self.y_points = []
+        self.graph.ymax = 30
+        self.graph.ymin = 5
         self.plot = LinePlot(color=(0.5, 0.4, 0.4, 1.0))
         self.plot.line_width = 2
-        """
-        self.y_points.append(list([0 for y in range(-self.n_points, 0)]))
-        for j in range(self.n_points):
-            self.x_points[j] = -self.n_seconds + \
-                    j * self.time_between_points
-        """
         self.plot.points = zip(self.x_points, self.y_points)
         self.graph.add_plot(self.plot)
+    
+    def update_plot(self, packet):
+        if (not packet.has_temperature_data()):
+            value = self.last_temperature
+        else:
+            value = packet.get_temperature()
+            self.last_temperature = value
+        self.temp_points.append(value)
+        if (len(self.temp_points) == self.n_points_per_update):
+            for val in self.temp_points:
+                self.y_points.append(self.y_points.pop(0))
+                self.y_points[-1] = val
+            self.temp_points = []
+            self.plot.points = zip(self.x_points, self.y_points)
+            if (self.autoscale):
+                y_min = min(self.y_points)
+                y_max = max(self.y_points)
+                min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(y_min, y_max, 10)
+                self.graph.ymin = y_min
+                self.graph.ymin = y_max
+                self.graph.y_ticks_major = major_ticks
+                self.graph.y_ticks_minor = minor_ticks
+
         
+    def on_num_samples_per_second(self, instance, value):
+        super(TemperaturePlot, self).on_num_samples_per_second(instance, value)
+        self.plot.points = zip(self.x_points, self.y_points)
+
 class HumidityPlot(GraphPanelItem):
+    def __init__(self, **kwargs):
+        super(HumidityPlot, self).__init__(**kwargs)
+        self.last_humidity = 0
+
     def on_graph(self, instance, value):
         super(HumidityPlot, self).on_graph(instance, value)
         self.graph.ylabel = 'Humidity (%)'
         self.graph.ymax = 100
         self.graph.y_ticks_minor = 5
         self.graph.y_ticks_major = 10
+        self.plot = LinePlot(color=(0.5, 0.4, 0.4, 1.0))
+        self.plot.line_width = 2
+        self.plot.points = zip(self.x_points, self.y_points)
+        self.graph.add_plot(self.plot)
+    
+    def update_plot(self, packet):
+        if (not packet.has_temperature_data()):
+            value = self.last_humidity
+        else:
+            value = packet.get_humidity()
+            self.last_humidity = value
+        self.temp_points.append(value)
+        if (len(self.temp_points) == self.n_points_per_update):
+            for val in self.temp_points:
+                self.y_points.append(self.y_points.pop(0))
+                self.y_points[-1] = val
+            self.temp_points = []
+            self.plot.points = zip(self.x_points, self.y_points)
 
 class CurrentPlot(GraphPanelItem):
     def on_graph(self, instance, value):
@@ -122,6 +252,8 @@ class PlotSettings(BoxLayout):
     n_seconds = NumericProperty(0)
     ymin = NumericProperty(0)
     ymax = NumericProperty(0)
+
+    autorange_selected = BooleanProperty(False)
     
     def __init__(self, **kwargs):
         super(PlotSettings, self).__init__(**kwargs)
@@ -145,12 +277,19 @@ class PlotSettings(BoxLayout):
     def autorange_changed(self, instance, value):
         self.ymin_input.disabled = value
         self.ymax_input.disabled = value
+        self.autorange_selected = value
 
     def axis_changed(self, instance, focused):
         if (not focused):
             if (not ((self.ymin_input.text == '') or (self.ymax_input.text == ''))):
-                self.ymin = float(self.ymin_input.text)
-                self.ymax = float(self.ymax_input.text)
+                y_min = float(self.ymin_input.text)
+                y_max = float(self.ymax_input.text)
+                if (y_min >= y_max):
+                    self.ymin_input.text = f"{self.ymin:.2f}"
+                    self.ymax_input.text = f"{self.ymax:.2f}"
+                else:
+                    self.ymin = y_min
+                    self.ymax = y_max
             elif (self.ymin_input.text == ''):
                 self.ymin_input.text = f"{self.ymin:.2f}"
             elif (self.ymax_input.text == ''):

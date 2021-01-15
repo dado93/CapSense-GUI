@@ -11,6 +11,7 @@ from communication import MIPSerial
 from kivy.config import Config
 Config.set('kivy', 'exit_on_escape', '0')
 Config.set('kivy', 'desktop', '1')
+Config.set('kivy', 'allow_screensaver', '0')
 
 Builder.load_file('toolbar.kv')
 Builder.load_file('bottom_bar.kv')
@@ -40,6 +41,7 @@ class ContainerLayout(BoxLayout):
         return False
 
     def on_toolbar(self, instance, value):
+        self.serial.bind(is_streaming=self.toolbar.is_streaming)
         try:
             self.toolbar.bind(message_string=self.bottom_bar.update_text)
         except:
@@ -64,10 +66,11 @@ class ContainerLayout(BoxLayout):
         """
         self.serial.bind(battery_voltage=self.top_bar.update_battery_level)
     
-    
     def on_graph_tabs(self, instance, value):
         self.serial.bind(data_sample_rate=self.graph_tabs.setter('data_sample_rate'))
         self.serial.bind(temperature_sample_rate=self.graph_tabs.setter('temperature_sample_rate'))
+        self.serial.bind(sample_rate_num_samples=self.graph_tabs.setter('num_samples_per_second'))
+        self.serial.add_callback(self.graph_tabs.update_plots)
 
     def connection_event(self, instance, value):
         """!

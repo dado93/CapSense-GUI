@@ -11,16 +11,24 @@
             size: self.size
             pos: self.pos
     ToolbarButton:
-        id: _sample_average_button
         text: 'Sample Rate'
+        on_release: root.sample_rate_dialog()
+    
+    ToolbarButton:
+        text: 'T&RH Config'
+        on_release: root.temp_rh_dialog()
     
     ToolbarButton:
         id: _sd_card_button
-        text: 'SD Card Settings'
+        text: 'SD Card'
     
     ToolbarButton:
         id: _sd_load_button
         text: 'Load SD Data'
+    
+    ToolbarButton:
+        id: _export_button
+        text: 'Data Export'
 
     ToolbarButton:
         id: _info_button

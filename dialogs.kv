@@ -1,45 +1,67 @@
 #:kivy 1.11
 
-<SampleAverageDialog>:
-    auto_dismiss: False
-    size_hint: 0.4, 0.4
-    pos_hint: {'top': 0.5, 'right':0.5}
-    title: 'Sample Average'
-    avg_samples_sinner: _spinner
-    GridLayout:
-        cols: 2
-        spacing: 10
-        padding: 20
-        Label: 
-            text: '# Samples'
-        Spinner:
-            id: _spinner
-            values: ['1','2','4','8','16','32']
-            on_text: root.spinner_updated()
-        Widget:
-        Widget:
-        Button:
-            text: 'Cancel'
-            on_release: root.dismiss()
-        Button:
-            text: 'Update'
+<SampleRateSelection>:
+    data_sample_rate_spinner: _data_sr_spinner
+    update_button: _update_button
+    dismiss_button: _dismiss_button
+    cols: 2
+    spacing: 10
+    padding: 20
+    Label: 
+        text: 'Data Sample Rate'
+    Spinner:
+        id: _data_sr_spinner
+    Widget:
+    Widget:
+    Button:
+        text: 'Cancel'
+        id: _dismiss_button
+    Button:
+        text: 'Update'
+        id: _update_button
 
-<ModeConfDialog>:
+<PopupRetrieval>:
     auto_dismiss: False
     size_hint: 0.4, 0.4
     pos_hint: {'top': 0.5, 'right':0.5}
-    title: 'Mode Configuration'
-    mode_spinner: _spinner
+    title: 'Sample Rate'
+    retrieval_label: _retrieval_label
+    pb_update: _pb_update
+    BoxLayout:
+        id: _update_widget
+        orientation:'vertical'
+        Label:
+            id: _retrieval_label
+            size_hint_y: 0.5
+        ProgressBar:
+            id: _pb_update
+            value: 50
+            size_hint_y: 0.5
+
+<SampleRateDialog>:
+    title: 'Sample Rate'
+
+<TRHConfigurationDialog>:
+    auto_dismiss: False
+    size_hint: 0.4, 0.4
+    pos_hint: {'top': 0.5, 'right':0.5}
+    title: 'Sample Rate'
+    temperature_sample_rate_spinner: _temp_sr_spinner
+    temperature_rep_spinner: _temp_rep_spinner
     GridLayout:
         cols: 2
         spacing: 10
         padding: 20
         Label: 
-            text: 'Mode'
+            text: 'T&RH Sample Rate'
         Spinner:
-            values: ['HR','SpO2','Multi LED'] 
-            id: _spinner
-            on_text: root.spinner_updated()
+            id: _temp_sr_spinner
+            values: ['0.5 Hz', '1 Hz', '2 Hz', '4 Hz','10 Hz']
+        Label: 
+            text: 'T&RH Repeatability'
+        Spinner:
+            id: _temp_rep_spinner
+            values: ['Low', 'Med', 'High']
         Widget:
         Widget:
         Button:
@@ -47,3 +69,4 @@
             on_release: root.dismiss()
         Button:
             text: 'Update'
+            on_release: root.update()
