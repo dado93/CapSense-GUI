@@ -5,6 +5,7 @@ from communication import MIPSerial
 import communication
 from kivy.clock import Clock
 from kivy.uix.gridlayout import GridLayout
+import time
 
 class Toolbar(BoxLayout):
     """
@@ -86,6 +87,8 @@ class SampleRateDialog(PopupRetrieval):
     
     def update(self, instance):
         self.serial.set_sample_rate(self.sample_rate_selection.data_sample_rate_spinner.text)
+        time.sleep(0.5)
+        self.serial.retrieve_sample_rate_from_board()
         self.dismiss()
 
 class TRHConfigurationDialog(Popup):

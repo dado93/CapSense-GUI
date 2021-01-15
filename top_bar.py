@@ -30,14 +30,14 @@ class TopBar(BoxLayout):
             self.streaming_button.text = 'Stop'
 
 
-    def enable_widgets(self, value):
+    def enable_widgets(self, enabled):
         """!
         @brief Enable/disable widgets for interaction with board.
         """
-        self.streaming_button.disabled = (not value)
-        self.battery_label.disabled = (not value)
-        if (not value):
-            self.battery_label.update_color(1,0,0)
+        self.streaming_button.disabled = (not enabled)
+        self.battery_label.disabled = (not enabled)
+        if (not enabled):
+            self.battery_label.update_color(0.6,0.6,0.6)
             self.battery_label.color = (1,1,1,1)
             self.battery_label.text = f'Battery: '
     

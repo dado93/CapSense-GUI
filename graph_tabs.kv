@@ -2,50 +2,19 @@
 #:import Graph kivy.garden.Graph
 
 <GraphTabs>:
-    capacitance_tab: _capacitance_tab
-    resistance_tab: _resistance_tab
-    temperature_tab: _temperature_tab
-    humidity_tab: _humidity_tab
-    current_tab: _current_tab
     do_default_tab: False
-    CapacitancePlot:
-        id: _capacitance_tab
-    ResistancePlot:
-        id: _resistance_tab    
-    TemperaturePlot:
-        id: _temperature_tab
-    HumidityPlot:
-        id: _humidity_tab
-    CurrentPlot:
-        id: _current_tab
 
 <GraphPanelItem>:
     graph: _graph
-    plot_settings: _plot_settings
-    BoxLayout:    
-        padding: 10
-        orientation: 'horizontal'
-        Graph:
-            id: _graph
-            size_hint_x: 0.7
-        PlotSettings:
-            id: _plot_settings
-            size_hint_x: 0.3
-
-<CapacitancePlot>:
-    text: 'Capacitance'
-
-<ResistancePlot>:
-    text: 'Resistance'
-
-<TemperaturePlot>:
-    text: 'Temperature'
-
-<HumidityPlot>:
-    text: 'Humidity'
-
-<CurrentPlot>:
-    text: 'Current'
+    plot_settings: _plot_settings    
+    padding: 10
+    orientation: 'horizontal'
+    Graph:
+        id: _graph
+        size_hint_x: 0.7
+    PlotSettings:
+        id: _plot_settings
+        size_hint_x: 0.3
 
 <PlotSettings>:
     orientation: 'vertical'

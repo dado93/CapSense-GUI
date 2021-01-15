@@ -69,7 +69,7 @@ class ContainerLayout(BoxLayout):
     def on_graph_tabs(self, instance, value):
         self.serial.bind(data_sample_rate=self.graph_tabs.setter('data_sample_rate'))
         self.serial.bind(temperature_sample_rate=self.graph_tabs.setter('temperature_sample_rate'))
-        self.serial.bind(sample_rate_num_sampels=self.graph_tabs.setter('num_samples_per_second'))
+        self.serial.bind(sample_rate_num_samples=self.graph_tabs.setter('num_samples_per_second'))
         self.serial.add_callback(self.graph_tabs.update_plots)
 
     def connection_event(self, instance, value):

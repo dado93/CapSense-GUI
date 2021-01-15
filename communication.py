@@ -258,12 +258,13 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                 self.received_packet_time = 0
                 self.temperature_received_packet_time = 0
                 self.temp_rh_samples_read = 0
+                self.data_sample_rate = '0.00'
+                self.temperature_sample_rate = '0.00'
             except:
                 self.message_string = 'Could not write command to board'
         else:
             self.message_string = 'Board is not connected'
             
-
     def stop_streaming(self):
         """!
         @brief Stop data streaming from the board.
@@ -276,6 +277,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                 self.port.write(STOP_STREAMING_CMD.encode('utf-8'))
                 self.message_string = 'Stopping data streaming'
                 self.is_streaming = False
+                self.read_state = 0
             except:
                 self.message_string = 'Could not write command to board'
         else:
@@ -283,13 +285,19 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
 
     def read_data(self):
         while (self.connected == BOARD_CONNECTED):
-            # Check if more than 5 seconds passed from last voltage packet
+            
+            # Check if more than 10 seconds passed from last voltage packet
             if (self.voltage_received_packet_time != 0):
                 curr_time = datetime.now()
                 if ((curr_time - self.voltage_received_packet_time).total_seconds() > 11):
                     self.connected = BOARD_DISCONNECTED
                     self.message_string = 'Device disconnected'
+                    find_port_thread = threading.Thread(target=self.find_port, daemon=True)
+                    find_port_thread.start()
+                    
+            
             if (self.port.in_waiting > 0):
+                
                 if (self.read_state == 0):
                     b = self.port.read(1)
                     # Header byte
@@ -301,11 +309,10 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                             self.voltage_received_packet_time = datetime.now()
                         elif (b == SAMPLE_RATE_PACKET_HEADER):
                             self.packet_type = 'sample rate'
-                            print('Sample rate packet received')
                         else:
                             self.packet_type = 'data'
                 elif (self.read_state == 1):
-                    if (self.is_streaming and self.packet_type == 'data'):
+                    if (self.packet_type == 'data'):
                         # Get CRC packet value
                         crc = self.port.read(1)
                     elif (self.packet_type == 'voltage'):
@@ -314,7 +321,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         temp_sample_rate = self.port.read(3)
                     self.read_state = 2
                 elif (self.read_state == 2):
-                    if (self.is_streaming and self.packet_type == 'data'):
+                    if (self.packet_type == 'data'):
                         # Packet counter
                         packet_counter = self.port.read(1)
                         packet_counter = struct.unpack('B',packet_counter)[0]
@@ -397,7 +404,6 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
 
     def parse_sample_rate(self, sample_rate_packet):
         sample_rate_packet = struct.unpack('3B', sample_rate_packet)
-        print(sample_rate_packet)
         if (sample_rate_packet[0] < len(self.available_sample_rates)):
             self.configured_sample_rate = self.available_sample_rates[sample_rate_packet[0]]
             self.message_string = f'Current sample rate: {self.configured_sample_rate}'
@@ -410,6 +416,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
     def compute_num_samples_sample_rate(self, sample_rate):
         # Get only the first part of the string --> frequency
         frequency = sample_rate.split(' ')[0]
+        print(frequency)
         self.sample_rate_num_samples = int(frequency)
 
     def update_computed_sample_rate(self):
