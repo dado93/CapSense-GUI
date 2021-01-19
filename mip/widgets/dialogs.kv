@@ -41,6 +41,27 @@
 <SampleRateDialog>:
     title: 'Sample Rate'
 
+<SDCardDialog>:
+    title: 'SD Card Configuration'
+    auto_dismiss: False
+    size_hint: 0.4, 0.4
+    pos_hint: {'top': 0.5, 'right':0.5}
+    GridLayout:
+        cols:2
+        Label: 
+            text: 'Rec Minutes'
+        Spinner:
+            id: _data_sr_spinner
+            values: ['None','5','15','30','60','120','180']
+        Widget:
+        Widget:
+        Button:
+            text: 'Cancel'
+            on_release: root.dismiss()
+        Button:
+            text: 'Update'
+            on_release: root.update()
+
 <TRHConfigurationDialog>:
     auto_dismiss: False
     size_hint: 0.4, 0.4

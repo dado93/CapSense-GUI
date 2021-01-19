@@ -1,4 +1,4 @@
-from communication import MIPSerial
+from mip.communication.mserial import MIPSerial
 from kivy.properties import ObjectProperty, BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label

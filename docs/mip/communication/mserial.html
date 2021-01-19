@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>mip.communication.mserial API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>mip.communication.mserial</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="mip.communication.mserial.BOARD_CONNECTED"><code class="name">var <span class="ident">BOARD_CONNECTED</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Start streaming command.</p></div>
+</dd>
+<dt id="mip.communication.mserial.BOARD_DISCONNECTED"><code class="name">var <span class="ident">BOARD_DISCONNECTED</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Board found but not connected.</p></div>
+</dd>
+<dt id="mip.communication.mserial.BOARD_FOUND"><code class="name">var <span class="ident">BOARD_FOUND</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Board connected.</p></div>
+</dd>
+<dt id="mip.communication.mserial.CONN_REQUEST_CMD"><code class="name">var <span class="ident">CONN_REQUEST_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Voltage packet header byte.</p></div>
+</dd>
+<dt id="mip.communication.mserial.DATA_PACKET_HEADER"><code class="name">var <span class="ident">DATA_PACKET_HEADER</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Data packet tail byte.</p></div>
+</dd>
+<dt id="mip.communication.mserial.DATA_PACKET_TAIL"><code class="name">var <span class="ident">DATA_PACKET_TAIL</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Sample rate packet header byte.</p></div>
+</dd>
+<dt id="mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER"><code class="name">var <span class="ident">SAMPLE_RATE_PACKET_HEADER</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Sample rate packet tail byte.</p></div>
+</dd>
+<dt id="mip.communication.mserial.START_STREAMING_CMD"><code class="name">var <span class="ident">START_STREAMING_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Stop streaming command.</p></div>
+</dd>
+<dt id="mip.communication.mserial.STOP_STREAMING_CMD"><code class="name">var <span class="ident">STOP_STREAMING_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Time set command.</p></div>
+</dd>
+<dt id="mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD"><code class="name">var <span class="ident">TEMP_RH_SETTINGS_SET_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Temperature and relative humidity latch command.</p></div>
+</dd>
+<dt id="mip.communication.mserial.TIME_LATCH_CMD"><code class="name">var <span class="ident">TIME_LATCH_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Temperature and relative humidity set command.</p></div>
+</dd>
+<dt id="mip.communication.mserial.TIME_SET_CMD"><code class="name">var <span class="ident">TIME_SET_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Time latch command.</p></div>
+</dd>
+<dt id="mip.communication.mserial.VOLTAGE_PACKET_HEADER"><code class="name">var <span class="ident">VOLTAGE_PACKET_HEADER</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Voltage packet tail byte.</p></div>
+</dd>
+<dt id="mip.communication.mserial.VOLTAGE_PACKET_TAIL"><code class="name">var <span class="ident">VOLTAGE_PACKET_TAIL</span></code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Data packet header byte.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="mip.communication.mserial.DataPacket"><code class="flex name class">
+<span>class <span class="ident">DataPacket</span></span>
+<span>(</span><span>packet_counter=0, temperature=0, humidity=0, cap_ch_1=0, cap_ch_2=0, cap_ch_3=0, cap_ch_4=0, current=0, aux=0, has_temp_data=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Data packet holding data received from board.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.communication.mserial.DataPacket.get_capacitance"><code class="name flex">
+<span>def <span class="ident">get_capacitance</span></span>(<span>self, channel_number=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.DataPacket.get_humidity"><code class="name flex">
+<span>def <span class="ident">get_humidity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.DataPacket.get_temperature"><code class="name flex">
+<span>def <span class="ident">get_temperature</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.DataPacket.has_temperature_data"><code class="name flex">
+<span>def <span class="ident">has_temperature_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial"><code class="flex name class">
+<span>class <span class="ident">MIPSerial</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>EventDispatcher(**kwargs)
+Generic event dispatcher interface.</p>
+<pre><code>See the module docstring for usage.
+</code></pre></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.communication.mserial.MIPSerial.battery_voltage"><code class="name">var <span class="ident">battery_voltage</span></code></dt>
+<dd>
+<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
+Property that represents a numeric value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+        Specifies the default value of the property.
+
+&gt;&gt;&gt; wid = Widget()
+&gt;&gt;&gt; wid.x = 42
+&gt;&gt;&gt; print(wid.x)
+42
+&gt;&gt;&gt; wid.x = "plop"
+ Traceback (most recent call last):
+   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+   File "properties.pyx", line 93, in kivy.properties.Property.__set__
+   File "properties.pyx", line 111, in kivy.properties.Property.set
+   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
+ ValueError: NumericProperty accept only int/float
+
+!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
+    NumericProperty can now accept custom text and tuple value to indicate a
+    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
+    'pt').
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.configured_sample_rate"><code class="name">var <span class="ident">configured_sample_rate</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.configured_temp_rh_sample_rate"><code class="name">var <span class="ident">configured_temp_rh_sample_rate</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.configured_temp_rh_sample_rep"><code class="name">var <span class="ident">configured_temp_rh_sample_rep</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.connected"><code class="name">var <span class="ident">connected</span></code></dt>
+<dd>
+<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
+Property that represents a numeric value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+        Specifies the default value of the property.
+
+&gt;&gt;&gt; wid = Widget()
+&gt;&gt;&gt; wid.x = 42
+&gt;&gt;&gt; print(wid.x)
+42
+&gt;&gt;&gt; wid.x = "plop"
+ Traceback (most recent call last):
+   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+   File "properties.pyx", line 93, in kivy.properties.Property.__set__
+   File "properties.pyx", line 111, in kivy.properties.Property.set
+   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
+ ValueError: NumericProperty accept only int/float
+
+!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
+    NumericProperty can now accept custom text and tuple value to indicate a
+    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
+    'pt').
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.data_sample_rate"><code class="name">var <span class="ident">data_sample_rate</span></code></dt>
+<dd>
+<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
+Property that represents a numeric value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+        Specifies the default value of the property.
+
+&gt;&gt;&gt; wid = Widget()
+&gt;&gt;&gt; wid.x = 42
+&gt;&gt;&gt; print(wid.x)
+42
+&gt;&gt;&gt; wid.x = "plop"
+ Traceback (most recent call last):
+   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+   File "properties.pyx", line 93, in kivy.properties.Property.__set__
+   File "properties.pyx", line 111, in kivy.properties.Property.set
+   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
+ ValueError: NumericProperty accept only int/float
+
+!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
+    NumericProperty can now accept custom text and tuple value to indicate a
+    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
+    'pt').
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.is_streaming"><code class="name">var <span class="ident">is_streaming</span></code></dt>
+<dd>
+<div class="desc"><p>BooleanProperty(defaultvalue=True, **kw)
+Property that represents only a boolean value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: boolean
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.message_string"><code class="name">var <span class="ident">message_string</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.sample_rate_num_samples"><code class="name">var <span class="ident">sample_rate_num_samples</span></code></dt>
+<dd>
+<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
+Property that represents a numeric value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+        Specifies the default value of the property.
+
+&gt;&gt;&gt; wid = Widget()
+&gt;&gt;&gt; wid.x = 42
+&gt;&gt;&gt; print(wid.x)
+42
+&gt;&gt;&gt; wid.x = "plop"
+ Traceback (most recent call last):
+   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+   File "properties.pyx", line 93, in kivy.properties.Property.__set__
+   File "properties.pyx", line 111, in kivy.properties.Property.set
+   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
+ ValueError: NumericProperty accept only int/float
+
+!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
+    NumericProperty can now accept custom text and tuple value to indicate a
+    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
+    'pt').
+</code></pre></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.temperature_sample_rate"><code class="name">var <span class="ident">temperature_sample_rate</span></code></dt>
+<dd>
+<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
+Property that represents a numeric value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+        Specifies the default value of the property.
+
+&gt;&gt;&gt; wid = Widget()
+&gt;&gt;&gt; wid.x = 42
+&gt;&gt;&gt; print(wid.x)
+42
+&gt;&gt;&gt; wid.x = "plop"
+ Traceback (most recent call last):
+   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+   File "properties.pyx", line 93, in kivy.properties.Property.__set__
+   File "properties.pyx", line 111, in kivy.properties.Property.set
+   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
+ ValueError: NumericProperty accept only int/float
+
+!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
+    NumericProperty can now accept custom text and tuple value to indicate a
+    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
+    'pt').
+</code></pre></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.communication.mserial.MIPSerial.add_callback"><code class="name flex">
+<span>def <span class="ident">add_callback</span></span>(<span>self, callback)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.check_mip_port"><code class="name flex">
+<span>def <span class="ident">check_mip_port</span></span>(<span>self, port_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Check if the port is the correct one.</p>
+<p>This function checks whether the port passed in as
+parameter correspons to a proper device.
+@param port_name name of the port to be checked.
+@return True if the port was found to be corrected.
+@return False if the port was not found to be corrected.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.compute_num_samples_sample_rate"><code class="name flex">
+<span>def <span class="ident">compute_num_samples_sample_rate</span></span>(<span>self, sample_rate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.connect"><code class="name flex">
+<span>def <span class="ident">connect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.convert_battery_voltage"><code class="name flex">
+<span>def <span class="ident">convert_battery_voltage</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Convert raw bytes to battery voltage.</p>
+<p>This function converts the bytes passed in as
+parameter to a proper voltage value. The
+battery voltage is equal to the 16 bit data
+computed from the two bytes (MSB first) and
+divided by 100.
+@param value battery voltage raw values
+@return computed battery voltage</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.convert_capacitance"><code class="name flex">
+<span>def <span class="ident">convert_capacitance</span></span>(<span>self, capacitance, capdac)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Convert raw bytes and capdac value into capacitance.</p>
+<p>This function converts the bytes passed in as
+parameter to a proper capacitance value based
+on capdac settings. The capacitance value is
+computed given the equation stated in the FDC1004Q datasheet.
+@param capacitance capacitance bytes
+@param capdac capacitance channel capdac value
+@return computed capacitance value</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.convert_humidity"><code class="name flex">
+<span>def <span class="ident">convert_humidity</span></span>(<span>self, raw_humidity)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Convert raw bytes into humidity.</p>
+<p>This function converts the bytes passed in as
+parameter to a proper humidity value. The
+humidity value is computed given the
+equation stated in the SHT85 datasheet.
+@param raw_humidity humidity bytes
+@return computed humidity value</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.convert_temperature"><code class="name flex">
+<span>def <span class="ident">convert_temperature</span></span>(<span>self, raw_temperature)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Convert raw bytes into temperature.</p>
+<p>This function converts the bytes passed in as
+parameter to a proper temperature value. The
+temperature value is computed given the
+equation stated in the SHT85 datasheet.
+@param raw_temperature temperature bytes
+@return computed temperature value</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.find_port"><code class="name flex">
+<span>def <span class="ident">find_port</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Find the serial port to which the device is connected.</p>
+<p>This function scans all the available serial ports until
+the one to which the device is connected is found. Once
+found, it attempts to connect to it.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.get_sample_rate_cmd"><code class="name flex">
+<span>def <span class="ident">get_sample_rate_cmd</span></span>(<span>self, sample_rate)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Get command to set sample rate.</p>
+<p>This function returns the correct command to send to the
+board to set the proper sample rate.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.get_temp_hum_config_cmd"><code class="name flex">
+<span>def <span class="ident">get_temp_hum_config_cmd</span></span>(<span>self, th_sample_rate, th_repeatability)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.get_temp_hum_config_value"><code class="name flex">
+<span>def <span class="ident">get_temp_hum_config_value</span></span>(<span>self, th_sample_rate, th_repeatability)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.parse_sample_rate"><code class="name flex">
+<span>def <span class="ident">parse_sample_rate</span></span>(<span>self, sample_rate_packet)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.read_data"><code class="name flex">
+<span>def <span class="ident">read_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.retrieve_sample_rate_from_board"><code class="name flex">
+<span>def <span class="ident">retrieve_sample_rate_from_board</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Send command to the board to retrieve current sample rate configuration.</p>
+<p>This function sends a command to the board to retrieve the current
+sample rate configuration for both data and temperature and relative
+humidity sensor.
+The response from the board is parsed in the main read data function.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.send_updated_time_to_board"><code class="name flex">
+<span>def <span class="ident">send_updated_time_to_board</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Update time and date on the board.</p>
+<p>This function send updated time and date values to the board
+by using the following packet structure:
+- First byte 't'
+- Two btyes for current year
+- One byte for month
+- One byte for day
+- One byte for hour
+- One byte for minute
+- One byte for second
+- Last byte 'T'</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.set_sample_rate"><code class="name flex">
+<span>def <span class="ident">set_sample_rate</span></span>(<span>self, sample_rate)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Send command to set sample rate on the board.</p>
+<p>This function sends the appropriate command to the board
+to set the sample rate to a new value. It then sends a
+command to the board to retrieve the sample rate value that
+was set, that is checked inside the read data function
+and the class property is then updated accordingly.
+@param sample_rate string identifying the new sample rate to be set.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.set_temperature_settings"><code class="name flex">
+<span>def <span class="ident">set_temperature_settings</span></span>(<span>self, sample_rate, repeatability)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Set new configuration for temperature and relative humidity sensor.</p>
+<p>This function sends the proper commands to the board to configure the
+temperature and relative humidity sensor.
+@param sample_rate the new desidered sample rate value
+@param repeatability the new desidered repeatability settings</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.start_streaming"><code class="name flex">
+<span>def <span class="ident">start_streaming</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Start data streaming from the board.</p>
+<p>This function starts data streaming from the board.
+It also sets up a running thread to retrieve the
+data from the board, parse it and send it to the
+data receivers.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.stop_streaming"><code class="name flex">
+<span>def <span class="ident">stop_streaming</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>!
+@brief Stop data streaming from the board.
+This function stops data streaming from the
+board. This function sends the appropriate command
+to the board and stops the running thread.</p></div>
+</dd>
+<dt id="mip.communication.mserial.MIPSerial.update_computed_sample_rate"><code class="name flex">
+<span>def <span class="ident">update_computed_sample_rate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.communication.mserial.Singleton"><code class="flex name class">
+<span>class <span class="ident">Singleton</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>type(object_or_name, bases, dict)
+type(object) -&gt; the object's type
+type(name, bases, dict) -&gt; a new type</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.type</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="mip.communication" href="index.html">mip.communication</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="mip.communication.mserial.BOARD_CONNECTED" href="#mip.communication.mserial.BOARD_CONNECTED">BOARD_CONNECTED</a></code></li>
+<li><code><a title="mip.communication.mserial.BOARD_DISCONNECTED" href="#mip.communication.mserial.BOARD_DISCONNECTED">BOARD_DISCONNECTED</a></code></li>
+<li><code><a title="mip.communication.mserial.BOARD_FOUND" href="#mip.communication.mserial.BOARD_FOUND">BOARD_FOUND</a></code></li>
+<li><code><a title="mip.communication.mserial.CONN_REQUEST_CMD" href="#mip.communication.mserial.CONN_REQUEST_CMD">CONN_REQUEST_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.DATA_PACKET_HEADER" href="#mip.communication.mserial.DATA_PACKET_HEADER">DATA_PACKET_HEADER</a></code></li>
+<li><code><a title="mip.communication.mserial.DATA_PACKET_TAIL" href="#mip.communication.mserial.DATA_PACKET_TAIL">DATA_PACKET_TAIL</a></code></li>
+<li><code><a title="mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER" href="#mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER">SAMPLE_RATE_PACKET_HEADER</a></code></li>
+<li><code><a title="mip.communication.mserial.START_STREAMING_CMD" href="#mip.communication.mserial.START_STREAMING_CMD">START_STREAMING_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.STOP_STREAMING_CMD" href="#mip.communication.mserial.STOP_STREAMING_CMD">STOP_STREAMING_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD" href="#mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD">TEMP_RH_SETTINGS_SET_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.TIME_LATCH_CMD" href="#mip.communication.mserial.TIME_LATCH_CMD">TIME_LATCH_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.TIME_SET_CMD" href="#mip.communication.mserial.TIME_SET_CMD">TIME_SET_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.VOLTAGE_PACKET_HEADER" href="#mip.communication.mserial.VOLTAGE_PACKET_HEADER">VOLTAGE_PACKET_HEADER</a></code></li>
+<li><code><a title="mip.communication.mserial.VOLTAGE_PACKET_TAIL" href="#mip.communication.mserial.VOLTAGE_PACKET_TAIL">VOLTAGE_PACKET_TAIL</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="mip.communication.mserial.DataPacket" href="#mip.communication.mserial.DataPacket">DataPacket</a></code></h4>
+<ul class="">
+<li><code><a title="mip.communication.mserial.DataPacket.get_capacitance" href="#mip.communication.mserial.DataPacket.get_capacitance">get_capacitance</a></code></li>
+<li><code><a title="mip.communication.mserial.DataPacket.get_humidity" href="#mip.communication.mserial.DataPacket.get_humidity">get_humidity</a></code></li>
+<li><code><a title="mip.communication.mserial.DataPacket.get_temperature" href="#mip.communication.mserial.DataPacket.get_temperature">get_temperature</a></code></li>
+<li><code><a title="mip.communication.mserial.DataPacket.has_temperature_data" href="#mip.communication.mserial.DataPacket.has_temperature_data">has_temperature_data</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.communication.mserial.MIPSerial" href="#mip.communication.mserial.MIPSerial">MIPSerial</a></code></h4>
+<ul class="">
+<li><code><a title="mip.communication.mserial.MIPSerial.add_callback" href="#mip.communication.mserial.MIPSerial.add_callback">add_callback</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.battery_voltage" href="#mip.communication.mserial.MIPSerial.battery_voltage">battery_voltage</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.check_mip_port" href="#mip.communication.mserial.MIPSerial.check_mip_port">check_mip_port</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.compute_num_samples_sample_rate" href="#mip.communication.mserial.MIPSerial.compute_num_samples_sample_rate">compute_num_samples_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.configured_sample_rate" href="#mip.communication.mserial.MIPSerial.configured_sample_rate">configured_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.configured_temp_rh_sample_rate" href="#mip.communication.mserial.MIPSerial.configured_temp_rh_sample_rate">configured_temp_rh_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.configured_temp_rh_sample_rep" href="#mip.communication.mserial.MIPSerial.configured_temp_rh_sample_rep">configured_temp_rh_sample_rep</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.connect" href="#mip.communication.mserial.MIPSerial.connect">connect</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.connected" href="#mip.communication.mserial.MIPSerial.connected">connected</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.convert_battery_voltage" href="#mip.communication.mserial.MIPSerial.convert_battery_voltage">convert_battery_voltage</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.convert_capacitance" href="#mip.communication.mserial.MIPSerial.convert_capacitance">convert_capacitance</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.convert_humidity" href="#mip.communication.mserial.MIPSerial.convert_humidity">convert_humidity</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.convert_temperature" href="#mip.communication.mserial.MIPSerial.convert_temperature">convert_temperature</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.data_sample_rate" href="#mip.communication.mserial.MIPSerial.data_sample_rate">data_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.find_port" href="#mip.communication.mserial.MIPSerial.find_port">find_port</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.get_sample_rate_cmd" href="#mip.communication.mserial.MIPSerial.get_sample_rate_cmd">get_sample_rate_cmd</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.get_temp_hum_config_cmd" href="#mip.communication.mserial.MIPSerial.get_temp_hum_config_cmd">get_temp_hum_config_cmd</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.get_temp_hum_config_value" href="#mip.communication.mserial.MIPSerial.get_temp_hum_config_value">get_temp_hum_config_value</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.is_streaming" href="#mip.communication.mserial.MIPSerial.is_streaming">is_streaming</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.message_string" href="#mip.communication.mserial.MIPSerial.message_string">message_string</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.parse_sample_rate" href="#mip.communication.mserial.MIPSerial.parse_sample_rate">parse_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.read_data" href="#mip.communication.mserial.MIPSerial.read_data">read_data</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.retrieve_sample_rate_from_board" href="#mip.communication.mserial.MIPSerial.retrieve_sample_rate_from_board">retrieve_sample_rate_from_board</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.sample_rate_num_samples" href="#mip.communication.mserial.MIPSerial.sample_rate_num_samples">sample_rate_num_samples</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.send_updated_time_to_board" href="#mip.communication.mserial.MIPSerial.send_updated_time_to_board">send_updated_time_to_board</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.set_sample_rate" href="#mip.communication.mserial.MIPSerial.set_sample_rate">set_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.set_temperature_settings" href="#mip.communication.mserial.MIPSerial.set_temperature_settings">set_temperature_settings</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.start_streaming" href="#mip.communication.mserial.MIPSerial.start_streaming">start_streaming</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.stop_streaming" href="#mip.communication.mserial.MIPSerial.stop_streaming">stop_streaming</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.temperature_sample_rate" href="#mip.communication.mserial.MIPSerial.temperature_sample_rate">temperature_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.update_computed_sample_rate" href="#mip.communication.mserial.MIPSerial.update_computed_sample_rate">update_computed_sample_rate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.communication.mserial.Singleton" href="#mip.communication.mserial.Singleton">Singleton</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
