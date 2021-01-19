@@ -1,3 +1,5 @@
+import os
+os.environ["KIVY_NO_ARGS"] = "1"
 from datetime import datetime
 import serial
 import serial.tools.list_ports as list_ports
@@ -6,6 +8,7 @@ import threading
 from kivy.properties import NumericProperty, BooleanProperty, StringProperty
 from kivy.event import EventDispatcher
 import time
+from loguru import logger
 
 #############################################
 #                 Constants                 #

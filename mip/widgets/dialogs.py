@@ -1,3 +1,5 @@
+import os
+os.environ["KIVY_NO_ARGS"] = "1"
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
