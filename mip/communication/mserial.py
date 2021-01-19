@@ -285,11 +285,12 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
 
     def read_data(self):
         while (self.connected == BOARD_CONNECTED):
-            
             # Check if more than 10 seconds passed from last voltage packet
             if (self.voltage_received_packet_time != 0):
                 curr_time = datetime.now()
-                if ((curr_time - self.voltage_received_packet_time).total_seconds() > 11):
+                if ((curr_time - self.voltage_received_packet_time).total_seconds() > 13):
+                    print(curr_time)
+                    print(self.voltage_received_packet_time)
                     self.connected = BOARD_DISCONNECTED
                     self.message_string = 'Device disconnected'
                     find_port_thread = threading.Thread(target=self.find_port, daemon=True)
@@ -297,7 +298,6 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                     
             
             if (self.port.in_waiting > 0):
-                
                 if (self.read_state == 0):
                     b = self.port.read(1)
                     # Header byte

@@ -4,9 +4,9 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
-
-import communication
-from communication import MIPSerial
+from mip.communication.mserial import MIPSerial
+import mip.communication
+import random
 
 from kivy.config import Config
 Config.set('kivy', 'exit_on_escape', '0')
@@ -15,7 +15,7 @@ Config.set('kivy', 'allow_screensaver', '0')
 
 Builder.load_file('toolbar.kv')
 Builder.load_file('bottom_bar.kv')
-Builder.load_file('dialogs.kv')
+Builder.load_file('mip/widgets/dialogs.kv')
 Builder.load_file('top_bar.kv')
 Builder.load_file('graph_tabs.kv')
 
@@ -71,6 +71,12 @@ class ContainerLayout(BoxLayout):
         self.serial.bind(temperature_sample_rate=self.graph_tabs.setter('temperature_sample_rate'))
         self.serial.bind(sample_rate_num_samples=self.graph_tabs.setter('num_samples_per_second'))
         self.serial.add_callback(self.graph_tabs.update_plots)
+        Clock.schedule_interval(self.random_update_plots, 0.1)
+
+    def random_update_plots(self, dt):
+        val = random.uniform(0,100)
+        packet = mip.communication.mserial.DataPacket(temperature=val, has_temp_data=True)
+        self.graph_tabs.update_plots(packet)
 
     def connection_event(self, instance, value):
         """!
@@ -83,21 +89,19 @@ class ContainerLayout(BoxLayout):
         @param value the current connection status
         @param instance the instance calling this callback
         """
-        if (value == communication.BOARD_CONNECTED):
+        if (value == mip.communication.mserial.BOARD_CONNECTED):
             self.progress_bar.value = 100
             self.pb_update_event.cancel()
             self.top_bar.enable_widgets(True)
             self.toolbar.disabled = False
             self.pb_update_sign = 0
-        elif (value == communication.BOARD_DISCONNECTED):
+        elif (value == mip.communication.mserial.BOARD_DISCONNECTED):
             self.top_bar.enable_widgets(False)
             self.toolbar.disabled = True
             if (self.pb_update_sign == 0):
                 self.progress_bar.value = 0
                 self.pb_update_sign = 1
                 self.pb_update_event = Clock.schedule_interval(self.progress_bar_update, 0.05)
-
-    
 
     def progress_bar_update(self, dt):
         if (self.pb_update_sign > 0):

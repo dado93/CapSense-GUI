@@ -185,8 +185,8 @@ class TemperaturePlot(GraphPanelItem):
                 y_min = min(self.y_points)
                 y_max = max(self.y_points)
                 min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(y_min, y_max, 10)
-                self.graph.ymin = y_min
-                self.graph.ymin = y_max
+                self.graph.ymin = min_val
+                self.graph.ymax = max_val
                 self.graph.y_ticks_major = major_ticks
                 self.graph.y_ticks_minor = minor_ticks
 

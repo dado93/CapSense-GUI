@@ -1,8 +1,8 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
-from communication import MIPSerial
-import communication
+from mip.communication.mserial import MIPSerial
+import mip.communication
 from kivy.graphics import Color, Rectangle
 
 class BottomBar(BoxLayout):
@@ -17,13 +17,13 @@ class BottomBar(BoxLayout):
         self.message_label.text = value
 
     def connection_event(self, instance, value):
-        if (value == communication.BOARD_FOUND):
+        if (value == mip.communication.mserial.BOARD_FOUND):
             self.connection_label.update_color(1, 1, 0, 0.7)
             self.connection_label.color = (0, 0, 0, 1)
-        elif (value == communication.BOARD_CONNECTED):
+        elif (value == mip.communication.mserial.BOARD_CONNECTED):
             self.connection_label.update_color(0, 0.5, 0, 0.7)
             self.connection_label.color = (1, 1, 1, 1)
-        elif (value == communication.BOARD_DISCONNECTED):
+        elif (value == mip.communication.mserial.BOARD_DISCONNECTED):
             self.connection_label.update_color(1, 0.0, 0, 0.7)
             self.connection_label.color = (1, 1, 1, 1)
         
