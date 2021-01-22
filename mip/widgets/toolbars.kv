@@ -1,0 +1,102 @@
+#:kivy 1.11.1
+
+<Toolbar>:
+    orientation:'vertical'
+    spacing: 10
+    padding: 10
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    ToolbarButton:
+        text: 'Sample Rate'
+        on_release: root.sample_rate_dialog()
+    
+    ToolbarButton:
+        text: 'T&RH Config'
+        on_release: root.temp_rh_dialog()
+    
+    ToolbarButton:
+        on_release: root.sd_card_dialog()
+        text: 'SD Card'
+    
+    ToolbarButton:
+        id: _sd_load_button
+        text: 'Load SD Data'
+    
+    ToolbarButton:
+        id: _export_button
+        text: 'Data Export'
+
+    ToolbarButton:
+        id: _info_button
+        text: 'Info'
+
+    Widget:
+
+<ToolbarButton@Button>:
+    size_hint_y: 0.1
+
+<BottomBar>:
+    orientation:'horizontal'
+    spacing: 10
+    message_label: _message_label
+    connection_label: _connection_label
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.1, 0.1, 1.0)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Label:
+        id: _message_label
+        text: "MIP GUI"
+    ConnectionLabel:
+        id: _connection_label
+        size_hint_x: 0.1
+    
+<ColoredLabel>:
+    canvas.before:
+        Color:
+            rgba: (1.0, 0., 0., 0.7)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<ConnectionLabel@ColoredLabel>:
+    text: 'Device'
+
+<SensorLabel@ColoredLabel>:
+    text: 'Sensor'
+
+<TopBar>:
+    streaming_button: _start_button
+    battery_label: _battery_label
+    padding: '2sp'
+    canvas:
+        Color:
+            rgba: 1, 1, 1, .6
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    size_hint: 1, None
+    height: '45sp'
+    Label:
+        size_hint: None, 1
+        width: '108sp'
+        text: 'MIP Board GUI'
+    Widget:
+    Button:
+        id: _start_button
+        disabled: True
+        size_hint: None, 1
+        width: '108sp'
+        text: 'Start'
+        on_release: root.streaming()
+    ColoredLabel:
+        id: _battery_label
+        size_hint: None, 1
+        width: '108sp'
+        text: 'Battery: '

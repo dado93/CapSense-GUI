@@ -1,0 +1,1192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>mip.graph API documentation</title>
+<meta name="description" content="Graph
+…" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>mip.graph</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="graph">Graph</h1>
+<p>The :class:<code><a title="mip.graph.Graph" href="#mip.graph.Graph">Graph</a></code> widget is a widget for displaying plots. It supports
+drawing multiple plot with different colors on the Graph. It also supports
+axes titles, ticks, labeled ticks, grids and a log or linear representation on
+both the x and y axis, independently.</p>
+<p>To display a plot. First create a graph which will function as a "canvas" for
+the plots. Then create plot objects e.g. MeshLinePlot and add them to the
+graph.</p>
+<p>To create a graph with x-axis between 0-100, y-axis between -1 to 1, x and y
+labels of and X and Y, respectively, x major and minor ticks every 25, 5 units,
+respectively, y major ticks every 1 units, full x and y grids and with
+a red line plot containing a sin wave on this range::</p>
+<pre><code>from kivy.garden.graph import Graph, MeshLinePlot
+graph = Graph(xlabel='X', ylabel='Y', x_ticks_minor=5,
+              x_ticks_major=25, y_ticks_major=1,
+              y_grid_label=True, x_grid_label=True, padding=5,
+              x_grid=True, y_grid=True, xmin=-0, xmax=100, ymin=-1, ymax=1)
+plot = MeshLinePlot(color=[1, 0, 0, 1])
+plot.points = [(x, sin(x / 10.)) for x in range(0, 101)]
+graph.add_plot(plot)
+</code></pre>
+<p>The MeshLinePlot plot is a particular plot which draws a set of points using
+a mesh object. The points are given as a list of tuples, with each tuple
+being a (x, y) coordinate in the graph's units.</p>
+<p>You can create different types of plots other than MeshLinePlot by inheriting
+from the Plot class and implementing the required functions. The Graph object
+provides a "canvas" to which a Plot's instructions are added. The plot object
+is responsible for updating these instructions to show within the bounding
+box of the graph the proper plot. The Graph notifies the Plot when it needs
+to be redrawn due to changes. See the MeshLinePlot class for how it is done.</p>
+<p>The current availables plots are:</p>
+<pre><code>* &lt;code&gt;&lt;a title="mip.graph.MeshStemPlot" href="#mip.graph.MeshStemPlot"&gt;MeshStemPlot&lt;/a&gt;&lt;/code&gt;
+* &lt;code&gt;&lt;a title="mip.graph.MeshLinePlot" href="#mip.graph.MeshLinePlot"&gt;MeshLinePlot&lt;/a&gt;&lt;/code&gt;
+* &lt;code&gt;&lt;a title="mip.graph.SmoothLinePlot" href="#mip.graph.SmoothLinePlot"&gt;SmoothLinePlot&lt;/a&gt;&lt;/code&gt; - require Kivy 1.8.1
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The graph uses a stencil view to clip the plots to the graph display area.
+As with the stencil graphics instructions, you cannot stack more than 8
+stencil-aware widgets.</p>
+</div>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="mip.graph.ContourPlot"><code class="flex name class">
+<span>class <span class="ident">ContourPlot</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>ContourPlot visualizes 3 dimensional data as an intensity map image.
+The user must first specify 'xrange' and 'yrange' (tuples of min,max) and
+then 'data', the intensity values.
+<code>data</code>, is a MxN matrix, where the first dimension of size M specifies the
+<code>y</code> values, and the second dimension of size N specifies the <code>x</code> values.
+Axis Y and X values are assumed to be linearly spaced values from
+xrange/yrange and the dimensions of 'data', <code>MxN</code>, respectively.
+The color values are automatically scaled to the min and max z range of the
+data set.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.graph.ContourPlot.data"><code class="name">var <span class="ident">data</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.graph.ContourPlot.xrange"><code class="name">var <span class="ident">xrange</span></code></dt>
+<dd>
+<div class="desc"><p>ListProperty(defaultvalue=0, **kw)
+Property that represents a list.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: list, defaults to []
+        Specifies the default value of the property.
+
+!!! warning "Warning"
+    When assigning a list to a :class:&lt;code&gt;ListProperty&lt;/code&gt;, the list stored in
+    the property is a shallow copy of the list and not the original list. This can
+    be demonstrated with the following example::
+
+        &gt;&gt;&gt; class MyWidget(Widget):
+        &gt;&gt;&gt;     my_list = ListProperty([])
+
+        &gt;&gt;&gt; widget = MyWidget()
+        &gt;&gt;&gt; my_list = [1, 5, {'hi': 'hello'}]
+        &gt;&gt;&gt; widget.my_list = my_list
+        &gt;&gt;&gt; print(my_list is widget.my_list)
+        False
+        &gt;&gt;&gt; my_list.append(10)
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'hello'}, 10] [1, 5, {'hi': 'hello'}]
+
+    However, changes to nested levels will affect the property as well,
+    since the property uses a shallow copy of my_list.
+
+        &gt;&gt;&gt; my_list[2]['hi'] = 'bye'
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'bye'}, 10] [1, 5, {'hi': 'bye'}]
+</code></pre></div>
+</dd>
+<dt id="mip.graph.ContourPlot.yrange"><code class="name">var <span class="ident">yrange</span></code></dt>
+<dd>
+<div class="desc"><p>ListProperty(defaultvalue=0, **kw)
+Property that represents a list.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: list, defaults to []
+        Specifies the default value of the property.
+
+!!! warning "Warning"
+    When assigning a list to a :class:&lt;code&gt;ListProperty&lt;/code&gt;, the list stored in
+    the property is a shallow copy of the list and not the original list. This can
+    be demonstrated with the following example::
+
+        &gt;&gt;&gt; class MyWidget(Widget):
+        &gt;&gt;&gt;     my_list = ListProperty([])
+
+        &gt;&gt;&gt; widget = MyWidget()
+        &gt;&gt;&gt; my_list = [1, 5, {'hi': 'hello'}]
+        &gt;&gt;&gt; widget.my_list = my_list
+        &gt;&gt;&gt; print(my_list is widget.my_list)
+        False
+        &gt;&gt;&gt; my_list.append(10)
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'hello'}, 10] [1, 5, {'hi': 'hello'}]
+
+    However, changes to nested levels will affect the property as well,
+    since the property uses a shallow copy of my_list.
+
+        &gt;&gt;&gt; my_list[2]['hi'] = 'bye'
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'bye'}, 10] [1, 5, {'hi': 'bye'}]
+</code></pre></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></b></code>:
+<ul class="hlist">
+<li><code><a title="mip.graph.Plot.color" href="#mip.graph.Plot.color">color</a></code></li>
+<li><code><a title="mip.graph.Plot.create_drawings" href="#mip.graph.Plot.create_drawings">create_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.draw" href="#mip.graph.Plot.draw">draw</a></code></li>
+<li><code><a title="mip.graph.Plot.funcx" href="#mip.graph.Plot.funcx">funcx</a></code></li>
+<li><code><a title="mip.graph.Plot.funcy" href="#mip.graph.Plot.funcy">funcy</a></code></li>
+<li><code><a title="mip.graph.Plot.get_drawings" href="#mip.graph.Plot.get_drawings">get_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.get_group" href="#mip.graph.Plot.get_group">get_group</a></code></li>
+<li><code><a title="mip.graph.Plot.get_px_bounds" href="#mip.graph.Plot.get_px_bounds">get_px_bounds</a></code></li>
+<li><code><a title="mip.graph.Plot.iterate_points" href="#mip.graph.Plot.iterate_points">iterate_points</a></code></li>
+<li><code><a title="mip.graph.Plot.params" href="#mip.graph.Plot.params">params</a></code></li>
+<li><code><a title="mip.graph.Plot.points" href="#mip.graph.Plot.points">points</a></code></li>
+<li><code><a title="mip.graph.Plot.unproject" href="#mip.graph.Plot.unproject">unproject</a></code></li>
+<li><code><a title="mip.graph.Plot.update" href="#mip.graph.Plot.update">update</a></code></li>
+<li><code><a title="mip.graph.Plot.x_axis" href="#mip.graph.Plot.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.x_px" href="#mip.graph.Plot.x_px">x_px</a></code></li>
+<li><code><a title="mip.graph.Plot.y_axis" href="#mip.graph.Plot.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.y_px" href="#mip.graph.Plot.y_px">y_px</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="mip.graph.Graph"><code class="flex name class">
+<span>class <span class="ident">Graph</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Graph class, see module documentation for more information.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.graph.Graph.background_color"><code class="name">var <span class="ident">background_color</span></code></dt>
+<dd>
+<div class="desc"><p>Color of the background, defaults to transparent</p></div>
+</dd>
+<dt id="mip.graph.Graph.border_color"><code class="name">var <span class="ident">border_color</span></code></dt>
+<dd>
+<div class="desc"><p>Color of the border, defaults to white</p></div>
+</dd>
+<dt id="mip.graph.Graph.draw_border"><code class="name">var <span class="ident">draw_border</span></code></dt>
+<dd>
+<div class="desc"><p>Whether a border is drawn around the canvas of the graph where the
+plots are displayed.</p>
+<p>:data:<code>draw_border</code> is a :class:<code>~kivy.properties.BooleanProperty</code>,
+defaults to True.</p></div>
+</dd>
+<dt id="mip.graph.Graph.font_size"><code class="name">var <span class="ident">font_size</span></code></dt>
+<dd>
+<div class="desc"><p>Font size of the labels.</p>
+<p>:data:<code>font_size</code> is a :class:<code>~kivy.properties.NumericProperty</code>, defaults
+to 15sp.</p></div>
+</dd>
+<dt id="mip.graph.Graph.label_options"><code class="name">var <span class="ident">label_options</span></code></dt>
+<dd>
+<div class="desc"><p>Label options that will be passed to <code>:class:</code>kivy.uix.Label`.</p></div>
+</dd>
+<dt id="mip.graph.Graph.padding"><code class="name">var <span class="ident">padding</span></code></dt>
+<dd>
+<div class="desc"><p>Padding distances between the labels, axes titles and graph, as
+well between the widget and the objects near the boundaries.</p>
+<p>:data:<code>padding</code> is a :class:<code>~kivy.properties.NumericProperty</code>, defaults
+to 5dp.</p></div>
+</dd>
+<dt id="mip.graph.Graph.plots"><code class="name">var <span class="ident">plots</span></code></dt>
+<dd>
+<div class="desc"><p>Holds a list of all the plots in the graph. To add and remove plots
+from the graph use :data:<code>add_plot</code> and :data:<code>add_plot</code>. Do not add
+directly edit this list.</p>
+<p>:data:<code>plots</code> is a :class:<code>~kivy.properties.ListProperty</code>,
+defaults to [].</p></div>
+</dd>
+<dt id="mip.graph.Graph.precision"><code class="name">var <span class="ident">precision</span></code></dt>
+<dd>
+<div class="desc"><p>Determines the numerical precision of the tick mark labels. This value
+governs how the numbers are converted into string representation. Accepted
+values are those listed in Python's manual in the
+"String Formatting Operations" section.</p>
+<p>:data:<code>precision</code> is a :class:<code>~kivy.properties.StringProperty</code>, defaults
+to '%g'.</p></div>
+</dd>
+<dt id="mip.graph.Graph.tick_color"><code class="name">var <span class="ident">tick_color</span></code></dt>
+<dd>
+<div class="desc"><p>Color of the grid/ticks, default to 1/4. grey.</p></div>
+</dd>
+<dt id="mip.graph.Graph.view_pos"><code class="name">var <span class="ident">view_pos</span></code></dt>
+<dd>
+<div class="desc"><p>The pos of the graph viewing area - the area where the plots are
+displayed, excluding labels etc. It is relative to the graph's pos.</p></div>
+</dd>
+<dt id="mip.graph.Graph.view_size"><code class="name">var <span class="ident">view_size</span></code></dt>
+<dd>
+<div class="desc"><p>The size of the graph viewing area - the area where the plots are
+displayed, excluding labels etc.</p></div>
+</dd>
+<dt id="mip.graph.Graph.x_axis"><code class="name">var <span class="ident">x_axis</span></code></dt>
+<dd>
+<div class="desc"><p>ListProperty(defaultvalue=0, **kw)
+Property that represents a list.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: list, defaults to []
+        Specifies the default value of the property.
+
+!!! warning "Warning"
+    When assigning a list to a :class:&lt;code&gt;ListProperty&lt;/code&gt;, the list stored in
+    the property is a shallow copy of the list and not the original list. This can
+    be demonstrated with the following example::
+
+        &gt;&gt;&gt; class MyWidget(Widget):
+        &gt;&gt;&gt;     my_list = ListProperty([])
+
+        &gt;&gt;&gt; widget = MyWidget()
+        &gt;&gt;&gt; my_list = [1, 5, {'hi': 'hello'}]
+        &gt;&gt;&gt; widget.my_list = my_list
+        &gt;&gt;&gt; print(my_list is widget.my_list)
+        False
+        &gt;&gt;&gt; my_list.append(10)
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'hello'}, 10] [1, 5, {'hi': 'hello'}]
+
+    However, changes to nested levels will affect the property as well,
+    since the property uses a shallow copy of my_list.
+
+        &gt;&gt;&gt; my_list[2]['hi'] = 'bye'
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'bye'}, 10] [1, 5, {'hi': 'bye'}]
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Graph.x_grid"><code class="name">var <span class="ident">x_grid</span></code></dt>
+<dd>
+<div class="desc"><p>Determines whether the x-axis has tick marks or a full grid.</p>
+<p>If :data:<code>x_ticks_major</code> is non-zero, then if x_grid is False tick marks
+will be displayed at every major tick. If x_grid is True, instead of ticks,
+a vertical line will be displayed at every major tick.</p>
+<p>:data:<code>x_grid</code> is a :class:<code>~kivy.properties.BooleanProperty</code>, defaults
+to False.</p></div>
+</dd>
+<dt id="mip.graph.Graph.x_grid_label"><code class="name">var <span class="ident">x_grid_label</span></code></dt>
+<dd>
+<div class="desc"><p>Whether labels should be displayed beneath each major tick. If true,
+each major tick will have a label containing the axis value.</p>
+<p>:data:<code>x_grid_label</code> is a :class:<code>~kivy.properties.BooleanProperty</code>,
+defaults to False.</p></div>
+</dd>
+<dt id="mip.graph.Graph.x_ticks_angle"><code class="name">var <span class="ident">x_ticks_angle</span></code></dt>
+<dd>
+<div class="desc"><p>Rotate angle of the x-axis tick marks.</p>
+<p>:data:<code>x_ticks_angle</code> is a :class:<code>~kivy.properties.NumericProperty</code>,
+defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.x_ticks_major"><code class="name">var <span class="ident">x_ticks_major</span></code></dt>
+<dd>
+<div class="desc"><p>Distance between major tick marks on the x-axis.</p>
+<p>Determines the distance between the major tick marks. Major tick marks
+start from min and re-occur at every ticks_major until :data:<code>xmax</code>.
+If :data:<code>xmax</code> doesn't overlap with a integer multiple of ticks_major,
+no tick will occur at :data:<code>xmax</code>. Zero indicates no tick marks.</p>
+<p>If :data:<code>xlog</code> is true, then this indicates the distance between ticks
+in multiples of current decade. E.g. if :data:<code>xmin</code> is 0.1 and
+ticks_major is 0.1, it means there will be a tick at every 10th of the
+decade, i.e. 0.1 &hellip; 0.9, 1, 2&hellip; If it is 0.3, the ticks will occur at
+0.1, 0.3, 0.6, 0.9, 2, 5, 8, 10. You'll notice that it went from 8 to 10
+instead of to 20, that's so that we can say 0.5 and have ticks at every
+half decade, e.g. 0.1, 0.5, 1, 5, 10, 50&hellip; Similarly, if ticks_major is
+1.5, there will be ticks at 0.1, 5, 100, 5,000&hellip; Also notice, that there's
+always a major tick at the start. Finally, if e.g. :data:<code>xmin</code> is 0.6
+and this 0.5 there will be ticks at 0.6, 1, 5&hellip;</p>
+<p>:data:<code>x_ticks_major</code> is a
+:class:<code>~kivy.properties.BoundedNumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.x_ticks_minor"><code class="name">var <span class="ident">x_ticks_minor</span></code></dt>
+<dd>
+<div class="desc"><p>The number of sub-intervals that divide x_ticks_major.</p>
+<p>Determines the number of sub-intervals into which ticks_major is divided,
+if non-zero. The actual number of minor ticks between the major ticks is
+ticks_minor - 1. Only used if ticks_major is non-zero. If there's no major
+tick at xmax then the number of minor ticks after the last major
+tick will be however many ticks fit until xmax.</p>
+<p>If self.xlog is true, then this indicates the number of intervals the
+distance between major ticks is divided. The result is the number of
+multiples of decades between ticks. I.e. if ticks_minor is 10, then if
+ticks_major is 1, there will be ticks at 0.1, 0.2&hellip;0.9, 1, 2, 3&hellip; If
+ticks_major is 0.3, ticks will occur at 0.1, 0.12, 0.15, 0.18&hellip; Finally,
+as is common, if ticks major is 1, and ticks minor is 5, there will be
+ticks at 0.1, 0.2, 0.4&hellip; 0.8, 1, 2&hellip;</p>
+<p>:data:<code>x_ticks_minor</code> is a
+:class:<code>~kivy.properties.BoundedNumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.xlabel"><code class="name">var <span class="ident">xlabel</span></code></dt>
+<dd>
+<div class="desc"><p>The label for the x-axis. If not empty it is displayed in the center of
+the axis.</p>
+<p>:data:<code>xlabel</code> is a :class:<code>~kivy.properties.StringProperty</code>,
+defaults to ''.</p></div>
+</dd>
+<dt id="mip.graph.Graph.xlog"><code class="name">var <span class="ident">xlog</span></code></dt>
+<dd>
+<div class="desc"><p>Determines whether the x-axis should be displayed logarithmically (True)
+or linearly (False).</p>
+<p>:data:<code>xlog</code> is a :class:<code>~kivy.properties.BooleanProperty</code>, defaults
+to False.</p></div>
+</dd>
+<dt id="mip.graph.Graph.xmax"><code class="name">var <span class="ident">xmax</span></code></dt>
+<dd>
+<div class="desc"><p>The x-axis maximum value, larger than xmin.</p>
+<p>:data:<code>xmax</code> is a :class:<code>~kivy.properties.NumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.xmin"><code class="name">var <span class="ident">xmin</span></code></dt>
+<dd>
+<div class="desc"><p>The x-axis minimum value.</p>
+<p>If :data:<code>xlog</code> is True, xmin must be larger than zero.</p>
+<p>:data:<code>xmin</code> is a :class:<code>~kivy.properties.NumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.y_axis"><code class="name">var <span class="ident">y_axis</span></code></dt>
+<dd>
+<div class="desc"><p>ListProperty(defaultvalue=0, **kw)
+Property that represents a list.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: list, defaults to []
+        Specifies the default value of the property.
+
+!!! warning "Warning"
+    When assigning a list to a :class:&lt;code&gt;ListProperty&lt;/code&gt;, the list stored in
+    the property is a shallow copy of the list and not the original list. This can
+    be demonstrated with the following example::
+
+        &gt;&gt;&gt; class MyWidget(Widget):
+        &gt;&gt;&gt;     my_list = ListProperty([])
+
+        &gt;&gt;&gt; widget = MyWidget()
+        &gt;&gt;&gt; my_list = [1, 5, {'hi': 'hello'}]
+        &gt;&gt;&gt; widget.my_list = my_list
+        &gt;&gt;&gt; print(my_list is widget.my_list)
+        False
+        &gt;&gt;&gt; my_list.append(10)
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'hello'}, 10] [1, 5, {'hi': 'hello'}]
+
+    However, changes to nested levels will affect the property as well,
+    since the property uses a shallow copy of my_list.
+
+        &gt;&gt;&gt; my_list[2]['hi'] = 'bye'
+        &gt;&gt;&gt; print(my_list, widget.my_list)
+        [1, 5, {'hi': 'bye'}, 10] [1, 5, {'hi': 'bye'}]
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Graph.y_grid"><code class="name">var <span class="ident">y_grid</span></code></dt>
+<dd>
+<div class="desc"><p>Determines whether the y-axis has tick marks or a full grid. See
+:data:<code>x_grid</code>.</p>
+<p>:data:<code>y_grid</code> is a :class:<code>~kivy.properties.BooleanProperty</code>, defaults
+to False.</p></div>
+</dd>
+<dt id="mip.graph.Graph.y_grid_label"><code class="name">var <span class="ident">y_grid_label</span></code></dt>
+<dd>
+<div class="desc"><p>Whether labels should be displayed beneath each major tick. If true,
+each major tick will have a label containing the axis value.</p>
+<p>:data:<code>y_grid_label</code> is a :class:<code>~kivy.properties.BooleanProperty</code>,
+defaults to False.</p></div>
+</dd>
+<dt id="mip.graph.Graph.y_ticks_major"><code class="name">var <span class="ident">y_ticks_major</span></code></dt>
+<dd>
+<div class="desc"><p>Distance between major tick marks. See :data:<code>x_ticks_major</code>.</p>
+<p>:data:<code>y_ticks_major</code> is a
+:class:<code>~kivy.properties.BoundedNumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.y_ticks_minor"><code class="name">var <span class="ident">y_ticks_minor</span></code></dt>
+<dd>
+<div class="desc"><p>The number of sub-intervals that divide ticks_major.
+See :data:<code>x_ticks_minor</code>.</p>
+<p>:data:<code>y_ticks_minor</code> is a
+:class:<code>~kivy.properties.BoundedNumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.ylabel"><code class="name">var <span class="ident">ylabel</span></code></dt>
+<dd>
+<div class="desc"><p>The label for the y-axis. If not empty it is displayed in the center of
+the axis.</p>
+<p>:data:<code>ylabel</code> is a :class:<code>~kivy.properties.StringProperty</code>,
+defaults to ''.</p></div>
+</dd>
+<dt id="mip.graph.Graph.ylog"><code class="name">var <span class="ident">ylog</span></code></dt>
+<dd>
+<div class="desc"><p>Determines whether the y-axis should be displayed logarithmically (True)
+or linearly (False).</p>
+<p>:data:<code>ylog</code> is a :class:<code>~kivy.properties.BooleanProperty</code>, defaults
+to False.</p></div>
+</dd>
+<dt id="mip.graph.Graph.ymax"><code class="name">var <span class="ident">ymax</span></code></dt>
+<dd>
+<div class="desc"><p>The y-axis maximum value, larger than ymin.</p>
+<p>:data:<code>ymax</code> is a :class:<code>~kivy.properties.NumericProperty</code>, defaults to 0.</p></div>
+</dd>
+<dt id="mip.graph.Graph.ymin"><code class="name">var <span class="ident">ymin</span></code></dt>
+<dd>
+<div class="desc"><p>The y-axis minimum value.</p>
+<p>If :data:<code>ylog</code> is True, ymin must be larger than zero.</p>
+<p>:data:<code>ymin</code> is a :class:<code>~kivy.properties.NumericProperty</code>, defaults to 0.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.graph.Graph.add_plot"><code class="name flex">
+<span>def <span class="ident">add_plot</span></span>(<span>self, plot)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a new plot to this graph.</p>
+<p>:Parameters:
+<code>plot</code>:
+Plot to add to this graph.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; graph = Graph()
+&gt;&gt;&gt; plot = MeshLinePlot(mode='line_strip', color=[1, 0, 0, 1])
+&gt;&gt;&gt; plot.points = [(x / 10., sin(x / 50.)) for x in range(-0, 101)]
+&gt;&gt;&gt; graph.add_plot(plot)
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Graph.add_widget"><code class="name flex">
+<span>def <span class="ident">add_widget</span></span>(<span>self, widget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a new widget as a child of this widget.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;widget&lt;/code&gt;: :class:&lt;code&gt;Widget&lt;/code&gt;
+        Widget to add to our list of children.
+    &lt;code&gt;index&lt;/code&gt;: int, defaults to 0
+        Index to insert the widget in the list. Notice that the default
+        of 0 means the widget is inserted at the beginning of the list
+        and will thus be drawn on top of other sibling widgets. For a
+        full discussion of the index and widget hierarchy, please see
+        the :doc:`Widgets Programming Guide &lt;guide/widgets&gt;`.
+
+        !!! versionadded "Added in version:&amp;ensp;1.0.5"
+
+
+    &lt;code&gt;canvas&lt;/code&gt;: str, defaults to None
+        Canvas to add widget's canvas to. Can be 'before', 'after' or
+        None for the default canvas.
+
+        !!! versionadded "Added in version:&amp;ensp;1.9.0"
+</code></pre>
+<p>.. code-block:: python</p>
+<pre><code>&gt;&gt;&gt; from kivy.uix.button import Button
+&gt;&gt;&gt; from kivy.uix.slider import Slider
+&gt;&gt;&gt; root = Widget()
+&gt;&gt;&gt; root.add_widget(Button())
+&gt;&gt;&gt; slider = Slider()
+&gt;&gt;&gt; root.add_widget(slider)
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Graph.add_x_axis"><code class="name flex">
+<span>def <span class="ident">add_x_axis</span></span>(<span>self, xmin, xmax, xlog=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.Graph.add_y_axis"><code class="name flex">
+<span>def <span class="ident">add_y_axis</span></span>(<span>self, ymin, ymax, ylog=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.Graph.collide_plot"><code class="name flex">
+<span>def <span class="ident">collide_plot</span></span>(<span>self, x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determine if the given coordinates fall inside the plot area. Use
+<code>x, y = self.to_widget(x, y, relative=True)</code> to first convert into
+widget coordinates if it's in window coordinates because it's assumed
+to be given in local widget coordinates, relative to the graph's pos.</p>
+<p>:Parameters:
+<code>x, y</code>:
+The coordinates to test.</p></div>
+</dd>
+<dt id="mip.graph.Graph.get_x_axis"><code class="name flex">
+<span>def <span class="ident">get_x_axis</span></span>(<span>self, axis=0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.Graph.get_y_axis"><code class="name flex">
+<span>def <span class="ident">get_y_axis</span></span>(<span>self, axis=0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.Graph.remove_plot"><code class="name flex">
+<span>def <span class="ident">remove_plot</span></span>(<span>self, plot)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove a plot from this graph.</p>
+<p>:Parameters:
+<code>plot</code>:
+Plot to remove from this graph.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; graph = Graph()
+&gt;&gt;&gt; plot = MeshLinePlot(mode='line_strip', color=[1, 0, 0, 1])
+&gt;&gt;&gt; plot.points = [(x / 10., sin(x / 50.)) for x in range(-0, 101)]
+&gt;&gt;&gt; graph.add_plot(plot)
+&gt;&gt;&gt; graph.remove_plot(plot)
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Graph.remove_widget"><code class="name flex">
+<span>def <span class="ident">remove_widget</span></span>(<span>self, widget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove a widget from the children of this widget.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;widget&lt;/code&gt;: :class:&lt;code&gt;Widget&lt;/code&gt;
+        Widget to remove from our children list.
+</code></pre>
+<p>.. code-block:: python</p>
+<pre><code>&gt;&gt;&gt; from kivy.uix.button import Button
+&gt;&gt;&gt; root = Widget()
+&gt;&gt;&gt; button = Button()
+&gt;&gt;&gt; root.add_widget(button)
+&gt;&gt;&gt; root.remove_widget(button)
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Graph.to_data"><code class="name flex">
+<span>def <span class="ident">to_data</span></span>(<span>self, x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert widget coords to data coords. Use
+<code>x, y = self.to_widget(x, y, relative=True)</code> to first convert into
+widget coordinates if it's in window coordinates because it's assumed
+to be given in local widget coordinates, relative to the graph's pos.</p>
+<p>:Parameters:
+<code>x, y</code>:
+The coordinates to convert.</p>
+<p>If the graph has multiple axes, use :class:<code><a title="mip.graph.Plot.unproject" href="#mip.graph.Plot.unproject">Plot.unproject()</a></code> instead.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.graph.LinePlot"><code class="flex name class">
+<span>class <span class="ident">LinePlot</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>LinePlot draws using a standard Line object.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.graph.LinePlot.line_width"><code class="name">var <span class="ident">line_width</span></code></dt>
+<dd>
+<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
+Property that represents a numeric value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+        Specifies the default value of the property.
+
+&gt;&gt;&gt; wid = Widget()
+&gt;&gt;&gt; wid.x = 42
+&gt;&gt;&gt; print(wid.x)
+42
+&gt;&gt;&gt; wid.x = "plop"
+ Traceback (most recent call last):
+   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+   File "properties.pyx", line 93, in kivy.properties.Property.__set__
+   File "properties.pyx", line 111, in kivy.properties.Property.set
+   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
+ ValueError: NumericProperty accept only int/float
+
+!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
+    NumericProperty can now accept custom text and tuple value to indicate a
+    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
+    'pt').
+</code></pre></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.graph.LinePlot.on_line_width"><code class="name flex">
+<span>def <span class="ident">on_line_width</span></span>(<span>self, *largs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></b></code>:
+<ul class="hlist">
+<li><code><a title="mip.graph.Plot.color" href="#mip.graph.Plot.color">color</a></code></li>
+<li><code><a title="mip.graph.Plot.create_drawings" href="#mip.graph.Plot.create_drawings">create_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.draw" href="#mip.graph.Plot.draw">draw</a></code></li>
+<li><code><a title="mip.graph.Plot.funcx" href="#mip.graph.Plot.funcx">funcx</a></code></li>
+<li><code><a title="mip.graph.Plot.funcy" href="#mip.graph.Plot.funcy">funcy</a></code></li>
+<li><code><a title="mip.graph.Plot.get_drawings" href="#mip.graph.Plot.get_drawings">get_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.get_group" href="#mip.graph.Plot.get_group">get_group</a></code></li>
+<li><code><a title="mip.graph.Plot.get_px_bounds" href="#mip.graph.Plot.get_px_bounds">get_px_bounds</a></code></li>
+<li><code><a title="mip.graph.Plot.iterate_points" href="#mip.graph.Plot.iterate_points">iterate_points</a></code></li>
+<li><code><a title="mip.graph.Plot.params" href="#mip.graph.Plot.params">params</a></code></li>
+<li><code><a title="mip.graph.Plot.points" href="#mip.graph.Plot.points">points</a></code></li>
+<li><code><a title="mip.graph.Plot.unproject" href="#mip.graph.Plot.unproject">unproject</a></code></li>
+<li><code><a title="mip.graph.Plot.update" href="#mip.graph.Plot.update">update</a></code></li>
+<li><code><a title="mip.graph.Plot.x_axis" href="#mip.graph.Plot.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.x_px" href="#mip.graph.Plot.x_px">x_px</a></code></li>
+<li><code><a title="mip.graph.Plot.y_axis" href="#mip.graph.Plot.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.y_px" href="#mip.graph.Plot.y_px">y_px</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="mip.graph.MeshLinePlot"><code class="flex name class">
+<span>class <span class="ident">MeshLinePlot</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MeshLinePlot class which displays a set of points similar to a mesh.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>mip.graph.HBar</li>
+<li><a title="mip.graph.MeshStemPlot" href="#mip.graph.MeshStemPlot">MeshStemPlot</a></li>
+<li>mip.graph.VBar</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.graph.MeshLinePlot.mode"><code class="name">var <span class="ident">mode</span></code></dt>
+<dd>
+<div class="desc"><p>VBO Mode used for drawing the points. Can be one of: 'points',
+'line_strip', 'line_loop', 'lines', 'triangle_strip', 'triangle_fan'.
+See :class:<code>~kivy.graphics.Mesh</code> for more details.</p>
+<p>Defaults to 'line_strip'.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.graph.MeshLinePlot.plot_mesh"><code class="name flex">
+<span>def <span class="ident">plot_mesh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.MeshLinePlot.set_mesh_size"><code class="name flex">
+<span>def <span class="ident">set_mesh_size</span></span>(<span>self, size)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></b></code>:
+<ul class="hlist">
+<li><code><a title="mip.graph.Plot.color" href="#mip.graph.Plot.color">color</a></code></li>
+<li><code><a title="mip.graph.Plot.create_drawings" href="#mip.graph.Plot.create_drawings">create_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.draw" href="#mip.graph.Plot.draw">draw</a></code></li>
+<li><code><a title="mip.graph.Plot.funcx" href="#mip.graph.Plot.funcx">funcx</a></code></li>
+<li><code><a title="mip.graph.Plot.funcy" href="#mip.graph.Plot.funcy">funcy</a></code></li>
+<li><code><a title="mip.graph.Plot.get_drawings" href="#mip.graph.Plot.get_drawings">get_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.get_group" href="#mip.graph.Plot.get_group">get_group</a></code></li>
+<li><code><a title="mip.graph.Plot.get_px_bounds" href="#mip.graph.Plot.get_px_bounds">get_px_bounds</a></code></li>
+<li><code><a title="mip.graph.Plot.iterate_points" href="#mip.graph.Plot.iterate_points">iterate_points</a></code></li>
+<li><code><a title="mip.graph.Plot.params" href="#mip.graph.Plot.params">params</a></code></li>
+<li><code><a title="mip.graph.Plot.points" href="#mip.graph.Plot.points">points</a></code></li>
+<li><code><a title="mip.graph.Plot.unproject" href="#mip.graph.Plot.unproject">unproject</a></code></li>
+<li><code><a title="mip.graph.Plot.update" href="#mip.graph.Plot.update">update</a></code></li>
+<li><code><a title="mip.graph.Plot.x_axis" href="#mip.graph.Plot.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.x_px" href="#mip.graph.Plot.x_px">x_px</a></code></li>
+<li><code><a title="mip.graph.Plot.y_axis" href="#mip.graph.Plot.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.y_px" href="#mip.graph.Plot.y_px">y_px</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="mip.graph.MeshStemPlot"><code class="flex name class">
+<span>class <span class="ident">MeshStemPlot</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MeshStemPlot uses the MeshLinePlot class to draw a stem plot. The data
+provided is graphed from origin to the data point.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="mip.graph.MeshLinePlot" href="#mip.graph.MeshLinePlot">MeshLinePlot</a></li>
+<li><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.graph.MeshStemPlot.plot_mesh"><code class="name flex">
+<span>def <span class="ident">plot_mesh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="mip.graph.MeshLinePlot" href="#mip.graph.MeshLinePlot">MeshLinePlot</a></b></code>:
+<ul class="hlist">
+<li><code><a title="mip.graph.MeshLinePlot.color" href="#mip.graph.Plot.color">color</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.create_drawings" href="#mip.graph.Plot.create_drawings">create_drawings</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.draw" href="#mip.graph.Plot.draw">draw</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.funcx" href="#mip.graph.Plot.funcx">funcx</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.funcy" href="#mip.graph.Plot.funcy">funcy</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.get_drawings" href="#mip.graph.Plot.get_drawings">get_drawings</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.get_group" href="#mip.graph.Plot.get_group">get_group</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.get_px_bounds" href="#mip.graph.Plot.get_px_bounds">get_px_bounds</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.iterate_points" href="#mip.graph.Plot.iterate_points">iterate_points</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.mode" href="#mip.graph.MeshLinePlot.mode">mode</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.params" href="#mip.graph.Plot.params">params</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.points" href="#mip.graph.Plot.points">points</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.unproject" href="#mip.graph.Plot.unproject">unproject</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.update" href="#mip.graph.Plot.update">update</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.x_axis" href="#mip.graph.Plot.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.x_px" href="#mip.graph.Plot.x_px">x_px</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.y_axis" href="#mip.graph.Plot.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.y_px" href="#mip.graph.Plot.y_px">y_px</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="mip.graph.Plot"><code class="flex name class">
+<span>class <span class="ident">Plot</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot class, see module documentation for more information.</p>
+<p>:Events:
+<code>on_clear_plot</code>
+Fired before a plot updates the display and lets the fbo know that
+it should clear the old drawings.</p>
+<div class="admonition versionadded">
+<p class="admonition-title">Added in version:&ensp;0.4</p>
+</div></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>mip.graph.BarPlot</li>
+<li><a title="mip.graph.ContourPlot" href="#mip.graph.ContourPlot">ContourPlot</a></li>
+<li><a title="mip.graph.LinePlot" href="#mip.graph.LinePlot">LinePlot</a></li>
+<li><a title="mip.graph.MeshLinePlot" href="#mip.graph.MeshLinePlot">MeshLinePlot</a></li>
+<li><a title="mip.graph.SmoothLinePlot" href="#mip.graph.SmoothLinePlot">SmoothLinePlot</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.graph.Plot.color"><code class="name">var <span class="ident">color</span></code></dt>
+<dd>
+<div class="desc"><p>Color of the plot.</p></div>
+</dd>
+<dt id="mip.graph.Plot.params"><code class="name">var <span class="ident">params</span></code></dt>
+<dd>
+<div class="desc"><p>DictProperty(defaultvalue=0, rebind=False, **kw)
+Property that represents a dict.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: dict, defaults to {}
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        See :class:&lt;code&gt;ObjectProperty&lt;/code&gt; for details.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! warning "Warning"
+    Similar to :class:&lt;code&gt;ListProperty&lt;/code&gt;, when assigning a dict to a
+    :class:&lt;code&gt;DictProperty&lt;/code&gt;, the dict stored in the property is a shallow copy of the
+    dict and not the original dict. See :class:&lt;code&gt;ListProperty&lt;/code&gt; for details.
+</code></pre></div>
+</dd>
+<dt id="mip.graph.Plot.points"><code class="name">var <span class="ident">points</span></code></dt>
+<dd>
+<div class="desc"><p>List of (x, y) points to be displayed in the plot.</p>
+<p>The elements of points are 2-tuples, (x, y). The points are displayed
+based on the mode setting.</p>
+<p>:data:<code>points</code> is a :class:<code>~kivy.properties.ListProperty</code>, defaults to
+[].</p></div>
+</dd>
+<dt id="mip.graph.Plot.x_axis"><code class="name">var <span class="ident">x_axis</span></code></dt>
+<dd>
+<div class="desc"><p>Index of the X axis to use, defaults to 0</p></div>
+</dd>
+<dt id="mip.graph.Plot.y_axis"><code class="name">var <span class="ident">y_axis</span></code></dt>
+<dd>
+<div class="desc"><p>Index of the Y axis to use, defaults to 0</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.graph.Plot.create_drawings"><code class="name flex">
+<span>def <span class="ident">create_drawings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>called once to create all the canvas instructions needed for the
+plot</p></div>
+</dd>
+<dt id="mip.graph.Plot.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, *largs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>draw the plot according to the params. It dispatches on_clear_plot
+so derived classes should call super before updating.</p></div>
+</dd>
+<dt id="mip.graph.Plot.funcx"><code class="name flex">
+<span>def <span class="ident">funcx</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a function that convert or not the X value according to plot
+prameters</p></div>
+</dd>
+<dt id="mip.graph.Plot.funcy"><code class="name flex">
+<span>def <span class="ident">funcy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a function that convert or not the Y value according to plot
+prameters</p></div>
+</dd>
+<dt id="mip.graph.Plot.get_drawings"><code class="name flex">
+<span>def <span class="ident">get_drawings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a list of canvas instructions that will be added to the
+graph's canvas.</p></div>
+</dd>
+<dt id="mip.graph.Plot.get_group"><code class="name flex">
+<span>def <span class="ident">get_group</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a string which is unique and is the group name given to all
+the instructions returned by _get_drawings. Graph uses this to remove
+these instructions when needed.</p></div>
+</dd>
+<dt id="mip.graph.Plot.get_px_bounds"><code class="name flex">
+<span>def <span class="ident">get_px_bounds</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a dict containing the pixels bounds from the plot parameters.
+The returned values are relative to the graph pos.</p></div>
+</dd>
+<dt id="mip.graph.Plot.iterate_points"><code class="name flex">
+<span>def <span class="ident">iterate_points</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Iterate on all the points adjusted to the graph settings</p></div>
+</dd>
+<dt id="mip.graph.Plot.on_clear_plot"><code class="name flex">
+<span>def <span class="ident">on_clear_plot</span></span>(<span>self, *largs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.Plot.unproject"><code class="name flex">
+<span>def <span class="ident">unproject</span></span>(<span>self, x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a function that unproject a pixel to a X/Y value on the plot
+(works only for linear, not log yet). <code>x</code>, <code>y</code>, is relative to the
+graph pos, so the graph's pos needs to be subtracted from x, y before
+passing it in.</p></div>
+</dd>
+<dt id="mip.graph.Plot.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, xlog, xmin, xmax, ylog, ymin, ymax, size)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called by graph whenever any of the parameters
+change. The plot should be recalculated then.
+log, min, max indicate the axis settings.
+size a 4-tuple describing the bounding box in which we can draw
+graphs, it's (x0, y0, x1, y1), which correspond with the bottom left
+and top right corner locations, respectively.</p></div>
+</dd>
+<dt id="mip.graph.Plot.x_px"><code class="name flex">
+<span>def <span class="ident">x_px</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a function that convert the X value of the graph to the
+pixel coordinate on the plot, according to the plot settings and axis
+settings. It's relative to the graph pos.</p></div>
+</dd>
+<dt id="mip.graph.Plot.y_px"><code class="name flex">
+<span>def <span class="ident">y_px</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a function that convert the Y value of the graph to the
+pixel coordinate on the plot, according to the plot settings and axis
+settings. The returned value is relative to the graph pos.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.graph.SmoothLinePlot"><code class="flex name class">
+<span>class <span class="ident">SmoothLinePlot</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Smooth Plot class, see module documentation for more information.
+This plot use a specific Fragment shader for a custom anti aliasing.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="mip.graph.SmoothLinePlot.GRADIENT_DATA"><code class="name">var <span class="ident">GRADIENT_DATA</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.graph.SmoothLinePlot.SMOOTH_FS"><code class="name">var <span class="ident">SMOOTH_FS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></b></code>:
+<ul class="hlist">
+<li><code><a title="mip.graph.Plot.color" href="#mip.graph.Plot.color">color</a></code></li>
+<li><code><a title="mip.graph.Plot.create_drawings" href="#mip.graph.Plot.create_drawings">create_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.draw" href="#mip.graph.Plot.draw">draw</a></code></li>
+<li><code><a title="mip.graph.Plot.funcx" href="#mip.graph.Plot.funcx">funcx</a></code></li>
+<li><code><a title="mip.graph.Plot.funcy" href="#mip.graph.Plot.funcy">funcy</a></code></li>
+<li><code><a title="mip.graph.Plot.get_drawings" href="#mip.graph.Plot.get_drawings">get_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.get_group" href="#mip.graph.Plot.get_group">get_group</a></code></li>
+<li><code><a title="mip.graph.Plot.get_px_bounds" href="#mip.graph.Plot.get_px_bounds">get_px_bounds</a></code></li>
+<li><code><a title="mip.graph.Plot.iterate_points" href="#mip.graph.Plot.iterate_points">iterate_points</a></code></li>
+<li><code><a title="mip.graph.Plot.params" href="#mip.graph.Plot.params">params</a></code></li>
+<li><code><a title="mip.graph.Plot.points" href="#mip.graph.Plot.points">points</a></code></li>
+<li><code><a title="mip.graph.Plot.unproject" href="#mip.graph.Plot.unproject">unproject</a></code></li>
+<li><code><a title="mip.graph.Plot.update" href="#mip.graph.Plot.update">update</a></code></li>
+<li><code><a title="mip.graph.Plot.x_axis" href="#mip.graph.Plot.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.x_px" href="#mip.graph.Plot.x_px">x_px</a></code></li>
+<li><code><a title="mip.graph.Plot.y_axis" href="#mip.graph.Plot.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.y_px" href="#mip.graph.Plot.y_px">y_px</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#graph">Graph</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="mip" href="../index.html">mip</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="mip.graph.ContourPlot" href="#mip.graph.ContourPlot">ContourPlot</a></code></h4>
+<ul class="">
+<li><code><a title="mip.graph.ContourPlot.data" href="#mip.graph.ContourPlot.data">data</a></code></li>
+<li><code><a title="mip.graph.ContourPlot.xrange" href="#mip.graph.ContourPlot.xrange">xrange</a></code></li>
+<li><code><a title="mip.graph.ContourPlot.yrange" href="#mip.graph.ContourPlot.yrange">yrange</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.graph.Graph" href="#mip.graph.Graph">Graph</a></code></h4>
+<ul class="two-column">
+<li><code><a title="mip.graph.Graph.add_plot" href="#mip.graph.Graph.add_plot">add_plot</a></code></li>
+<li><code><a title="mip.graph.Graph.add_widget" href="#mip.graph.Graph.add_widget">add_widget</a></code></li>
+<li><code><a title="mip.graph.Graph.add_x_axis" href="#mip.graph.Graph.add_x_axis">add_x_axis</a></code></li>
+<li><code><a title="mip.graph.Graph.add_y_axis" href="#mip.graph.Graph.add_y_axis">add_y_axis</a></code></li>
+<li><code><a title="mip.graph.Graph.background_color" href="#mip.graph.Graph.background_color">background_color</a></code></li>
+<li><code><a title="mip.graph.Graph.border_color" href="#mip.graph.Graph.border_color">border_color</a></code></li>
+<li><code><a title="mip.graph.Graph.collide_plot" href="#mip.graph.Graph.collide_plot">collide_plot</a></code></li>
+<li><code><a title="mip.graph.Graph.draw_border" href="#mip.graph.Graph.draw_border">draw_border</a></code></li>
+<li><code><a title="mip.graph.Graph.font_size" href="#mip.graph.Graph.font_size">font_size</a></code></li>
+<li><code><a title="mip.graph.Graph.get_x_axis" href="#mip.graph.Graph.get_x_axis">get_x_axis</a></code></li>
+<li><code><a title="mip.graph.Graph.get_y_axis" href="#mip.graph.Graph.get_y_axis">get_y_axis</a></code></li>
+<li><code><a title="mip.graph.Graph.label_options" href="#mip.graph.Graph.label_options">label_options</a></code></li>
+<li><code><a title="mip.graph.Graph.padding" href="#mip.graph.Graph.padding">padding</a></code></li>
+<li><code><a title="mip.graph.Graph.plots" href="#mip.graph.Graph.plots">plots</a></code></li>
+<li><code><a title="mip.graph.Graph.precision" href="#mip.graph.Graph.precision">precision</a></code></li>
+<li><code><a title="mip.graph.Graph.remove_plot" href="#mip.graph.Graph.remove_plot">remove_plot</a></code></li>
+<li><code><a title="mip.graph.Graph.remove_widget" href="#mip.graph.Graph.remove_widget">remove_widget</a></code></li>
+<li><code><a title="mip.graph.Graph.tick_color" href="#mip.graph.Graph.tick_color">tick_color</a></code></li>
+<li><code><a title="mip.graph.Graph.to_data" href="#mip.graph.Graph.to_data">to_data</a></code></li>
+<li><code><a title="mip.graph.Graph.view_pos" href="#mip.graph.Graph.view_pos">view_pos</a></code></li>
+<li><code><a title="mip.graph.Graph.view_size" href="#mip.graph.Graph.view_size">view_size</a></code></li>
+<li><code><a title="mip.graph.Graph.x_axis" href="#mip.graph.Graph.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.Graph.x_grid" href="#mip.graph.Graph.x_grid">x_grid</a></code></li>
+<li><code><a title="mip.graph.Graph.x_grid_label" href="#mip.graph.Graph.x_grid_label">x_grid_label</a></code></li>
+<li><code><a title="mip.graph.Graph.x_ticks_angle" href="#mip.graph.Graph.x_ticks_angle">x_ticks_angle</a></code></li>
+<li><code><a title="mip.graph.Graph.x_ticks_major" href="#mip.graph.Graph.x_ticks_major">x_ticks_major</a></code></li>
+<li><code><a title="mip.graph.Graph.x_ticks_minor" href="#mip.graph.Graph.x_ticks_minor">x_ticks_minor</a></code></li>
+<li><code><a title="mip.graph.Graph.xlabel" href="#mip.graph.Graph.xlabel">xlabel</a></code></li>
+<li><code><a title="mip.graph.Graph.xlog" href="#mip.graph.Graph.xlog">xlog</a></code></li>
+<li><code><a title="mip.graph.Graph.xmax" href="#mip.graph.Graph.xmax">xmax</a></code></li>
+<li><code><a title="mip.graph.Graph.xmin" href="#mip.graph.Graph.xmin">xmin</a></code></li>
+<li><code><a title="mip.graph.Graph.y_axis" href="#mip.graph.Graph.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.Graph.y_grid" href="#mip.graph.Graph.y_grid">y_grid</a></code></li>
+<li><code><a title="mip.graph.Graph.y_grid_label" href="#mip.graph.Graph.y_grid_label">y_grid_label</a></code></li>
+<li><code><a title="mip.graph.Graph.y_ticks_major" href="#mip.graph.Graph.y_ticks_major">y_ticks_major</a></code></li>
+<li><code><a title="mip.graph.Graph.y_ticks_minor" href="#mip.graph.Graph.y_ticks_minor">y_ticks_minor</a></code></li>
+<li><code><a title="mip.graph.Graph.ylabel" href="#mip.graph.Graph.ylabel">ylabel</a></code></li>
+<li><code><a title="mip.graph.Graph.ylog" href="#mip.graph.Graph.ylog">ylog</a></code></li>
+<li><code><a title="mip.graph.Graph.ymax" href="#mip.graph.Graph.ymax">ymax</a></code></li>
+<li><code><a title="mip.graph.Graph.ymin" href="#mip.graph.Graph.ymin">ymin</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.graph.LinePlot" href="#mip.graph.LinePlot">LinePlot</a></code></h4>
+<ul class="">
+<li><code><a title="mip.graph.LinePlot.line_width" href="#mip.graph.LinePlot.line_width">line_width</a></code></li>
+<li><code><a title="mip.graph.LinePlot.on_line_width" href="#mip.graph.LinePlot.on_line_width">on_line_width</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.graph.MeshLinePlot" href="#mip.graph.MeshLinePlot">MeshLinePlot</a></code></h4>
+<ul class="">
+<li><code><a title="mip.graph.MeshLinePlot.mode" href="#mip.graph.MeshLinePlot.mode">mode</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.plot_mesh" href="#mip.graph.MeshLinePlot.plot_mesh">plot_mesh</a></code></li>
+<li><code><a title="mip.graph.MeshLinePlot.set_mesh_size" href="#mip.graph.MeshLinePlot.set_mesh_size">set_mesh_size</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.graph.MeshStemPlot" href="#mip.graph.MeshStemPlot">MeshStemPlot</a></code></h4>
+<ul class="">
+<li><code><a title="mip.graph.MeshStemPlot.plot_mesh" href="#mip.graph.MeshStemPlot.plot_mesh">plot_mesh</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.graph.Plot" href="#mip.graph.Plot">Plot</a></code></h4>
+<ul class="two-column">
+<li><code><a title="mip.graph.Plot.color" href="#mip.graph.Plot.color">color</a></code></li>
+<li><code><a title="mip.graph.Plot.create_drawings" href="#mip.graph.Plot.create_drawings">create_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.draw" href="#mip.graph.Plot.draw">draw</a></code></li>
+<li><code><a title="mip.graph.Plot.funcx" href="#mip.graph.Plot.funcx">funcx</a></code></li>
+<li><code><a title="mip.graph.Plot.funcy" href="#mip.graph.Plot.funcy">funcy</a></code></li>
+<li><code><a title="mip.graph.Plot.get_drawings" href="#mip.graph.Plot.get_drawings">get_drawings</a></code></li>
+<li><code><a title="mip.graph.Plot.get_group" href="#mip.graph.Plot.get_group">get_group</a></code></li>
+<li><code><a title="mip.graph.Plot.get_px_bounds" href="#mip.graph.Plot.get_px_bounds">get_px_bounds</a></code></li>
+<li><code><a title="mip.graph.Plot.iterate_points" href="#mip.graph.Plot.iterate_points">iterate_points</a></code></li>
+<li><code><a title="mip.graph.Plot.on_clear_plot" href="#mip.graph.Plot.on_clear_plot">on_clear_plot</a></code></li>
+<li><code><a title="mip.graph.Plot.params" href="#mip.graph.Plot.params">params</a></code></li>
+<li><code><a title="mip.graph.Plot.points" href="#mip.graph.Plot.points">points</a></code></li>
+<li><code><a title="mip.graph.Plot.unproject" href="#mip.graph.Plot.unproject">unproject</a></code></li>
+<li><code><a title="mip.graph.Plot.update" href="#mip.graph.Plot.update">update</a></code></li>
+<li><code><a title="mip.graph.Plot.x_axis" href="#mip.graph.Plot.x_axis">x_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.x_px" href="#mip.graph.Plot.x_px">x_px</a></code></li>
+<li><code><a title="mip.graph.Plot.y_axis" href="#mip.graph.Plot.y_axis">y_axis</a></code></li>
+<li><code><a title="mip.graph.Plot.y_px" href="#mip.graph.Plot.y_px">y_px</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.graph.SmoothLinePlot" href="#mip.graph.SmoothLinePlot">SmoothLinePlot</a></code></h4>
+<ul class="">
+<li><code><a title="mip.graph.SmoothLinePlot.GRADIENT_DATA" href="#mip.graph.SmoothLinePlot.GRADIENT_DATA">GRADIENT_DATA</a></code></li>
+<li><code><a title="mip.graph.SmoothLinePlot.SMOOTH_FS" href="#mip.graph.SmoothLinePlot.SMOOTH_FS">SMOOTH_FS</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

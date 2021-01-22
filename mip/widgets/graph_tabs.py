@@ -4,18 +4,18 @@ from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import BooleanProperty, ObjectProperty, NumericProperty
 import re
-from kivy.garden.Graph import LinePlot
+from mip.graph import LinePlot
 from kivy.uix.tabbedpanel import TabbedPanelHeader
 from decimal import Decimal
 from math import pow, isclose
 
-class GraphTabs(TabbedPanel):
+class GraphManager(TabbedPanel):
     data_sample_rate = NumericProperty(0)
     temperature_sample_rate = NumericProperty(0)
     num_samples_per_second = NumericProperty(1)
 
     def __init__(self, **kwargs):
-        super(GraphTabs, self).__init__(**kwargs)
+        super(GraphManager, self).__init__(**kwargs)
         self.n_points_per_update = 10
         self.tabs_dict = {
             'Capacitance': CapacitancePlot(),

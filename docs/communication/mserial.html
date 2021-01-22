@@ -31,18 +31,15 @@
 <dl>
 <dt id="mip.communication.mserial.BOARD_CONNECTED"><code class="name">var <span class="ident">BOARD_CONNECTED</span></code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Start streaming command.</p></div>
+<div class="desc"><p>Board connected status.</p></div>
 </dd>
 <dt id="mip.communication.mserial.BOARD_DISCONNECTED"><code class="name">var <span class="ident">BOARD_DISCONNECTED</span></code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Board found but not connected.</p></div>
+<div class="desc"><p>Board disconnected status.</p></div>
 </dd>
 <dt id="mip.communication.mserial.BOARD_FOUND"><code class="name">var <span class="ident">BOARD_FOUND</span></code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Board connected.</p></div>
+<div class="desc"><p>Board found but not connected status.</p></div>
 </dd>
 <dt id="mip.communication.mserial.CONN_REQUEST_CMD"><code class="name">var <span class="ident">CONN_REQUEST_CMD</span></code></dt>
 <dd>
@@ -143,12 +140,10 @@
 </dd>
 <dt id="mip.communication.mserial.MIPSerial"><code class="flex name class">
 <span>class <span class="ident">MIPSerial</span></span>
+<span>(</span><span>baudrate=115200)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>EventDispatcher(**kwargs)
-Generic event dispatcher interface.</p>
-<pre><code>See the module docstring for usage.
-</code></pre></div>
+<div class="desc"><p>Main class for serial communication.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>kivy._event.EventDispatcher</li>
@@ -158,29 +153,10 @@ Generic event dispatcher interface.</p>
 <dl>
 <dt id="mip.communication.mserial.MIPSerial.battery_voltage"><code class="name">var <span class="ident">battery_voltage</span></code></dt>
 <dd>
-<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
-Property that represents a numeric value.</p>
-<pre><code>:Parameters:
-    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
-        Specifies the default value of the property.
-
-&gt;&gt;&gt; wid = Widget()
-&gt;&gt;&gt; wid.x = 42
-&gt;&gt;&gt; print(wid.x)
-42
-&gt;&gt;&gt; wid.x = "plop"
- Traceback (most recent call last):
-   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-   File "properties.pyx", line 93, in kivy.properties.Property.__set__
-   File "properties.pyx", line 111, in kivy.properties.Property.set
-   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
- ValueError: NumericProperty accept only int/float
-
-!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
-    NumericProperty can now accept custom text and tuple value to indicate a
-    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
-    'pt').
-</code></pre></div>
+<div class="desc"><p>NumericProperty holding the last battery voltage read
+from the device. It is possible to bind this property
+to all the widgets that need to show the current
+battery status of the device.</p></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.configured_sample_rate"><code class="name">var <span class="ident">configured_sample_rate</span></code></dt>
 <dd>
@@ -211,29 +187,9 @@ Property that represents a string value.</p>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.connected"><code class="name">var <span class="ident">connected</span></code></dt>
 <dd>
-<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
-Property that represents a numeric value.</p>
-<pre><code>:Parameters:
-    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
-        Specifies the default value of the property.
-
-&gt;&gt;&gt; wid = Widget()
-&gt;&gt;&gt; wid.x = 42
-&gt;&gt;&gt; print(wid.x)
-42
-&gt;&gt;&gt; wid.x = "plop"
- Traceback (most recent call last):
-   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-   File "properties.pyx", line 93, in kivy.properties.Property.__set__
-   File "properties.pyx", line 111, in kivy.properties.Property.set
-   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
- ValueError: NumericProperty accept only int/float
-
-!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
-    NumericProperty can now accept custom text and tuple value to indicate a
-    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
-    'pt').
-</code></pre></div>
+<div class="desc"><p>NumericProperty holding the current board connection status.
+It is possible to bind this property to all the widgets that
+need to detect any change in the board connection status.</p></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.data_sample_rate"><code class="name">var <span class="ident">data_sample_rate</span></code></dt>
 <dd>
@@ -338,7 +294,14 @@ Property that represents a numeric value.</p>
 <span>def <span class="ident">add_callback</span></span>(<span>self, callback)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Append callback to the list of callbacks that
+are called upon the complete reception of a
+data packet from the device.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>callback</code></strong></dt>
+<dd>the callback to be appended to the list</dd>
+</dl></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.check_mip_port"><code class="name flex">
 <span>def <span class="ident">check_mip_port</span></span>(<span>self, port_name)</span>
@@ -423,7 +386,7 @@ equation stated in the SHT85 datasheet.
 </code></dt>
 <dd>
 <div class="desc"><p>!
-@brief Find the serial port to which the device is connected.</p>
+Find the serial port to which the device is connected.</p>
 <p>This function scans all the available serial ports until
 the one to which the device is connected is found. Once
 found, it attempts to connect to it.</p></div>
