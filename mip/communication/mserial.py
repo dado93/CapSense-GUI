@@ -1,5 +1,3 @@
-import os
-os.environ["KIVY_NO_ARGS"] = "1"
 from datetime import datetime
 import serial
 import serial.tools.list_ports as list_ports
@@ -14,22 +12,21 @@ from loguru import logger
 #                 Constants                 #
 #############################################
 
-# Connection status
-
-"""!
-@brief Board disconnected.
-"""
 BOARD_DISCONNECTED = 0 
-"""!
-@brief Board found but not connected.
 """
-BOARD_FOUND = 1
-"""!
-@brief Board connected.
+Board disconnected status.
 """
-BOARD_CONNECTED = 2
 
-# Commands
+BOARD_FOUND = 1
+"""
+Board found but not connected status.
+"""
+
+BOARD_CONNECTED = 2
+"""
+Board connected status.
+"""
+
 """!
 @brief Start streaming command.
 """
@@ -109,9 +106,27 @@ class Singleton(type):
         return cls._instances[cls]
 
 class MIPSerial(EventDispatcher, metaclass=Singleton):
+    """
+    Main class for serial communication.
+    """
+
     connected = NumericProperty(defaultvalue=BOARD_DISCONNECTED)
+    """
+    NumericProperty holding the current board connection status.
+    It is possible to bind this property to all the widgets that
+    need to detect any change in the board connection status.
+    """
+
     message_string = StringProperty('')
+
     battery_voltage = NumericProperty(defaultvalue=0.0)
+    """
+    NumericProperty holding the last battery voltage read
+    from the device. It is possible to bind this property
+    to all the widgets that need to show the current 
+    battery status of the device.
+    """
+
     data_sample_rate = NumericProperty(defaultvalue=0.0)
     temperature_sample_rate = NumericProperty(defaultvalue=0.0)
     is_streaming = BooleanProperty(False)
@@ -120,9 +135,9 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
     configured_temp_rh_sample_rate = StringProperty('')
     configured_temp_rh_sample_rep = StringProperty('')
 
-    def __init__(self):
+    def __init__(self, baudrate=115200):
         self.port_name = ""
-        self.baudrate = 115200
+        self.baudrate = baudrate
         self.read_state = 0
         self.packet_type = ''
         self.voltage_received_packet_time = 0
@@ -137,12 +152,20 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         find_port_thread.start()
 
     def add_callback(self, callback):
+        """
+        Append callback to the list of callbacks that 
+        are called upon the complete reception of a 
+        data packet from the device.
+
+        Args:
+            callback: the callback to be appended to the list
+        """
         if (callback not in self.callbacks):
             self.callbacks.append(callback)
 
     def find_port(self):
         """!
-        @brief Find the serial port to which the device is connected.
+        Find the serial port to which the device is connected.
 
         This function scans all the available serial ports until
         the one to which the device is connected is found. Once

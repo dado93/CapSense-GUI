@@ -1,14 +1,14 @@
 #:kivy 1.11
-#:import Toolbar toolbar
-#:import BottomBar bottom_bar 
-#:import GraphTabs graph_tabs 
+#:import Toolbar mip.widgets.toolbars
+#:import BottomBar mip.widgets.toolbars 
+#:import GraphManager mip.widgets.graph_tabs 
 
 <ContainerLayout>:
     toolbar: _toolbar
     bottom_bar: _bottom_bar
     progress_bar: _progress_bar
     top_bar: _top_bar
-    graph_tabs: _graph_tabs
+    graph_tabs: _graph_manager
     orientation: 'vertical'
     spacing: 10
     padding: 20
@@ -22,8 +22,8 @@
             id: _toolbar
             disabled: False
             size_hint: 0.2, 1.0
-        GraphTabs:
-            id: _graph_tabs
+        GraphManager:
+            id: _graph_manager
     ProgressBar:
         id: _progress_bar
         size_hint_y: 0.01
