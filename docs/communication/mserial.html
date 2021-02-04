@@ -61,6 +61,10 @@
 <div class="desc"><p>!
 @brief Sample rate packet tail byte.</p></div>
 </dd>
+<dt id="mip.communication.mserial.SAMPLE_RATE_PACKET_TAIL"><code class="name">var <span class="ident">SAMPLE_RATE_PACKET_TAIL</span></code></dt>
+<dd>
+<div class="desc"><p>Capdac factor for capacitance conversion</p></div>
+</dd>
 <dt id="mip.communication.mserial.START_STREAMING_CMD"><code class="name">var <span class="ident">START_STREAMING_CMD</span></code></dt>
 <dd>
 <div class="desc"><p>!
@@ -307,8 +311,7 @@ data packet from the device.</p>
 <span>def <span class="ident">check_mip_port</span></span>(<span>self, port_name)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Check if the port is the correct one.</p>
+<div class="desc"><p>Check if the port is the correct one.</p>
 <p>This function checks whether the port passed in as
 parameter correspons to a proper device.
 @param port_name name of the port to be checked.
@@ -345,15 +348,20 @@ divided by 100.
 <span>def <span class="ident">convert_capacitance</span></span>(<span>self, capacitance, capdac)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Convert raw bytes and capdac value into capacitance.</p>
+<div class="desc"><p>Convert raw bytes and capdac value into capacitance.</p>
 <p>This function converts the bytes passed in as
 parameter to a proper capacitance value based
 on capdac settings. The capacitance value is
-computed given the equation stated in the FDC1004Q datasheet.
-@param capacitance capacitance bytes
-@param capdac capacitance channel capdac value
-@return computed capacitance value</p></div>
+computed given the equation stated in the FDC1004Q datasheet.</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>capacitance 3 bytes of capacitance data</li>
+<li>capdac single byte capdac value</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<ul>
+<li>computed capacitance value</li>
+</ul></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.convert_humidity"><code class="name flex">
 <span>def <span class="ident">convert_humidity</span></span>(<span>self, raw_humidity)</span>
@@ -395,8 +403,7 @@ found, it attempts to connect to it.</p></div>
 <span>def <span class="ident">get_sample_rate_cmd</span></span>(<span>self, sample_rate)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Get command to set sample rate.</p>
+<div class="desc"><p>Get command to set sample rate.</p>
 <p>This function returns the correct command to send to the
 board to set the proper sample rate.</p></div>
 </dd>
@@ -510,9 +517,16 @@ to the board and stops the running thread.</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>type(object_or_name, bases, dict)
-type(object) -&gt; the object's type
-type(name, bases, dict) -&gt; a new type</p></div>
+<div class="desc"><p>This class allows to implement the Singleton pattern.
+Using the Singleton class as metaclass allows to implement
+the Singleton pattern in each class.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class CustomSingleton(metaclass=Singleton):
+... pass
+</code></pre>
+<p>This way, only one instance is created of the class, and
+every time the class is instantiated in an object, the
+same instance is returned.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>builtins.type</li>
@@ -541,6 +555,7 @@ type(name, bases, dict) -&gt; a new type</p></div>
 <li><code><a title="mip.communication.mserial.DATA_PACKET_HEADER" href="#mip.communication.mserial.DATA_PACKET_HEADER">DATA_PACKET_HEADER</a></code></li>
 <li><code><a title="mip.communication.mserial.DATA_PACKET_TAIL" href="#mip.communication.mserial.DATA_PACKET_TAIL">DATA_PACKET_TAIL</a></code></li>
 <li><code><a title="mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER" href="#mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER">SAMPLE_RATE_PACKET_HEADER</a></code></li>
+<li><code><a title="mip.communication.mserial.SAMPLE_RATE_PACKET_TAIL" href="#mip.communication.mserial.SAMPLE_RATE_PACKET_TAIL">SAMPLE_RATE_PACKET_TAIL</a></code></li>
 <li><code><a title="mip.communication.mserial.START_STREAMING_CMD" href="#mip.communication.mserial.START_STREAMING_CMD">START_STREAMING_CMD</a></code></li>
 <li><code><a title="mip.communication.mserial.STOP_STREAMING_CMD" href="#mip.communication.mserial.STOP_STREAMING_CMD">STOP_STREAMING_CMD</a></code></li>
 <li><code><a title="mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD" href="#mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD">TEMP_RH_SETTINGS_SET_CMD</a></code></li>

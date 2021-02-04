@@ -55,7 +55,6 @@ class ColoredLabel(Label):
         self.rect.size = self.size
 
 
-
 class Toolbar(BoxLayout):
     """
     """
@@ -77,7 +76,7 @@ class Toolbar(BoxLayout):
         """
         """
         self.message_string = "Sample Rate Configuration"
-        self.popup = dialogs.PopupRetrieval()
+        self.popup = dialogs.SampleRateDialog()
         self.popup.open()
     
     def temp_rh_dialog(self):
@@ -126,18 +125,18 @@ class TopBar(BoxLayout):
         self.streaming_button.disabled = (not enabled)
         self.battery_label.disabled = (not enabled)
         if (not enabled):
-            self.battery_label.update_color(0.6,0.6,0.6)
+            self.battery_label.update_color(0.6,0.6,0.6, 1.0)
             self.battery_label.color = (1,1,1,1)
             self.battery_label.text = f'Battery: '
     
     def update_battery_level(self, instance, value):
         self.battery_label.text = f'Battery: {value:.1f}'
         if (value >= 3.7):
-            self.battery_label.update_color(0,1,0)
+            self.battery_label.update_color(0,1,0,1)
             self.battery_label.color = (0,0,0,1)
         elif (value >= 3.3 and value < 3.7):
-            self.battery_label.update_color(1,1,0)
+            self.battery_label.update_color(1,1,0,1)
             self.battery_label.color = (0,0,0,1)
         else:
-            self.battery_label.update_color(1,0,0)
+            self.battery_label.update_color(1,0,0,1)
             self.battery_label.color = (1,1,1,1)

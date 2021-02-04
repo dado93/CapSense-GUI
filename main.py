@@ -16,7 +16,6 @@ Builder.load_file('mip/widgets/dialogs.kv')
 Builder.load_file('mip/widgets/graph_tabs.kv')
 Builder.load_file('mip/widgets/container.kv')
 
-
 class MIPBoard(App):
     def build(self):
         return ContainerLayout()

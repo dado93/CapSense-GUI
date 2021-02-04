@@ -37,8 +37,10 @@ class GraphManager(TabbedPanel):
         print(self.content.children)
 
     def update_plots(self, packet):
-        for tab in self.tabs_dict.keys():
-            self.tabs_dict[tab].update_plot(packet)
+        self.tabs_dict['Temperature'].update_plot(packet.get_temperature(), 
+                                            valid_data=packet.has_temperature_data())
+        self.tabs_dict['Humidity'].update_plot(packet.get_humidity(),
+                                            valid_data=packet.has_temperature_data())
 
 class GraphPanelItem(BoxLayout):
     graph = ObjectProperty(None)
@@ -52,8 +54,8 @@ class GraphPanelItem(BoxLayout):
     autoscale = BooleanProperty(False)
 
     def __init__(self, **kwargs):
-        self.n_seconds = self.xmin * (-1)
-        self.n_points_per_update = 10
+        self.max_seconds = self.xmin * (-1)
+        self.n_points_per_update = self.num_samples_per_second
         self.temp_points = []
         super(GraphPanelItem, self).__init__(**kwargs)
 
@@ -70,12 +72,12 @@ class GraphPanelItem(BoxLayout):
         self.graph.ymin = self.ymin
         self.graph.ymax = self.ymax
         self.graph.y_grid_label = True
-        self.n_points = self.n_seconds * self.num_samples_per_second  # Number of points to plot
-        self.time_between_points = (self.n_seconds)/float(self.n_points)
+        self.n_points = self.max_seconds * self.num_samples_per_second  # Number of points to plot
+        self.time_between_points = (self.max_seconds)/float(self.n_points)
         self.x_points = [x for x in range(-self.n_points, 0)]
         self.y_points = [0 for y in range(-self.n_points, 0)]
         for j in range(self.n_points):
-            self.x_points[j] = -self.n_seconds + j * self.time_between_points
+            self.x_points[j] = -self.max_seconds + j * self.time_between_points
         
     def on_plot_settings(self, instance, value):
         self.plot_settings.bind(n_seconds=self.setter('xmin'))
@@ -107,16 +109,40 @@ class GraphPanelItem(BoxLayout):
     def on_temperature_sample_rate(self, instance, value):
         self.plot_settings.update_temperature_sample_rate(value)
     
-    def update_plot(self, packet):
-        pass
+    def update_plot(self, value, valid_data=True):
+        self.temp_points.append(value)
+        if (len(self.temp_points) == self.n_points_per_update):
+            for val in self.temp_points:
+                self.y_points.append(self.y_points.pop(0))
+                self.y_points[-1] = val
+            self.temp_points = []
+            self.plot.points = zip(self.x_points, self.y_points)
+            if (self.autoscale):
+                # Slice only the visible part
+                if (abs(self.graph.xmin) < self.max_seconds):
+                    y_points_slice = self.y_points[(self.max_seconds-abs(self.graph.xmin)) * self.num_samples_per_second:]
+                else:
+                    y_points_slice = self.y_points
+                
+                y_min = min(y_points_slice)
+                y_max = max(y_points_slice)
+                min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(y_min, y_max, 10)
+                self.graph.ymin = min_val
+                self.graph.ymax = max_val
+                self.graph.y_ticks_major = major_ticks
+                self.graph.y_ticks_minor = minor_ticks
 
     def on_num_samples_per_second(self, instance, value):
-        self.n_points = self.n_seconds * self.num_samples_per_second  # Number of points to plot
+        self.n_points = self.max_seconds * self.num_samples_per_second  # Number of points to plot
         self.x_points = [x for x in range(-self.n_points, 0)]
         self.y_points = [0 for y in range(-self.n_points, 0)]
-        self.time_between_points = (self.n_seconds)/float(self.n_points)
+        self.time_between_points = (self.max_seconds)/float(self.n_points)
         for j in range(self.n_points):
-            self.x_points[j] = -self.n_seconds + j * self.time_between_points
+            self.x_points[j] = -self.max_seconds + j * self.time_between_points
+        if (self.num_samples_per_second < 30):
+            self.n_points_per_update = 1
+        else:
+            self.n_points_per_update = 10
 
     def fexp(self, number):
         (sign, digits, exponent) = Decimal(number).as_tuple()
@@ -168,27 +194,12 @@ class TemperaturePlot(GraphPanelItem):
         self.plot.points = zip(self.x_points, self.y_points)
         self.graph.add_plot(self.plot)
     
-    def update_plot(self, packet):
-        if (not packet.has_temperature_data()):
+    def update_plot(self, value, valid_data):
+        if (not valid_data):
             value = self.last_temperature
         else:
-            value = packet.get_temperature()
             self.last_temperature = value
-        self.temp_points.append(value)
-        if (len(self.temp_points) == self.n_points_per_update):
-            for val in self.temp_points:
-                self.y_points.append(self.y_points.pop(0))
-                self.y_points[-1] = val
-            self.temp_points = []
-            self.plot.points = zip(self.x_points, self.y_points)
-            if (self.autoscale):
-                y_min = min(self.y_points)
-                y_max = max(self.y_points)
-                min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(y_min, y_max, 10)
-                self.graph.ymin = min_val
-                self.graph.ymax = max_val
-                self.graph.y_ticks_major = major_ticks
-                self.graph.y_ticks_minor = minor_ticks
+        super(TemperaturePlot, self).update_plot(value)
 
         
     def on_num_samples_per_second(self, instance, value):
@@ -211,19 +222,12 @@ class HumidityPlot(GraphPanelItem):
         self.plot.points = zip(self.x_points, self.y_points)
         self.graph.add_plot(self.plot)
     
-    def update_plot(self, packet):
-        if (not packet.has_temperature_data()):
+    def update_plot(self, value, valid_data):
+        if (not valid_data):
             value = self.last_humidity
         else:
-            value = packet.get_humidity()
             self.last_humidity = value
-        self.temp_points.append(value)
-        if (len(self.temp_points) == self.n_points_per_update):
-            for val in self.temp_points:
-                self.y_points.append(self.y_points.pop(0))
-                self.y_points[-1] = val
-            self.temp_points = []
-            self.plot.points = zip(self.x_points, self.y_points)
+        super(HumidityPlot, self).update_plot(value)
 
 class CurrentPlot(GraphPanelItem):
     def on_graph(self, instance, value):

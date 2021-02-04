@@ -84,20 +84,14 @@ class ContainerLayout(BoxLayout):
         self.serial.bind(battery_voltage=self.top_bar.update_battery_level)
     
     def on_graph_manager(self, instance, value):
-        self.serial.bind(data_sample_rate=self.graph_tabs.setter('data_sample_rate'))
-        self.serial.bind(temperature_sample_rate=self.graph_tabs.setter('temperature_sample_rate'))
-        self.serial.bind(sample_rate_num_samples=self.graph_tabs.setter('num_samples_per_second'))
-        self.serial.add_callback(self.graph_tabs.update_plots)
-        Clock.schedule_interval(self.random_update_plots, 0.1)
-
-    def random_update_plots(self, dt):
-        val = random.uniform(0,100)
-        packet = mip.communication.mserial.DataPacket(temperature=val, has_temp_data=True)
-        self.graph_tabs.update_plots(packet)
+        self.serial.bind(data_sample_rate=self.graph_manager.setter('data_sample_rate'))
+        self.serial.bind(temperature_sample_rate=self.graph_manager.setter('temperature_sample_rate'))
+        self.serial.bind(sample_rate_num_samples=self.graph_manager.setter('num_samples_per_second'))
+        self.serial.add_callback(self.graph_manager.update_plots)
 
     def connection_event(self, instance, value):
-        """!
-        @brief Callback called on serial connection event.
+        """
+        Callback called on serial connection event.
 
         This callback is called when there is a connection event
         from the serial port. It is called when the board is

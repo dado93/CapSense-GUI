@@ -1,9 +1,9 @@
-import os
-os.environ["KIVY_NO_ARGS"] = "1"
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
+from mip.communication.mserial import MIPSerial
+import time
 
 class PopupRetrieval(Popup):
     retrieval_label = ObjectProperty(None)
