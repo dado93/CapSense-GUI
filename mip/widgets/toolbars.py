@@ -13,6 +13,8 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.graphics import Color, Rectangle
 import time
+import json
+from pathlib import Path
 
 class BottomBar(BoxLayout):
     """
@@ -64,10 +66,12 @@ class Toolbar(BoxLayout):
     message_string = StringProperty("")
     """
     """
-    average = NumericProperty()
+    save_data = BooleanProperty(False)
     """
     """
-    mode = StringProperty("")
+    data_format = StringProperty('')
+
+    data_path = StringProperty('')
 
     def __init__(self, **kwargs):
         super(Toolbar, self).__init__(**kwargs)
@@ -89,6 +93,42 @@ class Toolbar(BoxLayout):
         popup = dialogs.SDCardDialog()
         popup.open()
     
+    def export_data_dialog(self):
+        self.message_string = "Configuring data export"
+        self.load_export_settings()
+        popup = dialogs.ExportDialog()
+        popup.set_settings(self.save_data, self.data_format, self.data_path)
+
+        popup.bind(save_data=self.setter('save_data'))
+        popup.bind(data_format=self.setter('data_format'))
+        popup.bind(folder_path_value=self.setter('data_path'))
+        
+        popup.bind(ok_pressed=self.save_export_settings)
+        popup.open()
+    
+    def save_export_settings(self, instance, value):
+        settings_json = {
+            'save_data' : self.save_data,
+            'data_format' : self.data_format,
+            'data_path' : self.data_path
+        }
+        with open('settings.json', 'w') as f:
+            f.write(json.dumps(settings_json, indent=4))
+
+    def load_export_settings(self):
+        if (Path('settings.json').exists()):
+            with open('settings.json', 'r') as f:
+                settings_json = json.load(f)
+                self.save_data = settings_json['save_data']
+                self.data_format = settings_json['data_format']
+                self.data_path = settings_json['data_path']
+        else:
+            self.save_data = False
+            self.data_path = str(Path.cwd() / 'Data')
+            self.data_format = 'txt'
+            if (not Path(self.data_path).exists()):
+                Path(self.data_path).mkdir(parents=True, exist_ok=True)
+
     def is_streaming(self, instance, value):
         self.disabled = value
 

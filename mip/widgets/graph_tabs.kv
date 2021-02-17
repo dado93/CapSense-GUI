@@ -26,6 +26,7 @@
     temperature_sr_label: _temperature_sr_label
     ymin_input: _ymin
     ymax_input: _ymax
+    legend: _legend
     GridLayout:
         cols: 2
         spacing: 10
@@ -60,6 +61,7 @@
         Widget:
     Legend:
         size_hint_y: 0.3
+        id: _legend
     GridLayout:
         cols: 1
         padding: 10
@@ -98,18 +100,22 @@
     #LegendEntry:
     #    height: '32sp'
 
-<LegendEntry@BoxLayout>:
-    line_label: _line_name
+<LegendEntry>:
+    legend_label: _legend_label
+    legend_color: _legend_color
     spacing: 5
+    size_hint: 1, None
+    height: '16sp'
+
     LegendLabel:
         id: _legend_color
         size_hint_x: 0.5
     Label:
         size_hint_x: 0.5
-        id: _line_name
+        id: _legend_label
         text: 'Channel #'
 
-<LegendLabel@Label>:
+<LegendLabel>:
     canvas.before:
         Color:
             rgba: 1, 0, 0, 1

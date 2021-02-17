@@ -67,13 +67,11 @@
 </dd>
 <dt id="mip.communication.mserial.START_STREAMING_CMD"><code class="name">var <span class="ident">START_STREAMING_CMD</span></code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Stop streaming command.</p></div>
+<div class="desc"><p>Command to start streaming data.</p></div>
 </dd>
 <dt id="mip.communication.mserial.STOP_STREAMING_CMD"><code class="name">var <span class="ident">STOP_STREAMING_CMD</span></code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Time set command.</p></div>
+<div class="desc"><p>Command to stop streaming data.</p></div>
 </dd>
 <dt id="mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD"><code class="name">var <span class="ident">TEMP_RH_SETTINGS_SET_CMD</span></code></dt>
 <dd>
@@ -367,14 +365,19 @@ computed given the equation stated in the FDC1004Q datasheet.</p>
 <span>def <span class="ident">convert_humidity</span></span>(<span>self, raw_humidity)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Convert raw bytes into humidity.</p>
+<div class="desc"><p>Convert raw bytes into humidity value.</p>
 <p>This function converts the bytes passed in as
 parameter to a proper humidity value. The
 humidity value is computed given the
-equation stated in the SHT85 datasheet.
-@param raw_humidity humidity bytes
-@return computed humidity value</p></div>
+equation stated in the SHT85 datasheet.</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>raw_humidity: the raw humidity bytes to be converted</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<ul>
+<li>the proper humidity value</li>
+</ul></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.convert_temperature"><code class="name flex">
 <span>def <span class="ident">convert_temperature</span></span>(<span>self, raw_temperature)</span>
@@ -405,19 +408,60 @@ found, it attempts to connect to it.</p></div>
 <dd>
 <div class="desc"><p>Get command to set sample rate.</p>
 <p>This function returns the correct command to send to the
-board to set the proper sample rate.</p></div>
+board to set the proper sample rate.</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>sample_rate: string with desired sample rate value</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<ul>
+<li>command corresponding to the sample rate to be set</li>
+</ul></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.get_temp_hum_config_cmd"><code class="name flex">
 <span>def <span class="ident">get_temp_hum_config_cmd</span></span>(<span>self, th_sample_rate, th_repeatability)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Based on the desired settings, this function returns a byte array
+containing the commands to be sent to the board to properly configure
+the temperature and relative humidity sensor.</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>th_sample_rate: the sample rate to be set to the board</li>
+<li>th_repeatability: the repeatability setting to be set to the board</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<ul>
+<li>byte array with commands to be sent to the board
+Usage:</li>
+</ul>
+<pre><code class="language-python-repl">&gt;&gt;&gt; cmds = get_temp_hum_config_cmd('0.5 Hz', 'Med')
+... cmds
+... bytearray(b' $')
+</code></pre></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.get_temp_hum_config_value"><code class="name flex">
 <span>def <span class="ident">get_temp_hum_config_value</span></span>(<span>self, th_sample_rate, th_repeatability)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Based on the settings, this function returns the proper
+strings representing temperature and humidity sample rate value
+and repeatabiity settings.</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>th_sample_rate: sample rate value</li>
+<li>th_repeatability: repeatability value</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<ul>
+<li>string with sample rate configuration</li>
+<li>string with repetability configuration
+Usage:</li>
+</ul>
+<pre><code class="language-python-repl">&gt;&gt;&gt; values = get_temp_hum_config_value(0x20, 0x24)
+... values
+... '0.5 Hz', 'Med'
+</code></pre></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.parse_sample_rate"><code class="name flex">
 <span>def <span class="ident">parse_sample_rate</span></span>(<span>self, sample_rate_packet)</span>
@@ -435,10 +479,9 @@ board to set the proper sample rate.</p></div>
 <span>def <span class="ident">retrieve_sample_rate_from_board</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Send command to the board to retrieve current sample rate configuration.</p>
+<div class="desc"><p>Send command to the board to retrieve current sample rate configuration.</p>
 <p>This function sends a command to the board to retrieve the current
-sample rate configuration for both data and temperature and relative
+sample rate configuration for both capacitance data and temperature and relative
 humidity sensor.
 The response from the board is parsed in the main read data function.</p></div>
 </dd>
@@ -476,12 +519,14 @@ and the class property is then updated accordingly.
 <span>def <span class="ident">set_temperature_settings</span></span>(<span>self, sample_rate, repeatability)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Set new configuration for temperature and relative humidity sensor.</p>
+<div class="desc"><p>Set new configuration for temperature and relative humidity sensor.</p>
 <p>This function sends the proper commands to the board to configure the
-temperature and relative humidity sensor.
-@param sample_rate the new desidered sample rate value
-@param repeatability the new desidered repeatability settings</p></div>
+temperature and relative humidity sensor.</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>sample_rate: the desired sample rate value</li>
+<li>repeatability: the desired repeatability settings</li>
+</ul></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.start_streaming"><code class="name flex">
 <span>def <span class="ident">start_streaming</span></span>(<span>self)</span>
@@ -522,7 +567,7 @@ Using the Singleton class as metaclass allows to implement
 the Singleton pattern in each class.</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; class CustomSingleton(metaclass=Singleton):
-... pass
+...     pass
 </code></pre>
 <p>This way, only one instance is created of the class, and
 every time the class is instantiated in an object, the

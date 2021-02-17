@@ -1,58 +1,70 @@
 #:kivy 1.11
 
-<SampleRateSelection>:
-    data_sample_rate_spinner: _data_sr_spinner
-    update_button: _update_button
-    dismiss_button: _dismiss_button
-    cols: 2
-    spacing: 10
-    padding: 20
-    Label: 
-        text: 'Data Sample Rate'
-    Spinner:
-        id: _data_sr_spinner
-    Widget:
-    Widget:
-    Button:
-        text: 'Cancel'
-        id: _dismiss_button
-    Button:
-        text: 'Update'
-        id: _update_button
-
 <PopupRetrieval>:
     auto_dismiss: False
-    size_hint: 0.4, 0.4
-    pos_hint: {'top': 0.5, 'right':0.5}
-    title: 'Sample Rate'
-    retrieval_label: _retrieval_label
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
     pb_update: _pb_update
+    spinner_layout: _spinner_layout
+    update_button: _update_button
+    cancel_button: _cancel_button
+    message_label: _message_label
+    ok_button: _ok_button
     BoxLayout:
         id: _update_widget
         orientation:'vertical'
+        GridLayout:
+            cols: 2
+            spacing: 10
+            padding: 20
+            size_hint_y: 0.4
+            disabled: True
+            id: _spinner_layout
         Label:
-            id: _retrieval_label
-            size_hint_y: 0.5
+            id: _message_label
+            text: 'Retrieving data'
+            size_hint_y: 0.2
         ProgressBar:
             id: _pb_update
             value: 50
-            size_hint_y: 0.5
-
+            size_hint_y: 0.1
+        GridLayout:
+            cols: 3
+            size_hint_y: 0.3
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+                id: _cancel_button
+            Button:
+                text: 'Update'
+                disabled: True
+                on_release: root.update()
+                id: _update_button
+            Button:
+                id: _ok_button
+                text: 'OK'
+                disabled: True
+                on_release: root.dismiss()
 <SampleRateDialog>:
     title: 'Sample Rate'
 
 <SDCardDialog>:
     title: 'SD Card Configuration'
     auto_dismiss: False
-    size_hint: 0.4, 0.4
-    pos_hint: {'top': 0.5, 'right':0.5}
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
+    rec_min_spinner: _rec_min_spinner
     GridLayout:
         cols:2
+        spacing: 10
         Label: 
             text: 'Rec Minutes'
         Spinner:
-            id: _data_sr_spinner
+            id: _rec_min_spinner
             values: ['None','5','15','30','60','120','180']
+            text: 'None'
         Widget:
         Widget:
         Button:
@@ -62,32 +74,105 @@
             text: 'Update'
             on_release: root.update()
 
-<TRHConfigurationDialog>:
+<ExportDialog>:
+    title: 'Data Export'
     auto_dismiss: False
-    size_hint: 0.4, 0.4
-    pos_hint: {'top': 0.5, 'right':0.5}
-    title: 'Sample Rate'
-    temperature_sample_rate_spinner: _temp_sr_spinner
-    temperature_rep_spinner: _temp_rep_spinner
-    GridLayout:
-        cols: 2
+    size_hint: 0.5, 0.5
+    spacing: 10
+    padding: 20
+    data_export_cb: _data_export_cb
+    data_format_spinner: _data_format_spinner
+    ok_button: _ok_button
+    folder_button: _folder_button
+    folder_path: _folder_path
+    folder_path_scroll: _folder_path_scroll
+    ColoredGridLayoutPopup:
+        cols:2
         spacing: 10
         padding: 20
         Label: 
-            text: 'T&RH Sample Rate'
-        Spinner:
-            id: _temp_sr_spinner
-            values: ['0.5 Hz', '1 Hz', '2 Hz', '4 Hz','10 Hz']
-        Label: 
-            text: 'T&RH Repeatability'
-        Spinner:
-            id: _temp_rep_spinner
-            values: ['Low', 'Med', 'High']
-        Widget:
-        Widget:
+            text: 'Activate Data Export'
+        CheckBox:
+            id: _data_export_cb
+        Label:
+            text: 'Data Format'
+        Spinner: 
+            values: ['txt','csv']
+            text: 'txt'
+            disabled: True
+            id: _data_format_spinner
+        Button:
+            text: 'Data Folder'
+            disabled: True
+            id: _folder_button
+            on_release: root.folder_selection()
+        ScrollView:
+            do_scroll_y: False
+            bar_width: 12
+            scroll_type: ['bars','content']
+            disabled: True
+            id: _folder_path_scroll
+            Label:
+                size_hint: None, None     
+                size: self.texture_size  
+                id: _folder_path
         Button:
             text: 'Cancel'
             on_release: root.dismiss()
         Button:
-            text: 'Update'
+            text: 'OK'
             on_release: root.update()
+            id: _ok_button
+
+<FolderPickerDialog>:
+    title: 'Folder Selection'
+    filechooser: _filechooser
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        spacing: 10
+        FileChooserListView:
+            id: _filechooser
+            size_hint_y: 0.8
+
+        BoxLayout:
+            size_hint_y: 0.2
+            spacing: 10
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+
+            Button:
+                text: "Select"
+                on_release: root.folder_selected()
+
+<ClosePopup>:
+    title: 'Exit App'
+    size_hint: 0.5, 0.3
+    spacing: 10
+    padding: 20
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            text: 'Do you want to close the app?'
+            size_hint_y: 0.6
+        GridLayout:
+            cols: 2
+            size_hint_y: 0.4
+            spacing: 10
+            padding: 20
+            Button:
+                text:'Cancel'
+                on_release: root.dismiss()
+            Button:
+                text: 'OK'
+                on_release: root.ok_pressed()
+
+<ColoredGridLayoutPopup@GridLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos

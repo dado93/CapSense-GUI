@@ -448,6 +448,10 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         self.read_state = 0 
             time.sleep(0.001)
 
+    ###########################################
+    #               Sample rate               #
+    ###########################################
+
     def parse_sample_rate(self, sample_rate_packet):
         sample_rate_packet = struct.unpack('3B', sample_rate_packet)
         if (sample_rate_packet[0] < len(self.available_sample_rates)):
@@ -460,9 +464,17 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                                                                                                                 sample_rate_packet[2])
 
     def compute_num_samples_sample_rate(self, sample_rate):
+        """
+        Compute number of samples per second (frequency) based on the
+        sample rate string. This is used to set the Numeric Property
+        and propagate the change to all the widgets that depend
+        on the sample rate of the received data (e.g. plots).
+
+        Args:
+            - sample_rate the sample rate string, in format 'xx Hz'
+        """
         # Get only the first part of the string --> frequency
         frequency = sample_rate.split(' ')[0]
-        print('Frequency: : ' + frequency)
         self.sample_rate_num_samples = int(frequency)
 
     def update_computed_sample_rate(self):
@@ -479,7 +491,6 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             diff = (curr_time - self.received_packet_time)
             self.temperature_sample_rate = (self.temp_rh_samples_read) / diff.total_seconds()
             #self.temp_rh_samples_read = 0
-
 
     def set_sample_rate(self, sample_rate):
         """!
@@ -672,6 +683,29 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         else:
             self.message_string = 'Board is not connected. Cannot update temperature settings.'
 
+    ###########################################
+    #         Set SD Card recording           #
+    ###########################################
+    def set_sd_card_rec_minutes(self, value):
+        if (not (value == 'None')):
+            self.message_string = 'No SD recording'
+            return
+        cmds_dict = {
+            '5': 'A',
+            '15': 'B',
+            '30': 'C',
+            '60': 'D',
+            '120': 'E',
+            '180': 'F'
+        }
+        self.message_string = f'Configuring SD Recording for {value} minutes'
+        if (self.port.is_open and self.connected == BOARD_CONNECTED):
+            try:
+                print(value)
+                self.port.write(cmds_dict[value].encode('utf-8'))
+            except:
+                self.message_string = 'Could not configure SD card recording'
+
     ###################################################
     #               Data conversion                   # 
     ###################################################
@@ -721,7 +755,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         Returns:
             - the proper humidity value
         """
-        assert(isinstance(humidity, list))
+        assert(isinstance(raw_humidity, tuple))
         temp = raw_humidity[0] << 8 | raw_humidity[1] 
         humidity = 100 * temp / ((2 << 15) - 1)
         return humidity
@@ -742,11 +776,11 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         Returns:
             - computed capacitance value
         """
-        assert(isinstance(capacitance, list))
-        capacitance = capacitance[0] << 16 | capacitance[1] << 8 | capacitance[2]
-        capacitance = capacitance / (2<<18)
-        capacitance = capacitance + capdac * CAPDAC_FACTOR
-        return capacitance
+        assert(isinstance(capacitance, tuple))
+        capacitance_v = capacitance[0] << 16 | capacitance[1] << 8 | capacitance[2]
+        capacitance_v = capacitance_v / (2<<18)
+        capacitance_v = capacitance_v + capdac * CAPDAC_FACTOR
+        return capacitance_v
 
 class DataPacket():
     """!
@@ -787,6 +821,9 @@ class DataPacket():
             return 0
         else:
             return self.capacitance_values[channel_number]
+    
+    def get_capacitance_array(self):
+        return self.capacitance_values
 
     def __str__(self):
         st = f"[{self.packet_counter}] - {self.temperature:.2f} - "

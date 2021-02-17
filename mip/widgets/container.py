@@ -1,5 +1,5 @@
 from kivy.clock import Clock
-from kivy.core.window import Window
+
 
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -7,6 +7,8 @@ from kivy.uix.boxlayout import BoxLayout
 from mip.communication.mserial import MIPSerial
 import mip.communication
 from loguru import logger
+
+from mip.widgets.dialogs import ClosePopup
 
 class ContainerLayout(BoxLayout):
     """
@@ -47,15 +49,12 @@ class ContainerLayout(BoxLayout):
         self.serial = MIPSerial()
         self.serial.bind(connected=self.connection_event)
         super(ContainerLayout, self).__init__(**kwargs)
-        Window.bind(on_request_close=self.exit_check)
+        
         # Start moving progress bar based on connection status
         self.pb_update_sign = 1
         self.pb_update_event = Clock.schedule_interval(self.progress_bar_update, 0.05)
     
-    def exit_check(self, *args):
-        print('Exit check')
-        return False
-
+    
     def on_toolbar(self, instance, value):
         self.serial.bind(is_streaming=self.toolbar.is_streaming)
         try:
