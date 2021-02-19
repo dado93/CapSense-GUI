@@ -33,6 +33,518 @@
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="mip.widgets.dialogs.ClosePopup"><code class="flex name class">
+<span>class <span class="ident">ClosePopup</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Popup class. See module documentation for more information.</p>
+<p>:Events:
+<code>on_open</code>:
+Fired when the Popup is opened.
+<code>on_dismiss</code>:
+Fired when the Popup is closed. If the callback returns True, the
+dismiss will be canceled.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.popup.Popup</li>
+<li>kivy.uix.modalview.ModalView</li>
+<li>kivy.uix.anchorlayout.AnchorLayout</li>
+<li>kivy.uix.layout.Layout</li>
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.widgets.dialogs.ClosePopup.ok_button_pressed"><code class="name">var <span class="ident">ok_button_pressed</span></code></dt>
+<dd>
+<div class="desc"><p>BooleanProperty(defaultvalue=True, **kw)
+Property that represents only a boolean value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: boolean
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.widgets.dialogs.ClosePopup.cancel_pressed"><code class="name flex">
+<span>def <span class="ident">cancel_pressed</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ClosePopup.ok_pressed"><code class="name flex">
+<span>def <span class="ident">ok_pressed</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog"><code class="flex name class">
+<span>class <span class="ident">ExportDialog</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Popup class. See module documentation for more information.</p>
+<p>:Events:
+<code>on_open</code>:
+Fired when the Popup is opened.
+<code>on_dismiss</code>:
+Fired when the Popup is closed. If the callback returns True, the
+dismiss will be canceled.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.popup.Popup</li>
+<li>kivy.uix.modalview.ModalView</li>
+<li>kivy.uix.anchorlayout.AnchorLayout</li>
+<li>kivy.uix.layout.Layout</li>
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.widgets.dialogs.ExportDialog.data_export_cb"><code class="name">var <span class="ident">data_export_cb</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.data_format"><code class="name">var <span class="ident">data_format</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.data_format_spinner"><code class="name">var <span class="ident">data_format_spinner</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.folder_button"><code class="name">var <span class="ident">folder_button</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.folder_path"><code class="name">var <span class="ident">folder_path</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.folder_path_scroll"><code class="name">var <span class="ident">folder_path_scroll</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.folder_path_value"><code class="name">var <span class="ident">folder_path_value</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.ok_button"><code class="name">var <span class="ident">ok_button</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.ok_pressed"><code class="name">var <span class="ident">ok_pressed</span></code></dt>
+<dd>
+<div class="desc"><p>BooleanProperty(defaultvalue=True, **kw)
+Property that represents only a boolean value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: boolean
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.save_data"><code class="name">var <span class="ident">save_data</span></code></dt>
+<dd>
+<div class="desc"><p>BooleanProperty(defaultvalue=True, **kw)
+Property that represents only a boolean value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: boolean
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.widgets.dialogs.ExportDialog.data_export_cb_changed"><code class="name flex">
+<span>def <span class="ident">data_export_cb_changed</span></span>(<span>self, instance, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.folder_selection"><code class="name flex">
+<span>def <span class="ident">folder_selection</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.on_data_export_cb"><code class="name flex">
+<span>def <span class="ident">on_data_export_cb</span></span>(<span>self, instance, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.on_data_format_spinner"><code class="name flex">
+<span>def <span class="ident">on_data_format_spinner</span></span>(<span>self, instance, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.on_folder_path_value"><code class="name flex">
+<span>def <span class="ident">on_folder_path_value</span></span>(<span>self, instance, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.set_settings"><code class="name flex">
+<span>def <span class="ident">set_settings</span></span>(<span>self, save_data, data_format='txt', data_path='/Data')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.dialogs.ExportDialog.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.widgets.dialogs.FolderPickerDialog"><code class="flex name class">
+<span>class <span class="ident">FolderPickerDialog</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Popup class. See module documentation for more information.</p>
+<p>:Events:
+<code>on_open</code>:
+Fired when the Popup is opened.
+<code>on_dismiss</code>:
+Fired when the Popup is closed. If the callback returns True, the
+dismiss will be canceled.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.popup.Popup</li>
+<li>kivy.uix.modalview.ModalView</li>
+<li>kivy.uix.anchorlayout.AnchorLayout</li>
+<li>kivy.uix.layout.Layout</li>
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.widgets.dialogs.FolderPickerDialog.filechooser"><code class="name">var <span class="ident">filechooser</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.dialogs.FolderPickerDialog.folder_path"><code class="name">var <span class="ident">folder_path</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.widgets.dialogs.FolderPickerDialog.folder_selected"><code class="name flex">
+<span>def <span class="ident">folder_selected</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="mip.widgets.dialogs.PopupRetrieval"><code class="flex name class">
 <span>class <span class="ident">PopupRetrieval</span></span>
 <span>(</span><span>retrieval_timeout=1, **kwargs)</span>
@@ -107,7 +619,7 @@ to determine the behaviour of the widget.</p></div>
 <span>def <span class="ident">checking_success</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Configuration check was successfull, enable
+<div class="desc"><p>Configuration check was succesfull, enable
 OK button.</p></div>
 </dd>
 <dt id="mip.widgets.dialogs.PopupRetrieval.retrieval_completed"><code class="name flex">
@@ -170,6 +682,53 @@ bar value.</p>
 <li>kivy._event.EventDispatcher</li>
 <li>kivy._event.ObjectWithUid</li>
 </ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.widgets.dialogs.SDCardDialog.rec_min_spinner"><code class="name">var <span class="ident">rec_min_spinner</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="mip.widgets.dialogs.SDCardDialog.update"><code class="name flex">
@@ -313,6 +872,44 @@ Usage:</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="mip.widgets.dialogs.ClosePopup" href="#mip.widgets.dialogs.ClosePopup">ClosePopup</a></code></h4>
+<ul class="">
+<li><code><a title="mip.widgets.dialogs.ClosePopup.cancel_pressed" href="#mip.widgets.dialogs.ClosePopup.cancel_pressed">cancel_pressed</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ClosePopup.ok_button_pressed" href="#mip.widgets.dialogs.ClosePopup.ok_button_pressed">ok_button_pressed</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ClosePopup.ok_pressed" href="#mip.widgets.dialogs.ClosePopup.ok_pressed">ok_pressed</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.widgets.dialogs.ExportDialog" href="#mip.widgets.dialogs.ExportDialog">ExportDialog</a></code></h4>
+<ul class="">
+<li><code><a title="mip.widgets.dialogs.ExportDialog.data_export_cb" href="#mip.widgets.dialogs.ExportDialog.data_export_cb">data_export_cb</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.data_export_cb_changed" href="#mip.widgets.dialogs.ExportDialog.data_export_cb_changed">data_export_cb_changed</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.data_format" href="#mip.widgets.dialogs.ExportDialog.data_format">data_format</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.data_format_spinner" href="#mip.widgets.dialogs.ExportDialog.data_format_spinner">data_format_spinner</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.folder_button" href="#mip.widgets.dialogs.ExportDialog.folder_button">folder_button</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.folder_path" href="#mip.widgets.dialogs.ExportDialog.folder_path">folder_path</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.folder_path_scroll" href="#mip.widgets.dialogs.ExportDialog.folder_path_scroll">folder_path_scroll</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.folder_path_value" href="#mip.widgets.dialogs.ExportDialog.folder_path_value">folder_path_value</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.folder_selection" href="#mip.widgets.dialogs.ExportDialog.folder_selection">folder_selection</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.ok_button" href="#mip.widgets.dialogs.ExportDialog.ok_button">ok_button</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.ok_pressed" href="#mip.widgets.dialogs.ExportDialog.ok_pressed">ok_pressed</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.on_data_export_cb" href="#mip.widgets.dialogs.ExportDialog.on_data_export_cb">on_data_export_cb</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.on_data_format_spinner" href="#mip.widgets.dialogs.ExportDialog.on_data_format_spinner">on_data_format_spinner</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.on_folder_path_value" href="#mip.widgets.dialogs.ExportDialog.on_folder_path_value">on_folder_path_value</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.save_data" href="#mip.widgets.dialogs.ExportDialog.save_data">save_data</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.set_settings" href="#mip.widgets.dialogs.ExportDialog.set_settings">set_settings</a></code></li>
+<li><code><a title="mip.widgets.dialogs.ExportDialog.update" href="#mip.widgets.dialogs.ExportDialog.update">update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.widgets.dialogs.FolderPickerDialog" href="#mip.widgets.dialogs.FolderPickerDialog">FolderPickerDialog</a></code></h4>
+<ul class="">
+<li><code><a title="mip.widgets.dialogs.FolderPickerDialog.filechooser" href="#mip.widgets.dialogs.FolderPickerDialog.filechooser">filechooser</a></code></li>
+<li><code><a title="mip.widgets.dialogs.FolderPickerDialog.folder_path" href="#mip.widgets.dialogs.FolderPickerDialog.folder_path">folder_path</a></code></li>
+<li><code><a title="mip.widgets.dialogs.FolderPickerDialog.folder_selected" href="#mip.widgets.dialogs.FolderPickerDialog.folder_selected">folder_selected</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="mip.widgets.dialogs.PopupRetrieval" href="#mip.widgets.dialogs.PopupRetrieval">PopupRetrieval</a></code></h4>
 <ul class="two-column">
 <li><code><a title="mip.widgets.dialogs.PopupRetrieval.checking_completed" href="#mip.widgets.dialogs.PopupRetrieval.checking_completed">checking_completed</a></code></li>
@@ -330,6 +927,7 @@ Usage:</li>
 <li>
 <h4><code><a title="mip.widgets.dialogs.SDCardDialog" href="#mip.widgets.dialogs.SDCardDialog">SDCardDialog</a></code></h4>
 <ul class="">
+<li><code><a title="mip.widgets.dialogs.SDCardDialog.rec_min_spinner" href="#mip.widgets.dialogs.SDCardDialog.rec_min_spinner">rec_min_spinner</a></code></li>
 <li><code><a title="mip.widgets.dialogs.SDCardDialog.update" href="#mip.widgets.dialogs.SDCardDialog.update">update</a></code></li>
 </ul>
 </li>

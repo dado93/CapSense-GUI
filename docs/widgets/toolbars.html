@@ -213,30 +213,22 @@ Fired when the user clicks on a word referenced with a
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="mip.widgets.toolbars.Toolbar.average"><code class="name">var <span class="ident">average</span></code></dt>
+<dt id="mip.widgets.toolbars.Toolbar.data_format"><code class="name">var <span class="ident">data_format</span></code></dt>
 <dd>
-<div class="desc"><p>NumericProperty(defaultvalue=0, **kw)
-Property that represents a numeric value.</p>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
 <pre><code>:Parameters:
-    &lt;code&gt;defaultvalue&lt;/code&gt;: int or float, defaults to 0
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
         Specifies the default value of the property.
-
-&gt;&gt;&gt; wid = Widget()
-&gt;&gt;&gt; wid.x = 42
-&gt;&gt;&gt; print(wid.x)
-42
-&gt;&gt;&gt; wid.x = "plop"
- Traceback (most recent call last):
-   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-   File "properties.pyx", line 93, in kivy.properties.Property.__set__
-   File "properties.pyx", line 111, in kivy.properties.Property.set
-   File "properties.pyx", line 159, in kivy.properties.NumericProperty.check
- ValueError: NumericProperty accept only int/float
-
-!!! versionchanged "Changed in version:&amp;ensp;1.4.1"
-    NumericProperty can now accept custom text and tuple value to indicate a
-    type, like "in", "pt", "px", "cm", "mm", in the format: '10pt' or (10,
-    'pt').
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.toolbars.Toolbar.data_path"><code class="name">var <span class="ident">data_path</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
 </code></pre></div>
 </dd>
 <dt id="mip.widgets.toolbars.Toolbar.message_string"><code class="name">var <span class="ident">message_string</span></code></dt>
@@ -248,26 +240,50 @@ Property that represents a string value.</p>
         Specifies the default value of the property.
 </code></pre></div>
 </dd>
-<dt id="mip.widgets.toolbars.Toolbar.mode"><code class="name">var <span class="ident">mode</span></code></dt>
+<dt id="mip.widgets.toolbars.Toolbar.save_data"><code class="name">var <span class="ident">save_data</span></code></dt>
 <dd>
-<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
-Property that represents a string value.</p>
+<div class="desc"><p>BooleanProperty(defaultvalue=True, **kw)
+Property that represents only a boolean value.</p>
 <pre><code>:Parameters:
-    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+    &lt;code&gt;defaultvalue&lt;/code&gt;: boolean
         Specifies the default value of the property.
 </code></pre></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="mip.widgets.toolbars.Toolbar.export_data_dialog"><code class="name flex">
+<span>def <span class="ident">export_data_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="mip.widgets.toolbars.Toolbar.is_streaming"><code class="name flex">
 <span>def <span class="ident">is_streaming</span></span>(<span>self, instance, value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="mip.widgets.toolbars.Toolbar.load_export_settings"><code class="name flex">
+<span>def <span class="ident">load_export_settings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.toolbars.Toolbar.on_data_path"><code class="name flex">
+<span>def <span class="ident">on_data_path</span></span>(<span>self, instance, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="mip.widgets.toolbars.Toolbar.sample_rate_dialog"><code class="name flex">
 <span>def <span class="ident">sample_rate_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.toolbars.Toolbar.save_export_settings"><code class="name flex">
+<span>def <span class="ident">save_export_settings</span></span>(<span>self, instance, value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -464,12 +480,17 @@ updates the text of the button.</p></div>
 </li>
 <li>
 <h4><code><a title="mip.widgets.toolbars.Toolbar" href="#mip.widgets.toolbars.Toolbar">Toolbar</a></code></h4>
-<ul class="two-column">
-<li><code><a title="mip.widgets.toolbars.Toolbar.average" href="#mip.widgets.toolbars.Toolbar.average">average</a></code></li>
+<ul class="">
+<li><code><a title="mip.widgets.toolbars.Toolbar.data_format" href="#mip.widgets.toolbars.Toolbar.data_format">data_format</a></code></li>
+<li><code><a title="mip.widgets.toolbars.Toolbar.data_path" href="#mip.widgets.toolbars.Toolbar.data_path">data_path</a></code></li>
+<li><code><a title="mip.widgets.toolbars.Toolbar.export_data_dialog" href="#mip.widgets.toolbars.Toolbar.export_data_dialog">export_data_dialog</a></code></li>
 <li><code><a title="mip.widgets.toolbars.Toolbar.is_streaming" href="#mip.widgets.toolbars.Toolbar.is_streaming">is_streaming</a></code></li>
+<li><code><a title="mip.widgets.toolbars.Toolbar.load_export_settings" href="#mip.widgets.toolbars.Toolbar.load_export_settings">load_export_settings</a></code></li>
 <li><code><a title="mip.widgets.toolbars.Toolbar.message_string" href="#mip.widgets.toolbars.Toolbar.message_string">message_string</a></code></li>
-<li><code><a title="mip.widgets.toolbars.Toolbar.mode" href="#mip.widgets.toolbars.Toolbar.mode">mode</a></code></li>
+<li><code><a title="mip.widgets.toolbars.Toolbar.on_data_path" href="#mip.widgets.toolbars.Toolbar.on_data_path">on_data_path</a></code></li>
 <li><code><a title="mip.widgets.toolbars.Toolbar.sample_rate_dialog" href="#mip.widgets.toolbars.Toolbar.sample_rate_dialog">sample_rate_dialog</a></code></li>
+<li><code><a title="mip.widgets.toolbars.Toolbar.save_data" href="#mip.widgets.toolbars.Toolbar.save_data">save_data</a></code></li>
+<li><code><a title="mip.widgets.toolbars.Toolbar.save_export_settings" href="#mip.widgets.toolbars.Toolbar.save_export_settings">save_export_settings</a></code></li>
 <li><code><a title="mip.widgets.toolbars.Toolbar.sd_card_dialog" href="#mip.widgets.toolbars.Toolbar.sd_card_dialog">sd_card_dialog</a></code></li>
 <li><code><a title="mip.widgets.toolbars.Toolbar.temp_rh_dialog" href="#mip.widgets.toolbars.Toolbar.temp_rh_dialog">temp_rh_dialog</a></code></li>
 </ul>

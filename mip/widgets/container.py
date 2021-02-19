@@ -1,13 +1,11 @@
 from kivy.clock import Clock
-
-
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 
-from mip.communication.mserial import MIPSerial
-import mip.communication
 from loguru import logger
 
+from mip.communication.mserial import MIPSerial
+import mip.communication
 from mip.widgets.dialogs import ClosePopup
 
 class ContainerLayout(BoxLayout):
@@ -54,21 +52,15 @@ class ContainerLayout(BoxLayout):
         self.pb_update_sign = 1
         self.pb_update_event = Clock.schedule_interval(self.progress_bar_update, 0.05)
     
-    
     def on_toolbar(self, instance, value):
         self.serial.bind(is_streaming=self.toolbar.is_streaming)
-        try:
-            self.toolbar.bind(message_string=self.bottom_bar.update_text)
-        except:
-            pass
-    
+        self.toolbar.bind(data_path=self.serial.exporter.set_output_path)
+        self.toolbar.bind(data_format=self.serial.exporter.set_output_format)
+        self.toolbar.bind(save_data=self.serial.exporter.setter('save_data'))
+
     def on_bottom_bar(self, instance, value):
-        logger.add(self.bottom_bar.update_str)
-        try:
-            self.toolbar.bind(message_string=self.bottom_bar.update_text)
-            self.serial.bind(message_string=self.bottom_bar.update_text)
-        except:
-            raise
+        #logger.add(sys.stderr, format="{time} {level} {message}", filter="my_module", level="INFO")
+        logger.add(self.bottom_bar.update_str, format="<green>{time:DD-MM-YYYY HH:mm:ss}</green> | <red>{level}</red> | {message}")
 
     def on_top_bar(self, instance, value):
         """!

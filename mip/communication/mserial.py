@@ -7,7 +7,7 @@ from kivy.properties import NumericProperty, BooleanProperty, StringProperty
 from kivy.event import EventDispatcher
 import time
 from loguru import logger
-
+from mip.export.csv_exporter import CSVExporter
 #############################################
 #                 Constants                 #
 #############################################
@@ -168,6 +168,9 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         self.callbacks = []
         self.available_sample_rates = ['1 Hz', '10 Hz', '25 Hz', '50 Hz', '100 Hz']
         self.available_temp_rh_sample_rates = ['0.5 Hz','1 Hz', '2 Hz', '4 Hz', '10 Hz']
+        self.exporter = CSVExporter()
+        self.bind(is_streaming=self.exporter.is_streaming)
+        self.add_callback(self.exporter.add_packet)
         find_port_thread = threading.Thread(target=self.find_port, daemon=True)
         find_port_thread.start()
 
@@ -213,7 +216,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         @return True if the port was found to be corrected.
         @return False if the port was not found to be corrected.
         """
-        self.message_string = 'Checking: {}'.format(port_name)
+        logger.debug('Checking: {}'.format(port_name))
         if (not 'MIP' in port_name):
             return False
         try:
@@ -225,7 +228,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                 while (port.in_waiting > 0):
                     received_string += port.read().decode('utf-8', errors='replace')
                 if ('$$$' in received_string):
-                    self.message_string = 'Device found on port: {}'.format(port_name)
+                    logger.debug('Device found on port: {}'.format(port_name))
                     port.close()
                     self.connected = BOARD_FOUND
                     time.sleep(3)
@@ -241,7 +244,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             try:
                 self.port = serial.Serial(port=self.port_name, baudrate=self.baudrate)
                 if (self.port.isOpen()):
-                    self.message_string = 'Device connected'
+                    logger.debug('Device connected')
                     self.connected = BOARD_CONNECTED
                     time.sleep(1)
                     self.send_updated_time_to_board()
@@ -271,7 +274,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             - One byte for second
             - Last byte 'T'
         """
-        self.message_string = 'Sending updated time and date to device'
+        logger.debug('Sending updated time and date to device')
         # Get current time
         curr_time = datetime.now()
         self.port.write(TIME_SET_CMD.encode('utf-8'))
@@ -296,20 +299,20 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         data receivers. 
         """
         if (self.connected == BOARD_CONNECTED):
+            self.is_streaming = True
+            self.samples_read = 0
+            self.received_packet_time = 0
+            self.temperature_received_packet_time = 0
+            self.temp_rh_samples_read = 0
+            self.data_sample_rate = '0.00'
+            self.temperature_sample_rate = '0.00'
             try:
                 self.port.write(START_STREAMING_CMD.encode('utf-8'))
-                self.message_string = 'Starting data streaming'
-                self.is_streaming = True
-                self.samples_read = 0
-                self.received_packet_time = 0
-                self.temperature_received_packet_time = 0
-                self.temp_rh_samples_read = 0
-                self.data_sample_rate = '0.00'
-                self.temperature_sample_rate = '0.00'
+                logger.debug('Starting data streaming')
             except:
-                self.message_string = 'Could not write command to board'
+                logger.critical('Could not write command to board')
         else:
-            self.message_string = 'Board is not connected'
+            logger.critical('Board is not connected')
             
     def stop_streaming(self):
         """!
@@ -321,13 +324,13 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         if (self.connected == BOARD_CONNECTED):
             try:
                 self.port.write(STOP_STREAMING_CMD.encode('utf-8'))
-                self.message_string = 'Stopping data streaming'
+                logger.debug('Stopping data streaming')
                 self.is_streaming = False
                 self.read_state = 0
             except:
-                self.message_string = 'Could not write command to board'
+                logger.critical('Could not write command to board')
         else:
-            self.message_string = 'Board is not connected'
+            logger.critical('Board is not connected')
 
     def read_data(self):
         while (self.connected == BOARD_CONNECTED):
@@ -444,7 +447,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                         for callback in self.callbacks:
                             callback(packet)
                     else:
-                        print('Skipped one packet')
+                        logger.critical('Skipped one packet')
                         self.read_state = 0 
             time.sleep(0.001)
 
@@ -456,10 +459,10 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         sample_rate_packet = struct.unpack('3B', sample_rate_packet)
         if (sample_rate_packet[0] < len(self.available_sample_rates)):
             self.configured_sample_rate = self.available_sample_rates[sample_rate_packet[0]]
-            self.message_string = f'Current sample rate: {self.configured_sample_rate}'
+            logger.debug(f'Current sample rate: {self.configured_sample_rate}')
             self.compute_num_samples_sample_rate(self.configured_sample_rate)
         else:
-            self.message_string = 'Error in received sample rate'
+            logger.critical('Error in received sample rate')
         self.configured_temp_rh_sample_rate, self.configured_temp_rh_sample_rep = self.get_temp_hum_config_value(sample_rate_packet[1], 
                                                                                                                 sample_rate_packet[2])
 
@@ -505,9 +508,9 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         """
         
         if (sample_rate not in self.available_sample_rates):
-            self.message_string = f'{sample_rate} is not a valid sample rate'
+            logger.critical(f'{sample_rate} is not a valid sample rate')
         else:
-            self.message_string = f'Setting sample rate to {sample_rate}'
+            logger.debug(f'Setting sample rate to {sample_rate}')
             sample_rate_cmd = self.get_sample_rate_cmd(sample_rate)
             self.port.write(sample_rate_cmd.encode('utf-8'))
 
@@ -542,11 +545,11 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         humidity sensor.
         The response from the board is parsed in the main read data function.
         """
-        self.message_string = 'Retrieving sample rate configuration from board'
+        logger.debug('Retrieving sample rate configuration from board')
         if (self.port.is_open and self.connected == BOARD_CONNECTED):
             self.port.write(RETRIEVE_SAMPLE_RATE_CMD.encode('utf-8'))
         else:
-            self.message_string = 'Board not connected. Cannot retrieve sample rate'
+            logger.critical('Board not connected. Cannot retrieve sample rate')
 
     ###########################################
     #    Temperature and humidity settings    #
@@ -671,24 +674,24 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             - repeatability: the desired repeatability settings
 
         """
-        self.message_string = f'Setting temperature sensor to {sample_rate} and {repeatability}'
+        logger.debug(f'Setting temperature sensor to {sample_rate} and {repeatability}')
         try:
             cmds = self.get_temp_hum_config_cmd(sample_rate, repeatability)
         except:
-            self.message_string = f'{sample_rate} and {repeatability} are invalid settings'
+            logger.critical(f'{sample_rate} and {repeatability} are invalid settings')
         if (self.port.is_open and self.connected == BOARD_CONNECTED):
             self.port.write(TEMP_RH_SETTINGS_SET_CMD.encode('utf-8'))
             self.port.write(cmds)
             self.port.write(TEMP_RH_SETTINGS_LATCH_CMD.encode('utf-8'))
         else:
-            self.message_string = 'Board is not connected. Cannot update temperature settings.'
+            logger.critical('Board is not connected. Cannot update temperature settings.')
 
     ###########################################
     #         Set SD Card recording           #
     ###########################################
     def set_sd_card_rec_minutes(self, value):
         if (not (value == 'None')):
-            self.message_string = 'No SD recording'
+            logger.debug('No SD recording')
             return
         cmds_dict = {
             '5': 'A',
@@ -698,10 +701,9 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             '120': 'E',
             '180': 'F'
         }
-        self.message_string = f'Configuring SD Recording for {value} minutes'
+        logger.debug(f'Configuring SD Recording for {value} minutes')
         if (self.port.is_open and self.connected == BOARD_CONNECTED):
             try:
-                print(value)
                 self.port.write(cmds_dict[value].encode('utf-8'))
             except:
                 self.message_string = 'Could not configure SD card recording'
@@ -710,8 +712,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
     #               Data conversion                   # 
     ###################################################
     def convert_battery_voltage(self, value):
-        """!
-        @brief Convert raw bytes to battery voltage.
+        """Convert raw bytes to battery voltage.
 
         This function converts the bytes passed in as
         parameter to a proper voltage value. The
@@ -783,8 +784,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         return capacitance_v
 
 class DataPacket():
-    """!
-    @brief Data packet holding data received from board.
+    """Data packet holding data received from board.
     """
     def __init__(self, packet_counter = 0,
                         temperature = 0, 
@@ -804,6 +804,9 @@ class DataPacket():
         self.aux = aux
         self.has_temp_data = has_temp_data
     
+    def get_packet_counter(self):
+        return self.packet_counter
+
     def has_temperature_data(self):
         return self.has_temp_data
     

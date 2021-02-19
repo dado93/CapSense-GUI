@@ -75,7 +75,8 @@ class Toolbar(BoxLayout):
 
     def __init__(self, **kwargs):
         super(Toolbar, self).__init__(**kwargs)
-
+        self.load_export_settings()
+        
     def sample_rate_dialog(self):
         """
         """
@@ -128,6 +129,9 @@ class Toolbar(BoxLayout):
             self.data_format = 'txt'
             if (not Path(self.data_path).exists()):
                 Path(self.data_path).mkdir(parents=True, exist_ok=True)
+
+    def on_data_path(self, instance, value):
+        print(value)
 
     def is_streaming(self, instance, value):
         self.disabled = value

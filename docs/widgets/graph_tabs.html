@@ -35,7 +35,7 @@
 <dl>
 <dt id="mip.widgets.graph_tabs.CapacitancePlot"><code class="flex name class">
 <span>class <span class="ident">CapacitancePlot</span></span>
-<span>(</span><span>**kwargs)</span>
+<span>(</span><span>n_plots=1, color=(0.5, 0.4, 0.4, 0.1), legend=[], **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Box layout class. See module documentation for more information.</p></div>
@@ -68,7 +68,7 @@
 </dd>
 <dt id="mip.widgets.graph_tabs.CurrentPlot"><code class="flex name class">
 <span>class <span class="ident">CurrentPlot</span></span>
-<span>(</span><span>**kwargs)</span>
+<span>(</span><span>n_plots=1, color=(0.5, 0.4, 0.4, 0.1), legend=[], **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Box layout class. See module documentation for more information.</p></div>
@@ -324,7 +324,7 @@ Property that represents a numeric value.</p>
 </dd>
 <dt id="mip.widgets.graph_tabs.GraphPanelItem"><code class="flex name class">
 <span>class <span class="ident">GraphPanelItem</span></span>
-<span>(</span><span>**kwargs)</span>
+<span>(</span><span>n_plots=1, color=(0.5, 0.4, 0.4, 0.1), legend=[], **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Box layout class. See module documentation for more information.</p></div>
@@ -725,6 +725,162 @@ Property that represents a numeric value.</p>
 </li>
 </ul>
 </dd>
+<dt id="mip.widgets.graph_tabs.LegendEntry"><code class="flex name class">
+<span>class <span class="ident">LegendEntry</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Box layout class. See module documentation for more information.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.boxlayout.BoxLayout</li>
+<li>kivy.uix.layout.Layout</li>
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mip.widgets.graph_tabs.LegendEntry.legend_color"><code class="name">var <span class="ident">legend_color</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.graph_tabs.LegendEntry.legend_label"><code class="name">var <span class="ident">legend_label</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.widgets.graph_tabs.LegendEntry.set_legend_color"><code class="name flex">
+<span>def <span class="ident">set_legend_color</span></span>(<span>self, color)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.graph_tabs.LegendEntry.set_legend_label"><code class="name flex">
+<span>def <span class="ident">set_legend_label</span></span>(<span>self, label)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="mip.widgets.graph_tabs.LegendLabel"><code class="flex name class">
+<span>class <span class="ident">LegendLabel</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Label class, see module documentation for more information.</p>
+<p>:Events:
+<code>on_ref_press</code>
+Fired when the user clicks on a word referenced with a
+<code>[ref]</code> tag in a text markup.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.label.Label</li>
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.widgets.graph_tabs.LegendLabel.update_color"><code class="name flex">
+<span>def <span class="ident">update_color</span></span>(<span>self, r, g, b, a)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.widgets.graph_tabs.LegendLabel.update_rect"><code class="name flex">
+<span>def <span class="ident">update_rect</span></span>(<span>self, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="mip.widgets.graph_tabs.PlotSettings"><code class="flex name class">
 <span>class <span class="ident">PlotSettings</span></span>
 <span>(</span><span>**kwargs)</span>
@@ -796,6 +952,50 @@ Property that represents only a boolean value.</p>
 </code></pre></div>
 </dd>
 <dt id="mip.widgets.graph_tabs.PlotSettings.data_sr_label"><code class="name">var <span class="ident">data_sr_label</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
+<dt id="mip.widgets.graph_tabs.PlotSettings.legend"><code class="name">var <span class="ident">legend</span></code></dt>
 <dd>
 <div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
 Property that represents a Python object.</p>
@@ -1096,6 +1296,12 @@ Property that represents a Python object.</p>
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="mip.widgets.graph_tabs.PlotSettings.add_legend_entry"><code class="name flex">
+<span>def <span class="ident">add_legend_entry</span></span>(<span>self, label, color)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="mip.widgets.graph_tabs.PlotSettings.autorange_changed"><code class="name flex">
 <span>def <span class="ident">autorange_changed</span></span>(<span>self, instance, value)</span>
 </code></dt>
@@ -1154,7 +1360,7 @@ Property that represents a Python object.</p>
 </dd>
 <dt id="mip.widgets.graph_tabs.ResistancePlot"><code class="flex name class">
 <span>class <span class="ident">ResistancePlot</span></span>
-<span>(</span><span>**kwargs)</span>
+<span>(</span><span>n_plots=1, color=(0.5, 0.4, 0.4, 0.1), legend=[], **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Box layout class. See module documentation for more information.</p></div>
@@ -1214,12 +1420,6 @@ Property that represents a Python object.</p>
 <dl>
 <dt id="mip.widgets.graph_tabs.TemperaturePlot.on_graph"><code class="name flex">
 <span>def <span class="ident">on_graph</span></span>(<span>self, instance, value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mip.widgets.graph_tabs.TemperaturePlot.on_num_samples_per_second"><code class="name flex">
-<span>def <span class="ident">on_num_samples_per_second</span></span>(<span>self, instance, value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1325,13 +1525,31 @@ Property that represents a Python object.</p>
 </ul>
 </li>
 <li>
+<h4><code><a title="mip.widgets.graph_tabs.LegendEntry" href="#mip.widgets.graph_tabs.LegendEntry">LegendEntry</a></code></h4>
+<ul class="">
+<li><code><a title="mip.widgets.graph_tabs.LegendEntry.legend_color" href="#mip.widgets.graph_tabs.LegendEntry.legend_color">legend_color</a></code></li>
+<li><code><a title="mip.widgets.graph_tabs.LegendEntry.legend_label" href="#mip.widgets.graph_tabs.LegendEntry.legend_label">legend_label</a></code></li>
+<li><code><a title="mip.widgets.graph_tabs.LegendEntry.set_legend_color" href="#mip.widgets.graph_tabs.LegendEntry.set_legend_color">set_legend_color</a></code></li>
+<li><code><a title="mip.widgets.graph_tabs.LegendEntry.set_legend_label" href="#mip.widgets.graph_tabs.LegendEntry.set_legend_label">set_legend_label</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="mip.widgets.graph_tabs.LegendLabel" href="#mip.widgets.graph_tabs.LegendLabel">LegendLabel</a></code></h4>
+<ul class="">
+<li><code><a title="mip.widgets.graph_tabs.LegendLabel.update_color" href="#mip.widgets.graph_tabs.LegendLabel.update_color">update_color</a></code></li>
+<li><code><a title="mip.widgets.graph_tabs.LegendLabel.update_rect" href="#mip.widgets.graph_tabs.LegendLabel.update_rect">update_rect</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="mip.widgets.graph_tabs.PlotSettings" href="#mip.widgets.graph_tabs.PlotSettings">PlotSettings</a></code></h4>
 <ul class="">
+<li><code><a title="mip.widgets.graph_tabs.PlotSettings.add_legend_entry" href="#mip.widgets.graph_tabs.PlotSettings.add_legend_entry">add_legend_entry</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.autorange_cb" href="#mip.widgets.graph_tabs.PlotSettings.autorange_cb">autorange_cb</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.autorange_changed" href="#mip.widgets.graph_tabs.PlotSettings.autorange_changed">autorange_changed</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.autorange_selected" href="#mip.widgets.graph_tabs.PlotSettings.autorange_selected">autorange_selected</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.axis_changed" href="#mip.widgets.graph_tabs.PlotSettings.axis_changed">axis_changed</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.data_sr_label" href="#mip.widgets.graph_tabs.PlotSettings.data_sr_label">data_sr_label</a></code></li>
+<li><code><a title="mip.widgets.graph_tabs.PlotSettings.legend" href="#mip.widgets.graph_tabs.PlotSettings.legend">legend</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.n_seconds" href="#mip.widgets.graph_tabs.PlotSettings.n_seconds">n_seconds</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.on_autorange_cb" href="#mip.widgets.graph_tabs.PlotSettings.on_autorange_cb">on_autorange_cb</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.PlotSettings.on_seconds_spinner" href="#mip.widgets.graph_tabs.PlotSettings.on_seconds_spinner">on_seconds_spinner</a></code></li>
@@ -1358,7 +1576,6 @@ Property that represents a Python object.</p>
 <h4><code><a title="mip.widgets.graph_tabs.TemperaturePlot" href="#mip.widgets.graph_tabs.TemperaturePlot">TemperaturePlot</a></code></h4>
 <ul class="">
 <li><code><a title="mip.widgets.graph_tabs.TemperaturePlot.on_graph" href="#mip.widgets.graph_tabs.TemperaturePlot.on_graph">on_graph</a></code></li>
-<li><code><a title="mip.widgets.graph_tabs.TemperaturePlot.on_num_samples_per_second" href="#mip.widgets.graph_tabs.TemperaturePlot.on_num_samples_per_second">on_num_samples_per_second</a></code></li>
 <li><code><a title="mip.widgets.graph_tabs.TemperaturePlot.update_plot" href="#mip.widgets.graph_tabs.TemperaturePlot.update_plot">update_plot</a></code></li>
 </ul>
 </li>

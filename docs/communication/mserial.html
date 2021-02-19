@@ -110,12 +110,17 @@
 <span>(</span><span>packet_counter=0, temperature=0, humidity=0, cap_ch_1=0, cap_ch_2=0, cap_ch_3=0, cap_ch_4=0, current=0, aux=0, has_temp_data=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Data packet holding data received from board.</p></div>
+<div class="desc"><p>Data packet holding data received from board.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="mip.communication.mserial.DataPacket.get_capacitance"><code class="name flex">
 <span>def <span class="ident">get_capacitance</span></span>(<span>self, channel_number=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.communication.mserial.DataPacket.get_capacitance_array"><code class="name flex">
+<span>def <span class="ident">get_capacitance_array</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -320,7 +325,14 @@ parameter correspons to a proper device.
 <span>def <span class="ident">compute_num_samples_sample_rate</span></span>(<span>self, sample_rate)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Compute number of samples per second (frequency) based on the
+sample rate string. This is used to set the Numeric Property
+and propagate the change to all the widgets that depend
+on the sample rate of the received data (e.g. plots).</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>sample_rate the sample rate string, in format 'xx Hz'</li>
+</ul></div>
 </dd>
 <dt id="mip.communication.mserial.MIPSerial.connect"><code class="name flex">
 <span>def <span class="ident">connect</span></span>(<span>self)</span>
@@ -332,8 +344,7 @@ parameter correspons to a proper device.
 <span>def <span class="ident">convert_battery_voltage</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>!
-@brief Convert raw bytes to battery voltage.</p>
+<div class="desc"><p>Convert raw bytes to battery voltage.</p>
 <p>This function converts the bytes passed in as
 parameter to a proper voltage value. The
 battery voltage is equal to the 16 bit data
@@ -515,6 +526,12 @@ was set, that is checked inside the read data function
 and the class property is then updated accordingly.
 @param sample_rate string identifying the new sample rate to be set.</p></div>
 </dd>
+<dt id="mip.communication.mserial.MIPSerial.set_sd_card_rec_minutes"><code class="name flex">
+<span>def <span class="ident">set_sd_card_rec_minutes</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="mip.communication.mserial.MIPSerial.set_temperature_settings"><code class="name flex">
 <span>def <span class="ident">set_temperature_settings</span></span>(<span>self, sample_rate, repeatability)</span>
 </code></dt>
@@ -616,6 +633,7 @@ same instance is returned.</p></div>
 <h4><code><a title="mip.communication.mserial.DataPacket" href="#mip.communication.mserial.DataPacket">DataPacket</a></code></h4>
 <ul class="">
 <li><code><a title="mip.communication.mserial.DataPacket.get_capacitance" href="#mip.communication.mserial.DataPacket.get_capacitance">get_capacitance</a></code></li>
+<li><code><a title="mip.communication.mserial.DataPacket.get_capacitance_array" href="#mip.communication.mserial.DataPacket.get_capacitance_array">get_capacitance_array</a></code></li>
 <li><code><a title="mip.communication.mserial.DataPacket.get_humidity" href="#mip.communication.mserial.DataPacket.get_humidity">get_humidity</a></code></li>
 <li><code><a title="mip.communication.mserial.DataPacket.get_temperature" href="#mip.communication.mserial.DataPacket.get_temperature">get_temperature</a></code></li>
 <li><code><a title="mip.communication.mserial.DataPacket.has_temperature_data" href="#mip.communication.mserial.DataPacket.has_temperature_data">has_temperature_data</a></code></li>
@@ -650,6 +668,7 @@ same instance is returned.</p></div>
 <li><code><a title="mip.communication.mserial.MIPSerial.sample_rate_num_samples" href="#mip.communication.mserial.MIPSerial.sample_rate_num_samples">sample_rate_num_samples</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.send_updated_time_to_board" href="#mip.communication.mserial.MIPSerial.send_updated_time_to_board">send_updated_time_to_board</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.set_sample_rate" href="#mip.communication.mserial.MIPSerial.set_sample_rate">set_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.set_sd_card_rec_minutes" href="#mip.communication.mserial.MIPSerial.set_sd_card_rec_minutes">set_sd_card_rec_minutes</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.set_temperature_settings" href="#mip.communication.mserial.MIPSerial.set_temperature_settings">set_temperature_settings</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.start_streaming" href="#mip.communication.mserial.MIPSerial.start_streaming">start_streaming</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.stop_streaming" href="#mip.communication.mserial.MIPSerial.stop_streaming">stop_streaming</a></code></li>
