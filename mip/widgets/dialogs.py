@@ -1,9 +1,11 @@
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.properties import BooleanProperty, ObjectProperty, StringProperty
 from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
 from mip.communication.mserial import MIPSerial
 import time
 
@@ -207,14 +209,31 @@ class SDCardDialog(Popup):
     """
     """
     rec_min_spinner = ObjectProperty(None)
+    header_info = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super(SDCardDialog, self).__init__(**kwargs)
         self.serial = MIPSerial()
 
     def update(self):
-        self.serial.set_sd_card_rec_minutes(self.rec_min_spinner.text)
+        self.serial.set_sd_card_rec_minutes(self.rec_min_spinner.text,self.header_info.text)
         self.dismiss()
+
+class HeaderTextInput(TextInput):
+
+    def insert_text(self, substring, from_undo=False):
+        if (len(self.text) < 4):
+            s = substring
+            return super(HeaderTextInput, self).insert_text(s, from_undo=from_undo)
+        else:
+            current_x_pos = self.pos[0]
+            fw_x_pos = current_x_pos + 20
+            bw_x_pos = current_x_pos - 20
+            anim = (Animation(x=fw_x_pos, duration=0.05) 
+                    + Animation(x=bw_x_pos, duration=0.05) 
+                    + Animation(x=current_x_pos, duration=0.05))
+            anim.start(self)
+
 
 class ExportDialog(Popup):
     data_export_cb = ObjectProperty(None)

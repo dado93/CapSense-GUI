@@ -56,6 +56,7 @@
     spacing: 10
     padding: 20
     rec_min_spinner: _rec_min_spinner
+    header_info: _header_info
     GridLayout:
         cols:2
         spacing: 10
@@ -66,14 +67,18 @@
             id: _rec_min_spinner
             values: ['None','5','15','30','60','120','180']
             text: 'None'
-        Widget:
-        Widget:
+        Label: 
+            text: 'Header Info'
+        HeaderTextInput:
+            hint_text: 'Custom Header'
+            id: _header_info
         Button:
             text: 'Cancel'
             on_release: root.dismiss()
         Button:
             text: 'Update'
             on_release: root.update()
+
 
 <ExportDialog>:
     title: 'Data Export'

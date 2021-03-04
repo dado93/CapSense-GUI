@@ -57,6 +57,16 @@ TEMP_RH_SETTINGS_SET_CMD = 'x'
 """
 TEMP_RH_SETTINGS_LATCH_CMD = 'X'
 
+SD_CARD_CUSTOM_HEADER_SET_CMD = 'y'
+"""
+Command to set custom header info in SD card file.
+"""
+
+SD_CARD_CUSTOM_HEADER_LATCH_CMD = 'Y'
+"""
+Command to latch custom header info in SD card file.
+"""
+
 SAMPLE_RATE_1_HZ_CMD   = '1'
 SAMPLE_RATE_10_HZ_CMD  = '2'
 SAMPLE_RATE_25_HZ_CMD  = '3'
@@ -696,8 +706,8 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
     ###########################################
     #         Set SD Card recording           #
     ###########################################
-    def set_sd_card_rec_minutes(self, value):
-        if (not (value == 'None')):
+    def set_sd_card_rec_minutes(self, rec_minutes, header):
+        if (rec_minutes == 'None'):
             logger.debug('No SD recording')
             return
         cmds_dict = {
@@ -708,10 +718,33 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
             '120': 'E',
             '180': 'F'
         }
-        logger.debug(f'Configuring SD Recording for {value} minutes')
+        logger.debug(f'Configuring SD Recording for {rec_minutes} minutes')
         if (self.port.is_open and self.connected == BOARD_CONNECTED):
             try:
-                self.port.write(cmds_dict[value].encode('utf-8'))
+                self.port.write(cmds_dict[rec_minutes].encode('utf-8'))
+                self.set_sd_card_custom_header(header)
+            except:
+                self.message_string = 'Could not configure SD card recording'
+    
+    def set_sd_card_custom_header(self, header_string):
+        """
+        Send a custom header to the board so that it is added
+        in the SD file during recording.
+        """
+        if (header_string == ''):
+            header_string = '    '
+        if len(header_string) > 4:
+            header_string = header_string[:4]
+        elif len(header_string) < 4:
+            header_string.rjust(4,' ')
+        logger.debug(f'Setting SD custom header to {header_string}')
+        if (self.port.is_open and self.connected == BOARD_CONNECTED):
+            try:
+                # Create packet
+                custom_header_settings = bytearray(header_string.encode('utf-8'))
+                self.port.write(SD_CARD_CUSTOM_HEADER_SET_CMD.encode('utf-8'))
+                self.port.write(custom_header_settings)
+                self.port.write(SD_CARD_CUSTOM_HEADER_LATCH_CMD.encode('utf-8'))
             except:
                 self.message_string = 'Could not configure SD card recording'
 
