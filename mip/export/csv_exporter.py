@@ -1,5 +1,3 @@
-
-
 from kivy.properties import BooleanProperty, StringProperty
 from kivy.event import EventDispatcher
 
@@ -12,14 +10,14 @@ PACKET_BUFFER_MAX_DIM = 10
 
 class CSVExporter(EventDispatcher):
     save_data = BooleanProperty(False)
+    data_sample_rate = StringProperty('')
+    temp_rh_sample_rate = StringProperty('')
+    temp_rh_rep = StringProperty('')
 
     def __init__(self):
         logger.debug('Data Exporter Initialized')
         self.load_export_settings()
         self.packet_list = []
-    
-    def on_save_data(self, instance, value):
-        logger.debug(value)
     
     def load_export_settings(self):
         if (Path('settings.json').exists()):
@@ -62,7 +60,6 @@ class CSVExporter(EventDispatcher):
                 self.delim = ' '
 
     def is_streaming(self, instance, streaming):
-        print(streaming)
         if (streaming):
             self.packet_list = []
             self.init_file()
@@ -78,6 +75,12 @@ class CSVExporter(EventDispatcher):
 
     def write_header(self):
         header = ''
+        header += f'% Data sample rate: {self.data_sample_rate}'
+        header += '\n'
+        header += f'% Temperature and RH sample rate: {self.temp_rh_sample_rate}'
+        header += '\n'
+        header += f'% Temperature and RH repeatability: {self.temp_rh_rep}'
+        header += '\n'
         header += "Packet_ID"
         header += self.delim
         header += "Temperature"

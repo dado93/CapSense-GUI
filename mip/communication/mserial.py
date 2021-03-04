@@ -168,11 +168,17 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         self.callbacks = []
         self.available_sample_rates = ['1 Hz', '10 Hz', '25 Hz', '50 Hz', '100 Hz']
         self.available_temp_rh_sample_rates = ['0.5 Hz','1 Hz', '2 Hz', '4 Hz', '10 Hz']
-        self.exporter = CSVExporter()
-        self.bind(is_streaming=self.exporter.is_streaming)
-        self.add_callback(self.exporter.add_packet)
+        self.configure_exporter()
         find_port_thread = threading.Thread(target=self.find_port, daemon=True)
         find_port_thread.start()
+
+    def configure_exporter(self):
+        self.exporter = CSVExporter()
+        self.bind(is_streaming=self.exporter.is_streaming)
+        self.bind(configured_sample_rate=self.exporter.setter('data_sample_rate'))
+        self.bind(configured_temp_rh_sample_rate=self.exporter.setter('temp_rh_sample_rate'))
+        self.bind(configured_temp_rh_sample_rep=self.exporter.setter('temp_rh_rep'))
+        self.add_callback(self.exporter.add_packet)
 
     def add_callback(self, callback):
         """
@@ -410,6 +416,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
                     
                     # Capacitance
                     cap = self.port.read(12)
+                    
                     cap_ch_1 = struct.unpack('3B',cap[:3])
                     cap_ch_2 = struct.unpack('3B',cap[3:6])
                     cap_ch_3 = struct.unpack('3B',cap[6:9])

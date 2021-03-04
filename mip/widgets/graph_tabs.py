@@ -119,6 +119,32 @@ class GraphPanelItem(BoxLayout):
             if ( (plot_index <= (len(self.legend) - 1)) and (plot_index <= (len(self.color) - 1)) ):
                 self.plot_settings.add_legend_entry(self.legend[plot_index], self.color[plot_index])
     
+    def on_autoscale(self, instance, value):
+        if (value):
+            self.autoscale_plots()
+
+    def autoscale_plots(self):
+        global_y_min = []
+        global_y_max = []
+        for plot_index in range(self.n_plots):
+            # Slice only the visible part
+            if (abs(self.graph.xmin) < self.max_seconds):
+                y_points_slice = self.y_points[plot_index][(self.max_seconds-abs(self.graph.xmin)) * self.num_samples_per_second:]       
+            else:
+                y_points_slice = self.y_points[plot_index]
+                
+            global_y_min.append(min(y_points_slice))
+            global_y_max.append(max(y_points_slice))
+        
+        y_min = min(global_y_min)
+        y_max = max(global_y_max)
+        if (y_min != y_max):
+            min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(y_min, y_max, 10)
+            self.graph.ymin = min_val
+            self.graph.ymax = max_val
+            self.graph.y_ticks_major = major_ticks
+            self.graph.y_ticks_minor = minor_ticks
+
     def on_ymin(self, instance, value):
         self.graph.ymin = value
         min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(self.ymin, self.ymax,10)
@@ -157,26 +183,8 @@ class GraphPanelItem(BoxLayout):
                 self.temp_points[plot_index] = []
                 self.plots[plot_index].points = zip(self.x_points, self.y_points[plot_index])
 
-        global_y_min = []
-        global_y_max = []
         if (self.autoscale):
-            for plot_index in range(self.n_plots):
-                # Slice only the visible part
-                if (abs(self.graph.xmin) < self.max_seconds):
-                    y_points_slice = self.y_points[plot_index][(self.max_seconds-abs(self.graph.xmin)) * self.num_samples_per_second:]       
-                else:
-                    y_points_slice = self.y_points[plot_index]
-                    
-                global_y_min.append(min(y_points_slice))
-                global_y_max.append(max(y_points_slice))
-            
-            y_min = min(global_y_min)
-            y_max = max(global_y_max)
-            min_val, max_val, major_ticks, minor_ticks = self.get_bounds_and_ticks(y_min, y_max, 10)
-            self.graph.ymin = min_val
-            self.graph.ymax = max_val
-            self.graph.y_ticks_major = major_ticks
-            self.graph.y_ticks_minor = minor_ticks
+            self.autoscale_plots()
 
     def on_num_samples_per_second(self, instance, value):
         self.n_points = self.max_seconds * self.num_samples_per_second  # Number of points to plot

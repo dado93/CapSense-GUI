@@ -13,3 +13,6 @@ Data are streamed using a [RN-42]() Bluetooth module.
 ## GUI Features
 - Automatic discovery of the correct serial port among those available on the machine
 - Plotting of data with variable sample rates with automatic adjustaments of the plots
+- Configurable plot settings
+- Data export to CSV/txt format
+

@@ -60,7 +60,7 @@ class ContainerLayout(BoxLayout):
 
     def on_bottom_bar(self, instance, value):
         #logger.add(sys.stderr, format="{time} {level} {message}", filter="my_module", level="INFO")
-        logger.add(self.bottom_bar.update_str, format="<green>{time:DD-MM-YYYY HH:mm:ss}</green> | <red>{level}</red> | {message}")
+        logger.add(self.bottom_bar.update_str, format="[color=7f7fff]{time:DD-MM-YYYY HH:mm:ss}[/color] | [color=ff33cc]{level}[/color] | {message}")
 
     def on_top_bar(self, instance, value):
         """!
