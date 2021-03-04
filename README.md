@@ -16,3 +16,11 @@ Data are streamed using a [RN-42]() Bluetooth module.
 - Configurable plot settings
 - Data export to CSV/txt format
 
+## Documentation Creation
+Documentation is generated using pdoc3 and pushed to GitHub pages at the following link: [https://dado93.github.io/CapSense-GUI/](https://dado93.github.io/CapSense-GUI/)
+
+In order to create the updated documentation, simply run:
+
+`make docs`
+
+and the updated documentation will be available in the docs folder.

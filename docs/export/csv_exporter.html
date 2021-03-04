@@ -48,7 +48,34 @@ Generic event dispatcher interface.</p>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="mip.export.csv_exporter.CSVExporter.message_string"><code class="name">var <span class="ident">message_string</span></code></dt>
+<dt id="mip.export.csv_exporter.CSVExporter.data_sample_rate"><code class="name">var <span class="ident">data_sample_rate</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.save_data"><code class="name">var <span class="ident">save_data</span></code></dt>
+<dd>
+<div class="desc"><p>BooleanProperty(defaultvalue=True, **kw)
+Property that represents only a boolean value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: boolean
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.temp_rh_rep"><code class="name">var <span class="ident">temp_rh_rep</span></code></dt>
+<dd>
+<div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
+Property that represents a string value.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: string, defaults to ''
+        Specifies the default value of the property.
+</code></pre></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.temp_rh_sample_rate"><code class="name">var <span class="ident">temp_rh_sample_rate</span></code></dt>
 <dd>
 <div class="desc"><p>StringProperty(defaultvalue=u'', **kw)
 Property that represents a string value.</p>
@@ -60,8 +87,32 @@ Property that represents a string value.</p>
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="mip.export.csv_exporter.CSVExporter.add_packet"><code class="name flex">
+<span>def <span class="ident">add_packet</span></span>(<span>self, packet)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.close_file"><code class="name flex">
+<span>def <span class="ident">close_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="mip.export.csv_exporter.CSVExporter.init_file"><code class="name flex">
 <span>def <span class="ident">init_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.is_streaming"><code class="name flex">
+<span>def <span class="ident">is_streaming</span></span>(<span>self, instance, streaming)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.load_export_settings"><code class="name flex">
+<span>def <span class="ident">load_export_settings</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -74,6 +125,18 @@ Property that represents a string value.</p>
 </dd>
 <dt id="mip.export.csv_exporter.CSVExporter.set_output_path"><code class="name flex">
 <span>def <span class="ident">set_output_path</span></span>(<span>self, instance, path)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.write_header"><code class="name flex">
+<span>def <span class="ident">write_header</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mip.export.csv_exporter.CSVExporter.write_packet"><code class="name flex">
+<span>def <span class="ident">write_packet</span></span>(<span>self, packet)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -99,10 +162,19 @@ Property that represents a string value.</p>
 <li>
 <h4><code><a title="mip.export.csv_exporter.CSVExporter" href="#mip.export.csv_exporter.CSVExporter">CSVExporter</a></code></h4>
 <ul class="">
+<li><code><a title="mip.export.csv_exporter.CSVExporter.add_packet" href="#mip.export.csv_exporter.CSVExporter.add_packet">add_packet</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.close_file" href="#mip.export.csv_exporter.CSVExporter.close_file">close_file</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.data_sample_rate" href="#mip.export.csv_exporter.CSVExporter.data_sample_rate">data_sample_rate</a></code></li>
 <li><code><a title="mip.export.csv_exporter.CSVExporter.init_file" href="#mip.export.csv_exporter.CSVExporter.init_file">init_file</a></code></li>
-<li><code><a title="mip.export.csv_exporter.CSVExporter.message_string" href="#mip.export.csv_exporter.CSVExporter.message_string">message_string</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.is_streaming" href="#mip.export.csv_exporter.CSVExporter.is_streaming">is_streaming</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.load_export_settings" href="#mip.export.csv_exporter.CSVExporter.load_export_settings">load_export_settings</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.save_data" href="#mip.export.csv_exporter.CSVExporter.save_data">save_data</a></code></li>
 <li><code><a title="mip.export.csv_exporter.CSVExporter.set_output_format" href="#mip.export.csv_exporter.CSVExporter.set_output_format">set_output_format</a></code></li>
 <li><code><a title="mip.export.csv_exporter.CSVExporter.set_output_path" href="#mip.export.csv_exporter.CSVExporter.set_output_path">set_output_path</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.temp_rh_rep" href="#mip.export.csv_exporter.CSVExporter.temp_rh_rep">temp_rh_rep</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.temp_rh_sample_rate" href="#mip.export.csv_exporter.CSVExporter.temp_rh_sample_rate">temp_rh_sample_rate</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.write_header" href="#mip.export.csv_exporter.CSVExporter.write_header">write_header</a></code></li>
+<li><code><a title="mip.export.csv_exporter.CSVExporter.write_packet" href="#mip.export.csv_exporter.CSVExporter.write_packet">write_packet</a></code></li>
 </ul>
 </li>
 </ul>
