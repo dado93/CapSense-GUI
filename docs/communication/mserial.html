@@ -65,6 +65,14 @@
 <dd>
 <div class="desc"><p>Capdac factor for capacitance conversion</p></div>
 </dd>
+<dt id="mip.communication.mserial.SD_CARD_CUSTOM_HEADER_LATCH_CMD"><code class="name">var <span class="ident">SD_CARD_CUSTOM_HEADER_LATCH_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>Command to latch custom header info in SD card file.</p></div>
+</dd>
+<dt id="mip.communication.mserial.SD_CARD_CUSTOM_HEADER_SET_CMD"><code class="name">var <span class="ident">SD_CARD_CUSTOM_HEADER_SET_CMD</span></code></dt>
+<dd>
+<div class="desc"><p>Command to set custom header info in SD card file.</p></div>
+</dd>
 <dt id="mip.communication.mserial.START_STREAMING_CMD"><code class="name">var <span class="ident">START_STREAMING_CMD</span></code></dt>
 <dd>
 <div class="desc"><p>Command to start streaming data.</p></div>
@@ -538,8 +546,15 @@ was set, that is checked inside the read data function
 and the class property is then updated accordingly.
 @param sample_rate string identifying the new sample rate to be set.</p></div>
 </dd>
+<dt id="mip.communication.mserial.MIPSerial.set_sd_card_custom_header"><code class="name flex">
+<span>def <span class="ident">set_sd_card_custom_header</span></span>(<span>self, header_string)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Send a custom header to the board so that it is added
+in the SD file during recording.</p></div>
+</dd>
 <dt id="mip.communication.mserial.MIPSerial.set_sd_card_rec_minutes"><code class="name flex">
-<span>def <span class="ident">set_sd_card_rec_minutes</span></span>(<span>self, value)</span>
+<span>def <span class="ident">set_sd_card_rec_minutes</span></span>(<span>self, rec_minutes, header)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -630,6 +645,8 @@ same instance is returned.</p></div>
 <li><code><a title="mip.communication.mserial.DATA_PACKET_TAIL" href="#mip.communication.mserial.DATA_PACKET_TAIL">DATA_PACKET_TAIL</a></code></li>
 <li><code><a title="mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER" href="#mip.communication.mserial.SAMPLE_RATE_PACKET_HEADER">SAMPLE_RATE_PACKET_HEADER</a></code></li>
 <li><code><a title="mip.communication.mserial.SAMPLE_RATE_PACKET_TAIL" href="#mip.communication.mserial.SAMPLE_RATE_PACKET_TAIL">SAMPLE_RATE_PACKET_TAIL</a></code></li>
+<li><code><a title="mip.communication.mserial.SD_CARD_CUSTOM_HEADER_LATCH_CMD" href="#mip.communication.mserial.SD_CARD_CUSTOM_HEADER_LATCH_CMD">SD_CARD_CUSTOM_HEADER_LATCH_CMD</a></code></li>
+<li><code><a title="mip.communication.mserial.SD_CARD_CUSTOM_HEADER_SET_CMD" href="#mip.communication.mserial.SD_CARD_CUSTOM_HEADER_SET_CMD">SD_CARD_CUSTOM_HEADER_SET_CMD</a></code></li>
 <li><code><a title="mip.communication.mserial.START_STREAMING_CMD" href="#mip.communication.mserial.START_STREAMING_CMD">START_STREAMING_CMD</a></code></li>
 <li><code><a title="mip.communication.mserial.STOP_STREAMING_CMD" href="#mip.communication.mserial.STOP_STREAMING_CMD">STOP_STREAMING_CMD</a></code></li>
 <li><code><a title="mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD" href="#mip.communication.mserial.TEMP_RH_SETTINGS_SET_CMD">TEMP_RH_SETTINGS_SET_CMD</a></code></li>
@@ -682,6 +699,7 @@ same instance is returned.</p></div>
 <li><code><a title="mip.communication.mserial.MIPSerial.sample_rate_num_samples" href="#mip.communication.mserial.MIPSerial.sample_rate_num_samples">sample_rate_num_samples</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.send_updated_time_to_board" href="#mip.communication.mserial.MIPSerial.send_updated_time_to_board">send_updated_time_to_board</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.set_sample_rate" href="#mip.communication.mserial.MIPSerial.set_sample_rate">set_sample_rate</a></code></li>
+<li><code><a title="mip.communication.mserial.MIPSerial.set_sd_card_custom_header" href="#mip.communication.mserial.MIPSerial.set_sd_card_custom_header">set_sd_card_custom_header</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.set_sd_card_rec_minutes" href="#mip.communication.mserial.MIPSerial.set_sd_card_rec_minutes">set_sd_card_rec_minutes</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.set_temperature_settings" href="#mip.communication.mserial.MIPSerial.set_temperature_settings">set_temperature_settings</a></code></li>
 <li><code><a title="mip.communication.mserial.MIPSerial.start_streaming" href="#mip.communication.mserial.MIPSerial.start_streaming">start_streaming</a></code></li>

@@ -103,3 +103,17 @@
         size_hint: None, 1
         width: '108sp'
         text: 'Battery: '
+
+<SDBar@BoxLayout>:
+    orientation:'horizontal'
+    padding: '2sp'
+    size_hint: 1, None
+    height: '45sp'
+    Label:
+        id: _sd_saving
+        text: 'SD Saving'
+    Label:
+        id: _sd_minutes
+        text: '00:00:00'
+    Button:
+        text: 'Start SD'

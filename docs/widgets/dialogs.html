@@ -545,6 +545,88 @@ Property that represents a string value.</p>
 </dd>
 </dl>
 </dd>
+<dt id="mip.widgets.dialogs.HeaderTextInput"><code class="flex name class">
+<span>class <span class="ident">HeaderTextInput</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TextInput class. See module documentation for more information.</p>
+<p>:Events:
+<code>on_text_validate</code>
+Fired only in multiline=False mode when the user hits 'enter'.
+This will also unfocus the textinput.
+<code>on_double_tap</code>
+Fired when a double tap happens in the text input. The default
+behavior selects the text around the cursor position. More info at
+:meth:<code>on_double_tap</code>.
+<code>on_triple_tap</code>
+Fired when a triple tap happens in the text input. The default
+behavior selects the line around the cursor position. More info at
+:meth:<code>on_triple_tap</code>.
+<code>on_quad_touch</code>
+Fired when four fingers are touching the text input. The default
+behavior selects the whole text. More info at
+:meth:<code>on_quad_touch</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When changing a :class:<code>TextInput</code> property that requires re-drawing,
+e.g. modifying the :attr:<code>text</code>, the updates occur on the next
+clock cycle and not instantly. This might cause any changes to the
+:class:<code>TextInput</code> that occur between the modification and the next
+cycle to be ignored, or to use previous values. For example, after
+a update to the :attr:<code>text</code>, changing the cursor in the same clock
+frame will move it using the previous text and will likely end up in an
+incorrect position. The solution is to schedule any updates to occur
+on the next clock cycle using
+:meth:<code>~kivy.clock.ClockBase.schedule_once</code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Selection is cancelled when TextInput is focused. If you need to
+show selection when TextInput is focused, you should delay
+(use Clock.schedule) the call to the functions for selecting
+text (select_all, select_text).</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title">Changed in version:&ensp;1.10.0</p>
+<p><code>background_disabled_active</code> has been removed.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title">Changed in version:&ensp;1.9.0</p>
+<p>:class:<code>TextInput</code> now inherits from
+:class:<code>~kivy.uix.behaviors.FocusBehavior</code>.
+:attr:<code>~kivy.uix.behaviors.FocusBehavior.keyboard_mode</code>,
+:meth:<code>~kivy.uix.behaviors.FocusBehavior.show_keyboard</code>,
+:meth:<code>~kivy.uix.behaviors.FocusBehavior.hide_keyboard</code>,
+:meth:<code>~kivy.uix.behaviors.FocusBehavior.focus</code>,
+and :attr:<code>~kivy.uix.behaviors.FocusBehavior.input_type</code>
+have been removed since they are now inherited
+from :class:<code>~kivy.uix.behaviors.FocusBehavior</code>.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title">Changed in version:&ensp;1.7.0</p>
+<p><code>on_double_tap</code>, <code>on_triple_tap</code> and <code>on_quad_touch</code> events added.</p>
+</div></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>kivy.uix.textinput.TextInput</li>
+<li>kivy.uix.behaviors.focus.FocusBehavior</li>
+<li>kivy.uix.widget.Widget</li>
+<li>kivy.uix.widget.WidgetBase</li>
+<li>kivy._event.EventDispatcher</li>
+<li>kivy._event.ObjectWithUid</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="mip.widgets.dialogs.HeaderTextInput.insert_text"><code class="name flex">
+<span>def <span class="ident">insert_text</span></span>(<span>self, substring, from_undo=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Insert new text at the current cursor position. Override this
+function in order to pre-process text for input validation.</p></div>
+</dd>
+</dl>
+</dd>
 <dt id="mip.widgets.dialogs.PopupRetrieval"><code class="flex name class">
 <span>class <span class="ident">PopupRetrieval</span></span>
 <span>(</span><span>retrieval_timeout=1, **kwargs)</span>
@@ -684,6 +766,50 @@ bar value.</p>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="mip.widgets.dialogs.SDCardDialog.header_info"><code class="name">var <span class="ident">header_info</span></code></dt>
+<dd>
+<div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
+Property that represents a Python object.</p>
+<pre><code>:Parameters:
+    &lt;code&gt;defaultvalue&lt;/code&gt;: object type
+        Specifies the default value of the property.
+    &lt;code&gt;rebind&lt;/code&gt;: bool, defaults to False
+        Whether kv rules using this object as an intermediate attribute
+        in a kv rule, will update the bound property when this object
+        changes.
+
+        That is the standard behavior is that if there's a kv rule
+        ``text: self.a.b.c.d``, where &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; are
+        properties with &lt;code&gt;rebind&lt;/code&gt; &lt;code&gt;False&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; is a
+        :class:&lt;code&gt;StringProperty&lt;/code&gt;. Then when the rule is applied, &lt;code&gt;text&lt;/code&gt;
+        becomes bound only to &lt;code&gt;d&lt;/code&gt;. If &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; change,
+        &lt;code&gt;text&lt;/code&gt; still remains bound to &lt;code&gt;d&lt;/code&gt;. Furthermore, if any of them
+        were &lt;code&gt;None&lt;/code&gt; when the rule was initially evaluated, e.g. &lt;code&gt;b&lt;/code&gt; was
+        &lt;code&gt;None&lt;/code&gt;; then &lt;code&gt;text&lt;/code&gt; is bound to &lt;code&gt;b&lt;/code&gt; and will not become bound
+        to &lt;code&gt;d&lt;/code&gt; even when &lt;code&gt;b&lt;/code&gt; is changed to not be &lt;code&gt;None&lt;/code&gt;.
+
+        By setting &lt;code&gt;rebind&lt;/code&gt; to &lt;code&gt;True&lt;/code&gt;, however, the rule will be
+        re-evaluated and all the properties rebound when that intermediate
+        property changes. E.g. in the example above, whenever &lt;code&gt;b&lt;/code&gt; changes
+        or becomes not &lt;code&gt;None&lt;/code&gt; if it was &lt;code&gt;None&lt;/code&gt; before, &lt;code&gt;text&lt;/code&gt; is
+        evaluated again and becomes rebound to &lt;code&gt;d&lt;/code&gt;. The overall result is
+        that &lt;code&gt;text&lt;/code&gt; is now bound to all the properties among &lt;code&gt;a&lt;/code&gt;,
+        &lt;code&gt;b&lt;/code&gt;, or &lt;code&gt;c&lt;/code&gt; that have &lt;code&gt;rebind&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;.
+    `\*\*kwargs`: a list of keyword arguments
+        &lt;code&gt;baseclass&lt;/code&gt;
+            If kwargs includes a &lt;code&gt;baseclass&lt;/code&gt; argument, this value will be
+            used for validation: `isinstance(value, kwargs['baseclass'])`.
+
+!!! warning "Warning"
+    To mark the property as changed, you must reassign a new python object.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.9.0"
+    &lt;code&gt;rebind&lt;/code&gt; has been introduced.
+
+!!! versionchanged "Changed in version:&amp;ensp;1.7.0"
+    &lt;code&gt;baseclass&lt;/code&gt; parameter added.
+</code></pre></div>
+</dd>
 <dt id="mip.widgets.dialogs.SDCardDialog.rec_min_spinner"><code class="name">var <span class="ident">rec_min_spinner</span></code></dt>
 <dd>
 <div class="desc"><p>ObjectProperty(defaultvalue=None, rebind=False, **kw)
@@ -910,6 +1036,12 @@ Usage:</li>
 </ul>
 </li>
 <li>
+<h4><code><a title="mip.widgets.dialogs.HeaderTextInput" href="#mip.widgets.dialogs.HeaderTextInput">HeaderTextInput</a></code></h4>
+<ul class="">
+<li><code><a title="mip.widgets.dialogs.HeaderTextInput.insert_text" href="#mip.widgets.dialogs.HeaderTextInput.insert_text">insert_text</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="mip.widgets.dialogs.PopupRetrieval" href="#mip.widgets.dialogs.PopupRetrieval">PopupRetrieval</a></code></h4>
 <ul class="two-column">
 <li><code><a title="mip.widgets.dialogs.PopupRetrieval.checking_completed" href="#mip.widgets.dialogs.PopupRetrieval.checking_completed">checking_completed</a></code></li>
@@ -927,6 +1059,7 @@ Usage:</li>
 <li>
 <h4><code><a title="mip.widgets.dialogs.SDCardDialog" href="#mip.widgets.dialogs.SDCardDialog">SDCardDialog</a></code></h4>
 <ul class="">
+<li><code><a title="mip.widgets.dialogs.SDCardDialog.header_info" href="#mip.widgets.dialogs.SDCardDialog.header_info">header_info</a></code></li>
 <li><code><a title="mip.widgets.dialogs.SDCardDialog.rec_min_spinner" href="#mip.widgets.dialogs.SDCardDialog.rec_min_spinner">rec_min_spinner</a></code></li>
 <li><code><a title="mip.widgets.dialogs.SDCardDialog.update" href="#mip.widgets.dialogs.SDCardDialog.update">update</a></code></li>
 </ul>
