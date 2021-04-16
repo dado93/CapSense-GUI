@@ -235,7 +235,7 @@ class MIPSerial(EventDispatcher, metaclass=Singleton):
         @return False if the port was not found to be corrected.
         """
         logger.debug('Checking: {}'.format(port_name))
-        if ( (sys.platform == 'darwin') and (not 'MIP' in port_name)):
+        if ( (platform == 'darwin') and (not 'MIP' in port_name)):
             return False
         try:
             port = serial.Serial(port=port_name, baudrate=self.baudrate)
