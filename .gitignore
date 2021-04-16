@@ -141,4 +141,4 @@ cython_debug/
 
 Data/
 settings.json
-.python-version
+*.python-version
