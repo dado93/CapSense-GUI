@@ -13,6 +13,7 @@ class CSVExporter(EventDispatcher):
     data_sample_rate = StringProperty('')
     temp_rh_sample_rate = StringProperty('')
     temp_rh_rep = StringProperty('')
+    custom_header = StringProperty('')
 
     def __init__(self):
         logger.debug('Data Exporter Initialized')
@@ -26,6 +27,7 @@ class CSVExporter(EventDispatcher):
                 self.save_data = settings_json['save_data']
                 self.data_format = settings_json['data_format']
                 self.data_path = Path(settings_json['data_path'])
+                self.custom_header = ''
                 if (self.data_format == 'csv'):
                     self.delim = ','
                 else:
@@ -34,6 +36,7 @@ class CSVExporter(EventDispatcher):
             self.save_data = False
             self.data_path = Path.cwd() / 'Data'
             self.data_format = 'txt'
+            self.custom_header = ''
             self.delim = ' '
             if (not self.data_path.exists()):
                 self.data_path.mkdir(parents=True, exist_ok=True)
@@ -80,6 +83,8 @@ class CSVExporter(EventDispatcher):
         header += f'% Temperature and RH sample rate: {self.temp_rh_sample_rate}'
         header += '\n'
         header += f'% Temperature and RH repeatability: {self.temp_rh_rep}'
+        header += '\n'
+        header += f'% Custom Header: {self.custom_header}'
         header += '\n'
         header += "Packet_ID"
         header += self.delim

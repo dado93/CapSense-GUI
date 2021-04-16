@@ -21,7 +21,7 @@ n_args = len(argv)
 
 if ((n_args == 1) or (n_args > 3)):
     print('Incorrect number of parameters')
-    print('Usage file_conversion.py input_file_path [output_file_path]')
+    print('Usage: file_conversion.py input_file_path [output_file_path]')
     sys.exit(1)
 
 input_file_path = Path(argv[1])
@@ -41,6 +41,8 @@ if ('Info:' in header.keys()):
     input_file_custom_header = input_file_custom_header.rjust(5,'_')
 else:
     input_file_custom_header = ''
+
+input_file_custom_header = 'xxxx'
 
 if (n_args == 3):
     output_file_path = Path(argv[2])

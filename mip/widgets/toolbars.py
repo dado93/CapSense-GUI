@@ -73,6 +73,8 @@ class Toolbar(BoxLayout):
 
     data_path = StringProperty('')
 
+    custom_header = StringProperty('')
+
     def __init__(self, **kwargs):
         super(Toolbar, self).__init__(**kwargs)
         self.load_export_settings()
@@ -98,12 +100,13 @@ class Toolbar(BoxLayout):
         self.message_string = "Configuring data export"
         self.load_export_settings()
         popup = dialogs.ExportDialog()
-        popup.set_settings(self.save_data, self.data_format, self.data_path)
+        print(self.custom_header)
+        popup.set_settings(self.save_data, self.data_format, self.data_path, self.custom_header)
 
         popup.bind(save_data=self.setter('save_data'))
         popup.bind(data_format=self.setter('data_format'))
         popup.bind(folder_path_value=self.setter('data_path'))
-        
+        popup.bind(custom_header_string=self.setter('custom_header'))
         popup.bind(ok_pressed=self.save_export_settings)
         popup.open()
     
@@ -111,7 +114,7 @@ class Toolbar(BoxLayout):
         settings_json = {
             'save_data' : self.save_data,
             'data_format' : self.data_format,
-            'data_path' : self.data_path
+            'data_path' : self.data_path,
         }
         with open('settings.json', 'w') as f:
             f.write(json.dumps(settings_json, indent=4))
@@ -129,9 +132,6 @@ class Toolbar(BoxLayout):
             self.data_format = 'txt'
             if (not Path(self.data_path).exists()):
                 Path(self.data_path).mkdir(parents=True, exist_ok=True)
-
-    def on_data_path(self, instance, value):
-        print(value)
 
     def is_streaming(self, instance, value):
         self.disabled = value

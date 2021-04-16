@@ -242,17 +242,20 @@ class ExportDialog(Popup):
     folder_button = ObjectProperty(None)
     folder_path = ObjectProperty(None)
     folder_path_scroll = ObjectProperty(None)
+    custom_header = ObjectProperty(None)
     
     folder_path_value = StringProperty('')
     save_data = BooleanProperty(False)
     data_format = StringProperty('txt')
     ok_pressed = BooleanProperty(False)
+    custom_header_string = StringProperty('')
 
-    def set_settings(self, save_data, data_format='txt', data_path='/Data'):
+    def set_settings(self, save_data, data_format='txt', data_path='/Data', header=''):
         if (save_data):
             self.data_export_cb.active = True
         self.data_format_spinner.text = data_format
         self.folder_path.text = data_path
+        self.custom_header.text = header
 
     def on_data_export_cb(self, instance, value):
         self.data_export_cb.bind(active=self.data_export_cb_changed)
@@ -265,16 +268,17 @@ class ExportDialog(Popup):
         self.folder_button.disabled = not value
         self.save_data = value
         self.folder_path_scroll.disabled = not value
-    
+
     def folder_selection(self):
         popup = FolderPickerDialog()
         popup.open()
         popup.bind(folder_path=self.setter('folder_path_value'))
     
     def on_folder_path_value(self, instance, value):
-        self.folder_path.text = value
+        self.folder_path.text = value        
 
     def update(self):
+        self.custom_header_string = self.custom_header.text
         self.ok_pressed = True
         self.dismiss()
 

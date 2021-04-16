@@ -57,6 +57,7 @@ class ContainerLayout(BoxLayout):
         self.toolbar.bind(data_path=self.serial.exporter.set_output_path)
         self.toolbar.bind(data_format=self.serial.exporter.set_output_format)
         self.toolbar.bind(save_data=self.serial.exporter.setter('save_data'))
+        self.toolbar.bind(custom_header=self.serial.exporter.setter('custom_header'))
 
     def on_bottom_bar(self, instance, value):
         #logger.add(sys.stderr, format="{time} {level} {message}", filter="my_module", level="INFO")
